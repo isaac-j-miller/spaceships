@@ -51,12 +51,26 @@ point EnemySpaceship::getMoveVector() {
 			moveVector.y = -1;
 			tooClose = true;
 		}
-
-		//then, check spaceships
-		
-		//then dodge bullets
 		box inflated = inflate(collisionBox, 2);
+		
+		//then, check spaceships
+		for (auto s : *spaceships) {//iterate through spaceships and find those which overlap
+			point sAvgPos = s->getAvgPosition();
+			if (s != this && pointDistance(avgPosition, sAvgPos) < 2 * (getMaxDimension() + s->getMaxDimension())) {
+				// check if overlap
+				traj = s->getDisplacementVector();
+				projectilePoint = sAvgPos;
+				tempRay = { projectilePoint, traj * 10E4 + projectilePoint };
+				if (lineIntersectBox(tempRay, inflated)) {
+					rays.push_back(tempRay);
+				}
+				tooClose = true;
+			}
+		}
+		
 		if (!tooClose) {
+			
+			//then dodge bullets
 			for (auto r : *projectiles) {//iterate through projectiles and find those that intersect this
 				if (r->getFather() != this && pointDistance(avgPosition, r->getAvgPosition()) < 2 * (getMaxDimension() + r->getMaxDimension())) {
 					traj = r->getTrajectory();
@@ -69,16 +83,17 @@ point EnemySpaceship::getMoveVector() {
 			}
 			//std::cout << "rays: " << rays.size() << std::endl;
 			//now rays contains all the rays that intersect the collisionBox
-			for (auto r : rays) { //iterate over rays that intersect the collisionBox
-				collisionPoint = collisionPoint + rayBoxIntersection(r, inflated);
-			}
-			if (rays.size() > 0) {
-				collisionPoint = collisionPoint * (1.f / (rays.size())); //get average collision point
-				difference = avgPosition - collisionPoint;
-				//std::cout <<"num rays: "<<rays.size()<< "; collision point: " << collisionPoint << "; avg = " << avg << "; vector = " << moveVector << std::endl;
-				if (difference.x != 0 || difference.y != 0) {
-					moveVector = normalizeVector(difference);
-				}
+			
+		}
+		for (auto r : rays) { //iterate over rays that intersect the collisionBox
+			collisionPoint = collisionPoint + rayBoxIntersection(r, inflated);
+		}
+		if (rays.size() > 0) {
+			collisionPoint = collisionPoint * (1.f / (rays.size())); //get average collision point
+			difference = avgPosition - collisionPoint;
+			//std::cout <<"num rays: "<<rays.size()<< "; collision point: " << collisionPoint << "; avg = " << avg << "; vector = " << moveVector << std::endl;
+			if (difference.x != 0 || difference.y != 0) {
+				moveVector = normalizeVector(difference);
 			}
 		}
 	}
@@ -110,9 +125,9 @@ void EnemySpaceship::specialMove(){
 		}
 		//now we have the rotation
 		
-		rotated = setRotation(angle);
-		move(getMoveVector() * moveMod);
 		
+		move(getMoveVector() * moveMod);
+		rotated = setRotation(angle);
 		
 		if (rand() % 1000 < difficulty) { // determine whether or not to fire
 			//disabling friendly fire prevention because friendly fire has been disabled
