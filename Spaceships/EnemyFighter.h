@@ -9,6 +9,7 @@ class EnemyFighter :
 public:
 	EnemyFighter(point initPos, double initRotation, int d);
 	~EnemyFighter();
+	void move(point inputVector) { Fighter::move(inputVector); };
 	void fireBullet();
 	void fireTorpedo();
 	void updateCollisionBox();

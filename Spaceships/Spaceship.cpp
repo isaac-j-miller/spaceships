@@ -195,13 +195,24 @@ void Spaceship::move(point inputVector) {
 		else {// if (boxWithin(collisionBox, inflate(windowBounds, .93))){ // if within bounds and 
 			//iterate over other spaceships
 			for (auto a : *spaceships) {
-				if (a != this && pointDistance(avgPosition, a->getAvgPosition()) < (getMaxDimension() + a->getMaxDimension())) { // if spaceship is close
-					if (boxOverlap(collisionBox, a->getCollisionBox())) {
-						point direction = (avgPosition - a->getAvgPosition()) * inputVector;
-						if (direction.x < 0 || direction.y < 0) { // moving in wrong direction
-							position = prevPosition;
+				if (a != this) {
+					point aPos = a ->getAvgPosition();
+					
+					if (pointDistance(avgPosition, aPos) < (getMaxDimension() + a->getMaxDimension())) { // if spaceship is close
+						box aBox = a->getCollisionBox();
+						point direction = (avgPosition - aPos) * inputVector;
+						if (boxOverlap(collisionBox, aBox)) {
+							if (direction.x < 0 || direction.y < 0) { // moving in wrong direction
+								position = prevPosition;
+							}
+							break;
 						}
-						break;
+						else if (boxWithin(collisionBox, aBox)) {
+							if (direction.x < 0 || direction.y < 0) { // moving in wrong direction
+								position = prevPosition;
+							}
+							break;
+						}
 					}
 				}
 			}

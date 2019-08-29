@@ -9,6 +9,7 @@ public:
 	static bool Init(const std::string& ImageFile);
 	void setImage();
 	Fighter(point initPos, double initRotation);
+	void move(point inputVector) { Spaceship::move(inputVector); };
 	virtual ~Fighter();
 	void fireBullet();
 	void fireTorpedo();

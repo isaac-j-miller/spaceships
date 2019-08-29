@@ -12,6 +12,7 @@ public:
 	friend class Mini;
 	static bool Init(const std::string& ImageFile);
 	void setImage();
+	void move(point inputVector);
 	Carrier(point initPos, double initRotation, int d);
 	~Carrier();
 	bool isAlive();

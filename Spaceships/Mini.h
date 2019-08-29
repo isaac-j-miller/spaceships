@@ -12,6 +12,7 @@ public:
 	friend class Carrier;
 	static bool Init(const std::string& ImageFile);
 	void setImage();
+	void move(point inputVector);
 	Mini(point initPos, double initRotation, int d, Carrier* papa);
 	~Mini();
 	void updateCollisionBox();

@@ -30,7 +30,7 @@ public:
 	void setDims();
 	virtual void setImage();
 	static bool Init(const std::string& shieldImageFile, std::vector<Spaceship*>* s, std::vector<EnemySpaceship*>* e, std::vector<Projectile*>* p, std::vector<Explosion*>* ex, box window);// , std::vector<Projectile*> p, std::vector<Spaceship*> s, std::vector<EnemySpaceship*> e, box w);
-	void move(point inputVector);
+	virtual void move(point inputVector);
 	void moveSprite();
 	virtual void fireBullet(); //must be virtual for different attack types
 	virtual void fireTorpedo(); //same
