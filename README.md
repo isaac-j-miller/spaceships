@@ -11,9 +11,17 @@ Some projectiles move slower or faster than others. This is because the projecti
 
 Currently, the highest level I have gotten to is level 9.
 
+OTHER INFO:
+This is still a work-in-progress. Current to-do list:
+-allow minis to collide with carriers
+-clean up powerup situation
+-add rotationspeed powerup
+-clean up collision rotation (sometimes enemies get stuck and don't rotate)
+-clean up encapsulation for projectiles
+
 CONTROLS:
-W: move up
-S: move down
+W: move forward (up)
+S: move back (down)
 A: move left
 D: move right
 Q: rotate counter-clockwise
