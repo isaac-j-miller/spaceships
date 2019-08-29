@@ -106,12 +106,17 @@ void PowerUp::animate() {
 
 bool PowerUp::isActive(Spaceship* player) {
 	// check for collision 
-	if (boxOverlap(getCollisionBox(), player->getCollisionBox())) {
+	box cbox = player->getCollisionBox();
+
+	if (boxOverlap(collisionBox, cbox)) {
 		//if collision
 		collision = true;
 		//player->pickUpBox(this);
 		
 		//if I make it extend to all spaceships, code will be here
+	}
+	else if (boxWithin(collisionBox, cbox)) {
+		collision = true;
 	}
 	else {
 		collision = false;

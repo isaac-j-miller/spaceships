@@ -21,11 +21,11 @@ const int SPACESHIP_TYPES = MAX_LEVEL + 1;
 const char* logFile = "scores.txt";
 unsigned long long int frame = 0;
 unsigned int highScore;
-float framerate = 1024; //fps
+const float framerate = 1024; //fps
 float framePeriodMicroSeconds = (1 / framerate) * 10E6;
 unsigned int prevScore = 0;
 bool paused = false;
-point size = { 1280, 960 };
+const point size = { 1280, 960 };
 const box windowBox = { { 0,0 } ,{0,size.y},{size.x,size.y},{size.x,0} };
 sf::RenderWindow window(sf::VideoMode(size.x, size.y), "Spaceships");
 sf::Font font;
@@ -34,6 +34,7 @@ sf::Text score;
 sf::Text highScoreText;
 sf::Text pauseText;
 sf::Text endText;
+sf::Text levelDisplay;
 sf::Image background;
 sf::Texture backgroundTexture;
 sf::Sprite bSprite;
@@ -189,7 +190,7 @@ void checkPause(sf::Event event) {
 	if (event.type == sf::Event::KeyPressed) {
 		if (event.key.code==sf::Keyboard::Space) {
 			paused = !paused;
-			std::cout << "Pause toggled" << std::endl;
+			//std::cout << "Pause toggled" << std::endl;
 		}
 	}
 	while (paused) {
@@ -292,6 +293,12 @@ int main()
 	highScoreText.setCharacterSize(30);
 	highScoreText.setFillColor(sf::Color::Red);
 	highScoreText.setStyle(sf::Text::Bold);
+
+	levelDisplay.setFont(font);
+	levelDisplay.setPosition(750, 0);
+	levelDisplay.setCharacterSize(30);
+	levelDisplay.setFillColor(sf::Color::Red);
+	levelDisplay.setStyle(sf::Text::Bold);
 
 	pauseText.setString("Paused");
 	pauseText.setFont(font);
@@ -414,7 +421,7 @@ int main()
 					
 					(*it)->specialMove();
 					if (enemySpaceships.size() != vSize) {
-						std::cout << "resized" << std::endl;
+						//std::cout << "resized" << std::endl;
 						it = enemySpaceships.begin();
 						it += loc;
 					}
@@ -523,9 +530,10 @@ int main()
 			highScore = prevScore;
 		}
 		highScoreText.setString("High Score: " + std::to_string(highScore));
+		levelDisplay.setString("Level: " + std::to_string(level));
 		if (!player->isAlive()) {
 			if (prevScore == highScore) {
-				endText.setString("New High Score: " + std::to_string(highScore) + "!");
+				endText.setString("New High Score: " + std::to_string(highScore) + "! Press Esc to exit.");
 			}
 			else {
 
@@ -538,6 +546,7 @@ int main()
 		}
 		window.draw(highScoreText);
 		window.draw(healthReadout);
+		window.draw(levelDisplay);
 		window.draw(score);
 		if (!player->isAlive()&& explosions.size()==0) {
 			sf::Event event;
@@ -546,7 +555,10 @@ int main()
 					window.close();
 				}
 				else if (event.type == sf::Event::KeyPressed) {
-					window.close();
+					if(event.key.code == sf::Keyboard::Escape){ 
+						window.close(); 
+					}
+					
 				}
 			}
 		}

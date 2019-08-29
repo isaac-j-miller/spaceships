@@ -22,6 +22,7 @@ Spaceship::Spaceship(point initPos, double initRotation) {
 	point tempBulletOrigin = { -.5,0 };
 	//std::cout << "spaceship init w/ position " << position << ", rotation " << rotation*180 << " deg, address: " << this;
 	setDims();
+	shieldTimer.restart();
 }
 Spaceship::~Spaceship() {
 
@@ -250,6 +251,7 @@ void Spaceship::activateShield() {
 void Spaceship::disableShield() {
 	shieldUp = false;
 	shieldStrength = 0;
+	shieldTimer.restart();
 	//sprite.setTexture(texture);
 }
 point Spaceship::getSize() {

@@ -178,7 +178,7 @@
     <ClCompile Include="PowerUp.cpp" />
     <ClCompile Include="PowerUpFactory.cpp" />
     <ClCompile Include="Projectile.cpp" />
-    <ClCompile Include="SFML2.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="Spaceship.cpp" />
     <ClCompile Include="SpaceshipFactory.cpp" />
     <ClCompile Include="TextExplosion.cpp" />

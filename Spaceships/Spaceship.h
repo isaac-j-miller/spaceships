@@ -107,5 +107,8 @@ protected:
 	point prevPosition = { 0,0 };
 	int elapsedFrames = 1;
 	box collisionBox = { {0,0}, {0,0 - height}, {0 + width,0 - height}, {0 + width,0} };
+	int shieldPeriod = 2000; //frames to wait to activate shield
+	int baseShieldStrength = 50;
+	FrameClock shieldTimer;
 };
 #endif // !SPACESHIP_H

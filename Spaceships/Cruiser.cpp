@@ -40,8 +40,8 @@ void Cruiser::setImage() {
 
 	sprite.setScale(sf::Vector2f(xScale, yScale));
 	//do the same for shield
-	xScale = 1.3 * width / shieldTexture.getSize().x;
-	yScale = 1.3 * height / shieldTexture.getSize().y;
+	xScale = 1.4 * width / shieldTexture.getSize().x;
+	yScale = 1.4 * height / shieldTexture.getSize().y;
 	shieldSprite.setOrigin(sf::Vector2f(shieldSprite.getTexture()->getSize().x * 0.5, shieldSprite.getTexture()->getSize().y * 0.5));
 	shieldSprite.setScale(sf::Vector2f(xScale, yScale));
 

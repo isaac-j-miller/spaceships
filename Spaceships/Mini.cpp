@@ -29,7 +29,7 @@ void Mini::setImage() {
 }
 Mini::Mini(point initPos, double initRotation, int d, Carrier* papa):
 EnemySpaceship(initPos, initRotation,d){
-	std::cout << "mini init" << std::endl;
+	//std::cout << "mini init" << std::endl;
 	father = papa;
 	position = initPos;
 	level = 0;

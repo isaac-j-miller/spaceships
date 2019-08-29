@@ -44,6 +44,7 @@ Carrier::Carrier(point initPos, double initRotation, int d) :
 	tempBulletOrigin = { .4, 0 };
 	setDims();
 	setImage();
+	
 }
 Carrier::~Carrier() {
 
@@ -61,6 +62,12 @@ bool Carrier::isAlive() {
 }
 void Carrier::updateCollisionBox() {
 	Spaceship::updateCollisionBox();
+	if (!shieldActive()) {
+		if (shieldTimer.getTime() > shieldPeriod) {
+			shieldStrength = baseShieldStrength;
+			activateShield();
+		}
+	}
 }
 void Carrier::fireBullet() {
 	Spaceship::fireBullet();

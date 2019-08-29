@@ -21,6 +21,7 @@ public:
 private:
 	std::vector<Mini*> children;
 	
+	
 };
 #endif
 

@@ -12,11 +12,11 @@ bool Torpedo::Init(const std::string& FileName) {
 Torpedo::Torpedo(point pos, point traj, int dmg, Spaceship* f) :
 	Projectile(pos, traj, dmg, f) {
 
-	speed = 3; //in pixels per frame
+	speed = 3.5; //in pixels per frame
 	explosionDuration = 20;//frames
 	explosionSize = 20;
-	width = 12;
-	height = 18;
+	width = 10;
+	height = 15;
 	baseTransform = { {-width / 2,-height / 2},{-height / 2,height / 2},{width / 2,height / 2},{width / 2,-height / 2} };
 	acceleration = 3E-2; // pixels/(frame^2)
 	maxDimension = std::max(width, height);
