@@ -36,10 +36,10 @@ EnemySpaceship(initPos, initRotation,d){
 	width = 20;
 	height = 20;
 	health = 50;
-	bulletPeriod = 15;
-	speed = 2.8;
+	bulletPeriod = 7;
+	speed = 5.6;
 	pointValue = 400;
-
+	mini = true;
 	tempTorpedoOrigin = { 0, 0 };
 	tempBulletOrigin = { 0, 0 };
 	setImage();

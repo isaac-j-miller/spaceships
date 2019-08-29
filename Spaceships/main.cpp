@@ -21,7 +21,7 @@ const int SPACESHIP_TYPES = MAX_LEVEL + 1;
 const char* logFile = "scores.txt";
 unsigned long long int frame = 0;
 unsigned int highScore;
-const float framerate = 1024; //fps
+const float framerate = 512; //fps
 float framePeriodMicroSeconds = (1 / framerate) * 10E6;
 unsigned int prevScore = 0;
 bool paused = false;
@@ -262,13 +262,13 @@ int main()
 	int playerLevel = initPlayerLevel;
 	int level = 0;
 	//int numEnemies = 6;
-	int enemiesSpawnPeriod = 3000;
+	int enemiesSpawnPeriod = 1500;
 	int enemiesSpawnNumber = 2;
 	//int difficulty = 2;
 	//int difficultyIncrement = 1;
 	int powerUpsInit = 4;
 	int powerUpSpawnNumber = 1;
-	int powerUpPeriod = 2500;
+	int powerUpPeriod = 1250;
 	//unsigned int levelUpScore = 10000;
 	highScore = getHighScore();
 	
@@ -346,6 +346,7 @@ int main()
 	spaceships.push_back(SpaceshipFactory::generatePlayer(initPlayerLevel));//instantiate player
 
 	static Spaceship* player = spaceships[0];
+	Projectile::Init(&explosions, &spaceships, size);
 	EnemySpaceship::Init(player); // initialize enemySpaceships with player as the target
 	point randpos;
 	//bool c = false; //used to make sure RNG doesn't place 2 spaceships in the same spot
@@ -420,16 +421,12 @@ int main()
 					int vSize = enemySpaceships.size();
 					
 					(*it)->specialMove();
-					if (enemySpaceships.size() != vSize) {
+					if (enemySpaceships.size() != vSize) { // if carrier spawns new enemies and resizes vector
 						//std::cout << "resized" << std::endl;
 						it = enemySpaceships.begin();
 						it += loc;
 					}
-
-					//carriers generating minis messes this up
-					//else {
 					++it;
-					
 				}
 				else {
 					//std::cout << "erasing enemy spaceship at " << *it << std::endl;
@@ -454,7 +451,7 @@ int main()
 					delete (*it);
 					(*it) = nullptr;
 					//std::cout << "removing it from spaceships" << std::endl;
-					it = spaceships.erase(it);
+					it = spaceships.erase(it); //resize vector and adjust iterator
 					
 				}
 				else {
@@ -465,16 +462,15 @@ int main()
 
 
 		for (auto it = projectiles.begin(); it != projectiles.end();) {//iterate through projectiles and draw the active ones and explode/disappear the dead/OOB ones
-			if (!(*it)->move(windowBox, spaceships)) {
+			if (!(*it)->move()) {
 				if ((*it)->getCounter() > 1) {
 					window.draw((*it)->getSprite());
-
 				}
 				++it;
 			}
 			else {
 				if ((*it)->getCollision()) {
-					explosions.push_back((*it)->getExplosion());
+					(*it)->explode();
 				}
 				delete* it;
 				//std::cout << "erasing projectile at " << *it << std::endl;

@@ -5,7 +5,7 @@ TextExplosion::TextExplosion(const std::string& t, const point& topLeft, const f
 	position = topLeft;
 	text = t;
 	fontSize = fs;
-	duration = 200;
+	duration = 100;
 	sfText.setString("");
 	sfText.setFont(font);
 	sfText.setStyle(sf::Text::Bold);

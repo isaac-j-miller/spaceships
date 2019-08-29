@@ -8,8 +8,8 @@ Cruiser::Cruiser(point initPos, double initRotation) :
 	height = 50;
 	health = 250;
 	torpedoDamage = 30;
-	bulletPeriod = 18;
-	speed = 2.5;
+	bulletPeriod = 9;
+	speed = 5;
 	pointValue = 4000;
 	
 	tempTorpedoOrigin = { -.5, 0 };

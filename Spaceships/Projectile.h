@@ -11,16 +11,20 @@ class Explosion;
 class Projectile//:
 	//public SpaceThing//abstract class
 {
+protected:
+	static std::vector<Explosion*>* explosions;
+	static std::vector<Spaceship*>* spaceships;
+	static point windowSize;
 	
 public:
 	Projectile(point position, point trajectory, int damage, Spaceship* f);
-	void Init();
+	static void Init(std::vector<Explosion*>* e, std::vector<Spaceship*>* s,point window);
 	void moveSprite();
 	void setImage();
 	float getRotation();
 	sf::Sprite getSprite();
-	bool move(box windowBounds, std::vector<Spaceship*> spaceships); //returns true if out of bounds or collides
-	Explosion* getExplosion();
+	bool move(); //returns true if out of bounds or collides
+	void explode();
 	bool getCollision();
 	point getCollisionCoords();
 	box getCollisionBox();
@@ -32,11 +36,12 @@ public:
 	float getMaxDimension();
 	int getCounter();
 protected:
+	float rotation = 0;
 	int counter=0;
 	int damage = 0;
 	//int loops = 0; //num times it can wrap
 	//int maxLoops = 2;
-	float speed = 2; //in pixels per frame
+	float speed = 4; //in pixels per frame
 	point fatherSpeed;
 	float acceleration = 0.;
 	point position = { 0,0 };

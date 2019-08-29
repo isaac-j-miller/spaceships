@@ -36,10 +36,10 @@ Carrier::Carrier(point initPos, double initRotation, int d) :
 	height = 80;
 	health = 800;
 	bulletPeriod = 20;
-	speed = 1.5;
+	speed = 3;
 	pointValue = 8000;
 	shieldStrength = 100;
-	shieldPeriod = 1000;
+	shieldPeriod = 500;
 	activateShield();
 	tempTorpedoOrigin = { 0, .4 };
 	tempBulletOrigin = { .4, 0 };
@@ -106,9 +106,9 @@ void Carrier::move(point inputVector) {
 		*/
 		//else {// if (boxWithin(collisionBox, inflate(windowBounds, .93))){ // if within bounds and 
 			//iterate over other spaceships
-			int pointsThresh = difficulty + 400;
+			//int pointsThresh = difficulty + 400;
 			for (auto a : *spaceships) {
-				if (a != this && a->getPointsValue() > pointsThresh || a == player) { // quickly filter out minis
+				if (a != this && !(a->isMini())) { // quickly filter out minis
 					point aPos = a->getAvgPosition();
 
 					if (pointDistance(avgPosition, aPos) < (getMaxDimension() + a->getMaxDimension())) { // if spaceship is close

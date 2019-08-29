@@ -63,7 +63,9 @@ public:
 	unsigned int getLevel();
 	bool getEnemy();
 	void destroy();
+	bool isMini() { return mini; }
 protected:
+	bool mini = false;
 	bool enemy = false;
 	unsigned int level = 0;
 	friend class PowerUp;
@@ -75,15 +77,15 @@ protected:
 	float height = 30;
 	float width = 30;
 	float maxDimension = std::max(width, height);
-	float speed = 2;
-	float rotationIncrement = .01;
+	float speed = 4;
+	float rotationIncrement = .02;
 	double rotation = 0; //1 is facing up, 0 is facing down, goes CCW
 	int ramDamage = 0;
 	int bulletDamage = 10;
 	int torpedoDamage = 20;
-	int bulletPeriod = 20; //in frames
-	int torpedoPeriod = 50;
-	int explosionDuration = 100; //in frames
+	int bulletPeriod = 10; //in frames
+	int torpedoPeriod = 25;
+	int explosionDuration = 50; //in frames
 	int health = 100;
 	point bulletOrigin;
 	point torpedoOrigin;
