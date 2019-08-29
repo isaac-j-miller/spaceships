@@ -1,6 +1,7 @@
 # spaceships
 2D spaceships arcade-style game
-
+DISCLAIMER:
+All assets are stolen from Google Images and will be replaced with original content or properly acquired content later.
 IMPORTANT:
 To simply play the game, download the spaceships/debug folder and run the executable "Spaceships.exe"
 
