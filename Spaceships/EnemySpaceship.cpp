@@ -34,6 +34,8 @@ point EnemySpaceship::getMoveVector() {
 		bool tooClose = false;
 		//first, check window bounds
 		displacementVector = getDisplacementVector();
+		// disabling window bound part because adding wrapping
+		/*
 		static int threshold = 20;
 		if (avgPosition.x < threshold && displacementVector.x <=0) { // if close to left side and moving left
 			moveVector.x = 1;
@@ -51,6 +53,7 @@ point EnemySpaceship::getMoveVector() {
 			moveVector.y = -1;
 			tooClose = true;
 		}
+		*/
 		box inflated = inflate(collisionBox, 2);
 		
 		//then, check spaceships
@@ -64,11 +67,11 @@ point EnemySpaceship::getMoveVector() {
 				if (lineIntersectBox(tempRay, inflated)) {
 					rays.push_back(tempRay);
 				}
-				tooClose = true;
+				//tooClose = true;
 			}
 		}
 		
-		if (!tooClose) {
+		//if (!tooClose) {
 			
 			//then dodge bullets
 			for (auto r : *projectiles) {//iterate through projectiles and find those that intersect this
@@ -84,7 +87,7 @@ point EnemySpaceship::getMoveVector() {
 			//std::cout << "rays: " << rays.size() << std::endl;
 			//now rays contains all the rays that intersect the collisionBox
 			
-		}
+		//}
 		for (auto r : rays) { //iterate over rays that intersect the collisionBox
 			collisionPoint = collisionPoint + rayBoxIntersection(r, inflated);
 		}

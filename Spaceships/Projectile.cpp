@@ -83,6 +83,14 @@ bool Projectile::move(box windowBounds, std::vector<Spaceship*> spaceships) {
 		if (counter == 2) {
 			position = fatherSpeed * timeElapsed + position;
 		}
+		/*
+		if (inRange(position,windowBounds.bottomRight)) {
+			//if wrapped
+			position = getWrapped(position, windowBounds.bottomRight);
+			prevPosition = position - (trajectory * (pow(timeElapsed, 2) * acceleration / 2 + speed * timeElapsed));
+			loops++;
+		}
+		*/
 		point difference = position - prevPosition;
 		float mag = magnitude(difference);
 		speed = mag / timeElapsed;
@@ -148,7 +156,8 @@ bool Projectile::move(box windowBounds, std::vector<Spaceship*> spaceships) {
 		}
 		clock.restart();
 		moveSprite();
-		return (boxWithin(collisionBox, windowBounds) ? false : true);
+		//std::cout << "timer: " << lifeClock.getTime() << " duration: " << duration << std::endl;
+		return (inRange(position, windowBounds.bottomRight) ? true : false);
 	}
 	else {
 		return false;

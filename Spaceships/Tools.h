@@ -59,6 +59,10 @@ levelInfo generateLevelInfo(int level);
 std::ostream& operator<<(std::ostream& os, const point& a);
 std::ostream& operator<<(std::ostream& os, const line_segment& a);
 std::ostream& operator<<(std::ostream& os, const box& a);
+
+bool inRange(const point& a, const point& bounds);
+float wrapValue(float a, const float& min, const float& max);
+point getWrapped(const point& a, const point& bounds);
 point averagePosition(const box& b);
 bool pointInBox(const point& a, const box& b);
 float magnitude(const point& a);

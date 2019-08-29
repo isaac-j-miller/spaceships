@@ -79,6 +79,13 @@ void Mini::move(point inputVector) {
 		prevPosition = position;
 		elapsedFrames = moveClock.getTime();
 		position = position + inputVector * speed;
+		if (inRange(position, windowBounds.bottomRight)) {
+			//if wrapped
+			position = getWrapped(position, windowBounds.bottomRight);
+			prevPosition = position - inputVector * speed;
+		}
+		//disable bc wrapping
+		/*
 		//check if within bounds
 		if (!boxWithin(collisionBox, windowBounds)) { // if the collisionbox is not fully within the bounds
 			// check which direction the thing is going and figure out which edge it's closest to & block if moving closer to edge
@@ -88,7 +95,8 @@ void Mini::move(point inputVector) {
 			}
 
 		}
-		else {// if (boxWithin(collisionBox, inflate(windowBounds, .93))){ // if within bounds and 
+		*/
+		//else {// if (boxWithin(collisionBox, inflate(windowBounds, .93))){ // if within bounds and 
 			//iterate over other spaceships
 			for (auto a : *spaceships) {
 				if (a != this && a!=father) { // can pass through father
@@ -112,7 +120,7 @@ void Mini::move(point inputVector) {
 					}
 				}
 			}
-		}
+		//}
 	}
 	//calculate displacement vector
 	if (elapsedFrames != 0) {

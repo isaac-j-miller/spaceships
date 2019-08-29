@@ -34,6 +34,8 @@ public:
 protected:
 	int counter=0;
 	int damage = 0;
+	//int loops = 0; //num times it can wrap
+	//int maxLoops = 2;
 	float speed = 2; //in pixels per frame
 	point fatherSpeed;
 	float acceleration = 0.;
@@ -53,5 +55,6 @@ protected:
 	Spaceship* father;
 	sf::Sprite sprite;
 	FrameClock clock;
+	//FrameClock lifeClock;
 };
 #endif
