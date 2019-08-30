@@ -19,8 +19,12 @@ This is still a work-in-progress. Current to-do list:
 -clean up powerup situation
 -make framerate-related functions dependent on framerate
 -make some powerups more rare
+-work out maximum values for powerups (the current system is spaghetti and very arbitrary)
+-bring more order to the PowerUpFactory
 -add more user spaceships
 -give levels more variety
+-add powerups which give the player new abilities
+-make levels less about attacking hordes of enemies and more about the challenge
 
 CONTROLS:
 W: move forward (up)
