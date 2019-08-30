@@ -4,27 +4,31 @@
 #include "FrameClock.h"
 #ifndef POWERUP_H
 #define POWERUP_H
-#define NUM_TYPES 7
+#define NUM_TYPES 8
 class Spaceship;
 class TextExplosion;
+class Explosion;
 class PowerUp
 {
 
 	static sf::Texture texture;
+protected:
+	static std::vector<Spaceship*>* spaceships;
+	static std::vector<Explosion*>* explosions;
 	//static sf::Image image;
 public:
 	PowerUp(point pos, int type, int value);
 	virtual ~PowerUp();
 	void setImage();
-	static bool Init(const std::string& ImageFile);
-	TextExplosion* explode();
+	static bool Init(const std::string& ImageFile, std::vector<Spaceship*>* s, std::vector<Explosion*>* ex);
+	void explode();
 	point getPosition();
 	point getSize();
 	box getCollisionBox();
 	point getAvgPosition();
 	void animate();
 	virtual bool isUpgrade();
-	bool isActive(Spaceship* player);
+	virtual bool isActive();
 	virtual void upgradeSpaceship(Spaceship* s);
 	sf::Sprite getSprite();
 protected:

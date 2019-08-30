@@ -15,7 +15,7 @@
 #include <iostream>
 #include <fstream>
 #include <chrono>
-const int thresholds[] = { 4000, 10000, 20000 };
+const int thresholds[] = { 0, 10000, 20000 };
 const int MAX_LEVEL = 2;
 const int SPACESHIP_TYPES = MAX_LEVEL + 1;
 const char* logFile = "scores.txt";
@@ -336,7 +336,7 @@ int main()
 	Bullet::Init("bullet.png");
 	Torpedo::Init("torpedo.png");
 	Explosion::Init("explosion.png");
-	PowerUp::Init("powerup.png");
+	PowerUp::Init("powerup.png",&spaceships,&explosions);
 	Upgrade::Init("levelup.png");
 	TextExplosion::Init("pixel_font.ttf", sf::Color::Green);
 	
@@ -397,7 +397,7 @@ int main()
 			playerLevel = player->getLevel();
 		}
 		if (player->isAlive() && player->getScore() >= thresholds[player->getLevel()] && !levelUpActive && player->getLevel() < MAX_LEVEL) {
-			powerUps.push_back(PowerUpFactory::generateSpecificTypeRandom(-1));
+			powerUps.push_back(PowerUpFactory::generateSpecificTypeRandom(-1)); //generate levelup powerup
 			levelUpActive = true;
 		}
 		if (!player->isAlive()&& !logged) {
@@ -491,27 +491,22 @@ int main()
 		}
 		
 		for (auto it = powerUps.begin(); it != powerUps.end();) { //iterate through all powerups, draw the alive ones and explode the dead ones
-			if ((*it)->isActive(player)) {
+			if ((*it)->isActive()) {
 				window.draw((*it)->getSprite());
 				++it;
 			}
 			else if (player->isAlive()){
-				explosions.push_back((*it)->explode());
+				(*it)->explode();
 				if ((*it)->isUpgrade()) {
-					player = SpaceshipFactory::upgradePlayer(player);
-					spaceships[0] = player;
-					EnemySpaceship::Init(player);
-					//std::cout << "Player level is " << player->getLevel() << " and health is " << player->getHealth() << std::endl;
-				}
-				else {
-					player->pickUpBox(*it);
+					player = spaceships[0]; //need to fix the pointer to player so that the user inputs still map to the correct spaceship
 				}
 				delete* it;
 				//std::cout << "erasing powerup at " << *it << std::endl;
 				it = powerUps.erase(it);
 			}
 		}
-
+		//Spaceship* player = spaceships[0];
+		//EnemySpaceship::Init(player); // initialize enemySpaceships with player as the target
 		if (player->isAlive()) {
 			healthReadout.setString("Player health: " + std::to_string(player->getHealth()));
 			score.setString("Score: " + std::to_string(player->getScore()));

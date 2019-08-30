@@ -83,8 +83,8 @@ std::tuple<int,int> PowerUpFactory::getValue(int type) {
 		break;
 	case 3:
 		// speed upgrade
-		minValue = 1;
-		maxValue = 3;
+		minValue = 2;
+		maxValue = 6;
 		break;
 	case 4:
 		// health upgrade
@@ -93,11 +93,16 @@ std::tuple<int,int> PowerUpFactory::getValue(int type) {
 		break;
 	case 5:
 		// bullet ROF upgrade
-		minValue = 1;
-		maxValue = 2;
+		minValue = 2;
+		maxValue = 4;
 		break;
 	case 6:
 		// torpedo ROF upgrade
+		minValue = 2;
+		maxValue = 4;
+		break;
+	case 7:
+		// rotation speed upgrade
 		minValue = 1;
 		maxValue = 2;
 		break;

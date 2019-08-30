@@ -28,12 +28,14 @@ void Upgrade::upgradeSpaceship(Spaceship* s) {
 bool Upgrade::isUpgrade() {
 	return true;
 }
-bool Upgrade::isActive(Spaceship* player) {
-	if (PowerUp::isActive(player)) {
-		upgradeSpaceship(player);
-		return true;
-	}
-	else {
+bool Upgrade::isActive() {
+	//Spaceship* player = spaceships->at(0);
+	if (!PowerUp::isActive()) {
+		
+		//spaceships->at(0) = player;
+		spaceships->at(0) = SpaceshipFactory::upgradePlayer(spaceships->at(0));
+		EnemySpaceship::Init(spaceships->at(0));
 		return false;
 	}
+	return true;
 }
