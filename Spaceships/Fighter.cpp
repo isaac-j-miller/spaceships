@@ -7,7 +7,7 @@ Fighter::Fighter(point initPos, double initRotation) :
 	width = 30;
 	height = 40;
 	health = 150;
-	speed = 2.5;
+	speed = 5;
 	pointValue = 2000;
 	point tempTorpedoOrigin = { -.5,0 };
 	point tempBulletOrigin = { .5,0 };

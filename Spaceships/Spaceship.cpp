@@ -73,13 +73,14 @@ void Spaceship::incrementRotation(float rotationDir) {
 		if (a != this && pointDistance(position, a->getPosition()) <1.5*(getMaxDimension()+a->getMaxDimension()) ) {
 			if (boxOverlap(collisionBox, a->getCollisionBox())) {
 				rotation -= rotationDir * rotationIncrement * boundAdjustment;
+				updateCollisionBox();
 				break;
 			}
 		}
 	}
 	
 	
-	updateCollisionBox();
+	
 	moveSprite();
 	//std::cout << "rotation incremented by " << rotationDir * rotationIncrement<<"; new rotation is " << rotation << std::endl;
 }
@@ -94,10 +95,11 @@ bool Spaceship::setRotation(float newRotation) {
 	if (rotation > 2) {
 		rotation = rotation - 2;
 	}
-	point avg = averagePosition(getCollisionBox());
+	//point avg = averagePosition(getCollisionBox());
 	
 	for (auto a : *spaceships) {
-		if (a != this && pointDistance(avg, averagePosition(a->getCollisionBox())) < .75 * (getMaxDimension() + a->getMaxDimension())) {
+		
+		if (a != this && pointDistance(avgPosition, a->getAvgPosition()) < .75 * (getMaxDimension() + a->getMaxDimension())) {
 			if (boxOverlap(collisionBox, a->getCollisionBox())) {
 				rotation = oldRotation;
 				set = false;
@@ -105,7 +107,7 @@ bool Spaceship::setRotation(float newRotation) {
 			}
 		}
 	}
-
+	
 	updateCollisionBox();
 	moveSprite();
 	return set;
@@ -183,6 +185,13 @@ void Spaceship::move(point inputVector) {
 		prevPosition = position;
 		elapsedFrames = moveClock.getTime();
 		position = position + inputVector * speed;
+		if (inRange(position, windowBounds.bottomRight)) {
+			//if wrapped
+			position = getWrapped(position, windowBounds.bottomRight);
+			prevPosition = position - inputVector * speed;
+		}
+		//disable bc wrapping
+		/*
 		//check if within bounds
 		if (!boxWithin(collisionBox, windowBounds)) { // if the collisionbox is not fully within the bounds
 			// check which direction the thing is going and figure out which edge it's closest to & block if moving closer to edge
@@ -192,20 +201,32 @@ void Spaceship::move(point inputVector) {
 			}
 			
 		}
-		else {// if (boxWithin(collisionBox, inflate(windowBounds, .93))){ // if within bounds and 
+		*/
+		//else {// if (boxWithin(collisionBox, inflate(windowBounds, .93))){ // if within bounds and 
 			//iterate over other spaceships
 			for (auto a : *spaceships) {
-				if (a != this && pointDistance(avgPosition, a->getAvgPosition()) < (getMaxDimension() + a->getMaxDimension())) { // if spaceship is close
-					if (boxOverlap(collisionBox, a->getCollisionBox())) {
-						point direction = (avgPosition - a->getAvgPosition()) * inputVector;
-						if (direction.x < 0 || direction.y < 0) { // moving in wrong direction
-							position = prevPosition;
+				if (a != this) {
+					point aPos = a ->getAvgPosition();
+					
+					if (pointDistance(avgPosition, aPos) < (getMaxDimension() + a->getMaxDimension())) { // if spaceship is close
+						box aBox = a->getCollisionBox();
+						point direction = (avgPosition - aPos) * inputVector;
+						if (boxOverlap(collisionBox, aBox)) {
+							if (direction.x < 0 || direction.y < 0) { // moving in wrong direction
+								position = prevPosition;
+							}
+							break;
 						}
-						break;
+						else if (boxWithin(collisionBox, aBox)) {
+							if (direction.x < 0 || direction.y < 0) { // moving in wrong direction
+								position = prevPosition;
+							}
+							break;
+						}
 					}
 				}
 			}
-		}
+		//}
 	}
 	//calculate displacement vector
 	if (elapsedFrames != 0) {
@@ -240,8 +261,10 @@ sf::Sprite Spaceship::getShield() {
 void Spaceship::moveSprite() {
 	sprite.setRotation(180 * rotation);
 	sprite.setPosition(avgPosition.x, avgPosition.y);
-	shieldSprite.setRotation(180 * rotation);
-	shieldSprite.setPosition(avgPosition.x, avgPosition.y);
+	if (shieldUp) {
+		shieldSprite.setRotation(180 * rotation);
+		shieldSprite.setPosition(avgPosition.x, avgPosition.y);
+	}
 	//std::cout << "moving to: (" << position.x << ',' << position.y << ')' << std::endl;
 }
 void Spaceship::activateShield() {
@@ -259,7 +282,7 @@ point Spaceship::getSize() {
 }
 box Spaceship::getCollisionBox() {
 	if(!(position == prevPosition)){
-	updateCollisionBox();
+		updateCollisionBox();
 	}
 	return collisionBox;
 }

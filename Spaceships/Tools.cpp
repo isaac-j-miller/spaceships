@@ -196,6 +196,25 @@ bool pointInBox(const point& a, const box& b2) {
 	return (intersectionCount == 1 ? true : false);
 }
 
+float wrapValue(float a, const float& min, const float& max) {
+	while (a>max) {
+		a -= max;
+	}
+	while (a < min) {
+		a += max;
+	}
+	return a;
+}
+
+bool inRange(const point& a, const point& bounds) {
+	//std::cout << a << "," << bounds << std::endl;
+	return !((a.x < bounds.x && a.x>0.) && (a.y < bounds.y && a.y>0.));
+}
+
+point getWrapped(const point& a, const point& bounds) {
+	return { wrapValue(a.x,0,bounds.x),wrapValue(a.y,0, bounds.y) };
+}
+
 point averagePosition(const box& b) {
 	point average = b.topLeft + b.bottomLeft + b.bottomRight + b.topRight;
 	average = average * 0.25;

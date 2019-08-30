@@ -1,8 +1,12 @@
 #include "PowerUp.h"
 #include "TextExplosion.h"
 #include "Spaceship.h"
+#include "EnemySpaceship.h"
+#include "SpaceshipFactory.h"
 
 sf::Texture PowerUp::texture;
+std::vector<Spaceship*>* PowerUp::spaceships;
+std::vector<Explosion*>* PowerUp::explosions;
 //sf::Image PowerUp::image = sf::Image();
 PowerUp::PowerUp(point pos, int t, int v=0) {
 	position = pos;
@@ -44,6 +48,10 @@ PowerUp::PowerUp(point pos, int t, int v=0) {
 			// torpedo RoF upgrade
 			explosionString = "Torpedo RoF + ";
 			break;
+		case 7:
+			// torpedo RoF upgrade
+			explosionString = "Rotation Speed + ";
+			break;
 		default:
 			explosionString = "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! type " + std::to_string(t);
 			break;
@@ -64,12 +72,14 @@ PowerUp::~PowerUp() {
 bool PowerUp::isUpgrade() {
 	return false;
 }
-bool PowerUp::Init(const std::string& ImageFile) {
+bool PowerUp::Init(const std::string& ImageFile, std::vector<Spaceship*>* s, std::vector<Explosion*>* ex) {
+	spaceships = s;
+	explosions = ex;
 	return texture.loadFromFile(ImageFile);
 }
-TextExplosion* PowerUp::explode() {
+void PowerUp::explode() {
 	//std::cout << "powerUp at " << avgPosition << "exploding. type: "<<type <<" string: " << explosionString << std::endl;
-	return new TextExplosion(explosionString, position, stringSize);
+	explosions->push_back( new TextExplosion(explosionString, position, stringSize));
 }
 point PowerUp::getPosition() {
 	return position;
@@ -104,22 +114,24 @@ void PowerUp::animate() {
 	sprite.setScale(sf::Vector2f(xScale, yScale));
 }
 
-bool PowerUp::isActive(Spaceship* player) {
+bool PowerUp::isActive() {
 	// check for collision 
-	box cbox = player->getCollisionBox();
-
+	box cbox = spaceships->at(0)->getCollisionBox();
+	Spaceship* player = spaceships->at(0);
 	if (boxOverlap(collisionBox, cbox)) {
 		//if collision
 		collision = true;
-		//player->pickUpBox(this);
-		
-		//if I make it extend to all spaceships, code will be here
 	}
 	else if (boxWithin(collisionBox, cbox)) {
 		collision = true;
 	}
 	else {
 		collision = false;
+	}
+	if (collision) {
+		if (!isUpgrade()) {
+			upgradeSpaceship(player);
+		}
 	}
 	return !collision;
 }
@@ -170,6 +182,15 @@ void PowerUp::upgradeSpaceship(Spaceship* s) {
 		}
 		else {
 			s->health += value;
+		}
+		break;
+	case 7:
+		// rotation speed upgrade
+		if (s->rotationIncrement > .08) {
+			s->rotationIncrement -= static_cast<float>(value) / 500.;
+		}
+		else {
+			s->health += value/100;
 		}
 		break;
 	default:

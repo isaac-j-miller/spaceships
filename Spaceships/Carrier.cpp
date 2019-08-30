@@ -36,9 +36,10 @@ Carrier::Carrier(point initPos, double initRotation, int d) :
 	height = 80;
 	health = 800;
 	bulletPeriod = 20;
-	speed = 1.5;
+	speed = 3;
 	pointValue = 8000;
 	shieldStrength = 100;
+	shieldPeriod = 500;
 	activateShield();
 	tempTorpedoOrigin = { 0, .4 };
 	tempBulletOrigin = { .4, 0 };
@@ -78,4 +79,62 @@ void Carrier::fireTorpedo() {
 	enemySpaceships->push_back(temp);
 	children.push_back(temp);
 	torpedoClock.restart();
+}
+void Carrier::move(point inputVector) {
+	inputVector = normalizeVector(inputVector);
+	updateCollisionBox();
+	if (health > 0) {
+		prevPosition = position;
+		elapsedFrames = moveClock.getTime();
+		position = position + inputVector * speed;
+		if (inRange(position, windowBounds.bottomRight)) {
+			//if wrapped
+			position = getWrapped(position, windowBounds.bottomRight);
+			prevPosition = position - inputVector * speed;
+		}
+		//disable bc wrapping
+		/*
+		//check if within bounds
+		if (!boxWithin(collisionBox, windowBounds)) { // if the collisionbox is not fully within the bounds
+			// check which direction the thing is going and figure out which edge it's closest to & block if moving closer to edge
+			point direction = (avgPosition - averagePosition(windowBounds)) * inputVector;
+			if (direction.x > 0 || direction.y > 0) { // moving in wrong direction
+				position = prevPosition;
+			}
+
+		}
+		*/
+		//else {// if (boxWithin(collisionBox, inflate(windowBounds, .93))){ // if within bounds and 
+			//iterate over other spaceships
+			//int pointsThresh = difficulty + 400;
+			for (auto a : *spaceships) {
+				if (a != this && !(a->isMini())) { // quickly filter out minis
+					point aPos = a->getAvgPosition();
+
+					if (pointDistance(avgPosition, aPos) < (getMaxDimension() + a->getMaxDimension())) { // if spaceship is close
+						box aBox = a->getCollisionBox();
+						point direction = (avgPosition - aPos) * inputVector;
+						if (boxOverlap(collisionBox, aBox)) {
+							if (direction.x < 0 || direction.y < 0) { // moving in wrong direction
+								position = prevPosition;
+							}
+							break;
+						}
+						else if (boxWithin(aBox, collisionBox)) {
+							if (direction.x < 0 || direction.y < 0) { // moving in wrong direction
+								position = prevPosition;
+							}
+							break;
+						}
+					}
+				}
+			//}
+		}
+	}
+	//calculate displacement vector
+	if (elapsedFrames != 0) {
+		displacementVector = (position - prevPosition) * (1 / elapsedFrames);
+	}
+	moveSprite();
+	moveClock.restart();
 }

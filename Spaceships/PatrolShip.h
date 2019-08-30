@@ -10,6 +10,7 @@ public:
 	
 	static bool Init(const std::string& ImageFile);
 	void setImage();
+	void move(point inputVector) { Spaceship::move(inputVector); };
 	PatrolShip(point initPos, double initRotation);
 	virtual ~PatrolShip();
 	//void setImage();

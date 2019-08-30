@@ -10,6 +10,7 @@ public:
 	static Spaceship* player;
 	EnemySpaceship(point initPos, double initRotation, int d);
 	~EnemySpaceship();
+	void move(point inputVector) { Spaceship::move(inputVector); };
 	static void Init(Spaceship* p);
 	virtual void updateCollisionBox();
 	virtual void fireBullet();

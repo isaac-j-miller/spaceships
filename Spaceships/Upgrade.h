@@ -13,7 +13,7 @@ public:
 	bool isUpgrade();
 	void setImage();
 	void upgradeSpaceship(Spaceship* s);
-	bool isActive(Spaceship* player);
+	bool isActive();
 };
 #endif
 
