@@ -258,6 +258,9 @@ int main()
 	unsigned int seed = (std::chrono::system_clock::now().time_since_epoch().count() - 15672112962443214) / 10E6;
 	std::cout << seed<< std::endl;
 	srand(seed);
+	for (int i = 0; i < 20; i++) {
+		rand();
+	}
 	bool logged = false;
 	bool levelUpActive = false;
 	int initPlayerLevel = 0;
