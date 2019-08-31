@@ -18,7 +18,7 @@ public:
 	void updateCollisionBox();
 	void fireBullet();
 	void fireTorpedo();
-	bool isAlive();
+	bool isActive();
 private:
 	bool fatherAlive = true;
 	Carrier* father;

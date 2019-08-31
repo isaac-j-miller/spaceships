@@ -13,6 +13,6 @@ public:
 	void fireBullet();
 	void fireTorpedo();
 	void updateCollisionBox();
-	bool isAlive();
+	bool isActive() { return Cruiser::isActive(); }
 };
 #endif

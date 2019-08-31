@@ -14,7 +14,7 @@ public:
 	void fireBullet();
 	void fireTorpedo();
 	void updateCollisionBox();
-	bool isAlive();
+	bool isActive() { return Spaceship::isActive(); }
 protected:
 	static sf::Texture texture;
 	static sf::Texture shieldTexture;

@@ -2,29 +2,25 @@
 #include <iostream>
 #include "Spaceship.h"
 #include "Explosion.h"
-std::vector<Explosion*>* Projectile::explosions;
-std::vector<Spaceship*>* Projectile::spaceships;
-point Projectile::windowSize;
+
 Projectile::Projectile(point pos, point traj, int dmg, Spaceship* f) {
 	father = f;
-	clock.restart();
+	moveClock.restart();
 	position = pos;
 	damage = dmg;
 	fatherSpeed = f->getDisplacementVector();
 	point offset = {0,0};
 	trajectory = round_down(traj) + offset;
 	rotation = asin(trajectory.x / magnitude(trajectory));
+	
 	//std::cout << "creating projectile with trajectory " << trajectory << std::endl;
+	//std::cout << '(' << position.x << ',' << position.y << ')' << std::endl;
 	collisionBox = getCollisionBox();
 	moveSprite();
 	//position = getTopLeft(collisionBox);
 	//projectileList.push_back(*this);
 }
-void Projectile::Init(std::vector<Explosion*>* e, std::vector<Spaceship*>* s, point window) {
-	explosions = e;
-	spaceships = s;
-	windowSize = window;
-}
+
 void Projectile::setImage() {
 	
 }
@@ -34,13 +30,11 @@ int Projectile::getCounter() {
 void Projectile::explode() {
 	explosions->push_back(new Explosion(explosionDuration, explosionSize, getCollisionCoords()));
 }
-point Projectile::getAvgPosition() {
-	return avgPosition;
-}
+
 void Projectile::moveSprite() {
 	//sprite.setOrigin(sf::Vector2f(width / 2, height / 2));
-	sprite.setRotation((vectToAngle(trajectory)-M_PI_2)*180/M_PI);
-	//std::cout << "moving and rotating sprite. position is " << position << "angle is"
+	sprite.setRotation((vectToAngle(trajectory) + M_PI_2) * 180 / M_PI);
+	//std::cout << "moving sprite. position is " << position << std::endl;
 	//sprite.setOrigin(sf::Vector2f(0,0));
 	sprite.setPosition(avgPosition.x,avgPosition.y);
 }
@@ -48,44 +42,24 @@ bool Projectile::getCollision() {
 	return collision;
 }
 
-box Projectile::getCollisionBox() {
-	if (!(position == prevPosition)) {
-		box pbox = rotate(baseTransform, getRotation() * M_PI);
-			pbox = pbox + position;
-			collisionBox = pbox;
-			avgPosition = averagePosition(collisionBox);
-			return pbox;
-	}
-	else {
-		return collisionBox;
-	}
-}
+
 point Projectile::getCollisionCoords() {
 	return collisionCoords;
 }
 Spaceship* Projectile::getFather() {
 	return father;
 }
-float Projectile::getRotation() {
-	//std::cout << "rotation is " << magnitude(trajectory)*180 << " degrees" <<std::endl;
-	//this is probably messed up
-	//return magnitude(trajectory);
-	
-	return rotation;
-}
-point Projectile::getTrajectory() {
-	return trajectory;
-}
+
 
 bool Projectile::move() {
 	counter++;
-	unsigned long long int timeElapsed = clock.getTime();
+	unsigned long long int timeElapsed = moveClock.getTime();
 	if (timeElapsed != 0) {
 		prevPosition = position;
 		//std::cout << "Elapsed time: " << timeElapsed << "; ";
 		//std::cout << "orig cBox: " << iB << std::endl;
 		//std::cout << "moving from (" << position.x << ',' << position.y << ") to (";
-		position = position + trajectory * (pow(timeElapsed, 2) * acceleration / 2 + speed * timeElapsed);
+		position = position + trajectory * (pow(timeElapsed, 2) * acceleration / 2 + static_cast<double>(speed) * timeElapsed);
 		//position.y += trajectory.y * (pow(timeElapsed, 2) * acceleration / 2 + speed * timeElapsed);
 		if (counter == 2) {
 			position = fatherSpeed * timeElapsed + position;
@@ -101,8 +75,9 @@ bool Projectile::move() {
 		point difference = position - prevPosition;
 		float mag = magnitude(difference);
 		speed = mag / timeElapsed;
-		//std::cout << position.x << ',' << position.y << ')' << std::endl;
-		//std::cout << "speed: " << speed << "px/frame" << std::endl;
+		displacementVector = difference *(1/ timeElapsed);
+		//std::cout << '(' <<position.x << ',' << position.y << ')' << std::endl;
+		//std::cout << "displacement vector: " << displacementVector << "px/frame" << std::endl;
 		//std::cout << "yspeed = " << trajectory.y * (pow(timeElapsed, 2) * acceleration / 2 + speed * timeElapsed) << " pixels/us" << std::endl;
 		getCollisionBox();
 		const point points[] = { collisionBox.topLeft, collisionBox.bottomLeft, collisionBox.bottomRight, collisionBox.topRight };
@@ -113,7 +88,7 @@ bool Projectile::move() {
 
 					box c = s->getCollisionBox();
 					//std::cout <<"line: "<< l << "; " << std::endl;
-					if (s != father && pointDistance(position, s->getPosition()) < 1.5 * (getMaxDimension() + s->getMaxDimension())) {
+					if (s != father && pointDistance(position, s->getPosition()) < 1.5f * (getMaxDimension() + s->getMaxDimension())) {
 						//std::cout << "current spaceship ("<<i<<") to check has bbox: " << c << std::endl;
 						if (pointInBox(points[i], c)) {//if collision
 							// make the ship take damage
@@ -139,7 +114,7 @@ bool Projectile::move() {
 				auto s = spaceships->at(0);
 				box c = s->getCollisionBox();
 				//std::cout <<"line: "<< l << "; " << std::endl;
-				if (s != father && pointDistance(position, s->getPosition()) < 1.5 * (getMaxDimension() + s->getMaxDimension())) {
+				if (s != father && pointDistance(position, s->getPosition()) < 1.5f * (getMaxDimension() + s->getMaxDimension())) {
 					//std::cout << "current spaceship ("<<i<<") to check has bbox: " << c << std::endl;
 					if (pointInBox(points[i], c)) {//if collision
 						// make the ship take damage
@@ -161,21 +136,16 @@ bool Projectile::move() {
 				}
 			}
 		}
-		clock.restart();
+		moveClock.restart();
 		moveSprite();
-		//std::cout << "timer: " << lifeClock.getTime() << " duration: " << duration << std::endl;
+		//std::cout << "inrange: " << (inRange(position, windowSize) ? "yes" : "no") << std::endl;
 		return (inRange(position, windowSize) ? true : false);
 	}
 	else {
 		return false;
 	}
 }
-//point Projectile::getAvgPosition() {
-//	return avgPosition;
-//}
-point Projectile::getPosition() {
-	return position;
-}
+
 float Projectile::getMaxDimension() {
 	return maxDimension;
 }

@@ -1,8 +1,5 @@
 #include "Tools.h"
-#ifndef _USE_MATH_DEFINES
-#define _USE_MATH_DEFINES
-#endif
-#include <math.h>
+
 
 
 levelInfo generateLevelInfo(int level) {
@@ -208,7 +205,7 @@ float wrapValue(float a, const float& min, const float& max) {
 
 bool inRange(const point& a, const point& bounds) {
 	//std::cout << a << "," << bounds << std::endl;
-	return !((a.x < bounds.x && a.x>0.) && (a.y < bounds.y && a.y>0.));
+	return ((a.x < bounds.x && a.x>0.) && (a.y < bounds.y && a.y>0.));
 }
 
 point getWrapped(const point& a, const point& bounds) {

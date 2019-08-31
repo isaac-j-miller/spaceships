@@ -11,7 +11,7 @@ Fighter::Fighter(point initPos, double initRotation) :
 	pointValue = 2000;
 	point tempTorpedoOrigin = { -.5,0 };
 	point tempBulletOrigin = { .5,0 };
-	setDims();
+	setDims(width, height);
 	setImage();
 }
 Fighter::~Fighter() {
@@ -55,4 +55,3 @@ void Fighter::fireTorpedo() {
 void Fighter::updateCollisionBox() {
 	Spaceship::updateCollisionBox();
 }
-bool Fighter::isAlive() { return Spaceship::isAlive(); }

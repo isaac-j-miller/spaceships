@@ -56,8 +56,8 @@ void Mini::fireBullet() {
 void Mini::fireTorpedo() {
 	fireBullet();
 }
-bool Mini::isAlive() { 
-	bool a = Spaceship::isAlive(); 
+bool Mini::isActive() { 
+	bool a = Spaceship::isActive(); 
 	//remove self from list if 
 	if (!a && fatherAlive) {
 		for (auto it = father->children.begin(); it != father->children.end();) {
@@ -79,7 +79,7 @@ void Mini::move(point inputVector) {
 		prevPosition = position;
 		elapsedFrames = moveClock.getTime();
 		position = position + inputVector * speed;
-		if (inRange(position, windowBounds.bottomRight)) {
+		if (!inRange(position, windowSize)) {
 			//if wrapped
 			position = getWrapped(position, windowBounds.bottomRight);
 			prevPosition = position - inputVector * speed;

@@ -19,4 +19,4 @@ void EnemyFighter::fireTorpedo() {
 void EnemyFighter::updateCollisionBox() {
 	Fighter::updateCollisionBox();
 }
-bool EnemyFighter::isAlive() { return Spaceship::isAlive(); }
+

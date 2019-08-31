@@ -1,5 +1,7 @@
 #pragma once
 #include "Explosion.h"
+#ifndef TEXTEXPLOSION_H
+#define TEXTEXPLOSION_H
 class TextExplosion :
 	public Explosion
 {
@@ -19,3 +21,4 @@ private:
 	sf::Texture iTexture; // individual texture-- textExplosions have unique text
 };
 
+#endif

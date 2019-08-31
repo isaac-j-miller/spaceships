@@ -4,14 +4,6 @@
 #include <iostream>
 
 
-std::vector<Spaceship*>* Spaceship::spaceships;
-std::vector<EnemySpaceship*>* Spaceship::enemySpaceships;
-std::vector<Projectile*>* Spaceship::projectiles;
-std::vector<Explosion*>* Spaceship::explosions;
-std::string Spaceship::shieldImageFileName = "shield.png";
-box Spaceship::windowBounds;
-float Spaceship::boundAdjustment = 1;
-
 Spaceship::Spaceship() {
 
 }
@@ -21,21 +13,13 @@ Spaceship::Spaceship(point initPos, double initRotation) {
 	point tempTorpedoOrigin = { .5,0 };
 	point tempBulletOrigin = { -.5,0 };
 	//std::cout << "spaceship init w/ position " << position << ", rotation " << rotation*180 << " deg, address: " << this;
-	setDims();
+	//setDims(width, height);
 	shieldTimer.restart();
 }
 Spaceship::~Spaceship() {
 
 }
-void Spaceship::setDims() {
-	baseTransform = { {-width / 2,-height / 2},{-height / 2,height / 2},{width / 2,height / 2},{width / 2,-height / 2} };
-	updateCollisionBox();
-	avgPosition = averagePosition(collisionBox);
-	maxDimension = std::max(width, height);
 
-	//std::cout << "collisionBox: " << collisionBox << std::endl;
-	setImage();
-}
 void Spaceship::explode() {
 	explosions->push_back( new Explosion(explosionDuration, getMaxDimension(), getAvgPosition()));
 }
@@ -70,9 +54,9 @@ void Spaceship::incrementRotation(float rotationDir) {
 	std::cout << "collisionBox in bounds: " << collisionBox << std::endl;
 	*/
 	for (auto a : *spaceships) {
-		if (a != this && pointDistance(position, a->getPosition()) <1.5*(getMaxDimension()+a->getMaxDimension()) ) {
+		if (a != this && pointDistance(position, a->getPosition()) <1.5f*(getMaxDimension()+a->getMaxDimension()) ) {
 			if (boxOverlap(collisionBox, a->getCollisionBox())) {
-				rotation -= rotationDir * rotationIncrement * boundAdjustment;
+				rotation -= rotationDir * rotationIncrement;
 				updateCollisionBox();
 				break;
 			}
@@ -99,7 +83,7 @@ bool Spaceship::setRotation(float newRotation) {
 	
 	for (auto a : *spaceships) {
 		
-		if (a != this && pointDistance(avgPosition, a->getAvgPosition()) < .75 * (getMaxDimension() + a->getMaxDimension())) {
+		if (a != this && pointDistance(avgPosition, a->getAvgPosition()) < .75f * (getMaxDimension() + a->getMaxDimension())) {
 			if (boxOverlap(collisionBox, a->getCollisionBox())) {
 				rotation = oldRotation;
 				set = false;
@@ -116,18 +100,16 @@ void Spaceship::setImage() {
 	
 }
 void Spaceship::fireBullet() {
-	//std::cout << "Firing Bullet" << std::endl;
+	//std::cout << "Firing Bullet from " << bulletOrigin <<std::endl;
 	//std::cout << "rotation =" << rotation * 180 << std::endl;
 	bulletClock.restart();
 	projectiles->push_back( new Bullet(bulletOrigin, getTrajectory(), bulletDamage, this));
 }
-point Spaceship:: getTrajectory() {
-	return getComponents(rotation*M_PI + M_PI_2);
-}
+
 bool Spaceship::bulletReady() {
 	return (bulletClock.getTime() >= bulletPeriod);
 }
-bool Spaceship::isAlive() {
+bool Spaceship::isActive() {
 	return (health > 0 ? true : false);
 }
 void Spaceship::increaseScore(unsigned int points) {
@@ -162,19 +144,7 @@ void Spaceship::fireTorpedo() {
 bool Spaceship::torpedoReady() {
 	return (torpedoClock.getTime() >= torpedoPeriod);
 }
-bool Spaceship::Init(const std::string& shieldImageFile, std::vector<Spaceship*>* s, std::vector<EnemySpaceship*>* e, std::vector<Projectile*>* p, std::vector<Explosion*>* ex, box window) {
-	spaceships = s;
-	enemySpaceships = e;
-	projectiles = p;
-	explosions = ex;
-	windowBounds = window;
-	shieldImageFileName = shieldImageFile;
-	//bool done = (image.loadFromFile(ImageFile)&& shieldImage.loadFromFile(shieldImageFile));
-	return true;
-}
-point Spaceship::getDisplacementVector() {
-	return displacementVector;
-}
+
 int Spaceship::getHealth() {
 	return health;
 }
@@ -185,7 +155,7 @@ void Spaceship::move(point inputVector) {
 		prevPosition = position;
 		elapsedFrames = moveClock.getTime();
 		position = position + inputVector * speed;
-		if (inRange(position, windowBounds.bottomRight)) {
+		if (!inRange(position, windowSize)) {
 			//if wrapped
 			position = getWrapped(position, windowBounds.bottomRight);
 			prevPosition = position - inputVector * speed;
@@ -246,12 +216,7 @@ bool Spaceship::pickUpBox(PowerUp* p) {
 	p->upgradeSpaceship(this);
 	return (p->isUpgrade() ? true : false);
 }
-point Spaceship::getAvgPosition() {
-	return avgPosition;
-}
-point Spaceship::getPosition() {
-	return position;
-}
+
 bool Spaceship::shieldActive() {
 	return shieldUp;
 }
@@ -280,16 +245,12 @@ void Spaceship::disableShield() {
 point Spaceship::getSize() {
 	return { width,height };
 }
-box Spaceship::getCollisionBox() {
-	if(!(position == prevPosition)){
-		updateCollisionBox();
-	}
-	return collisionBox;
-}
+
 sf::Sprite Spaceship::getSprite() {
 	return sprite;
 }
 void Spaceship::updateCollisionBox() {
+	//std::cout << "basetransform:" << baseTransform << std::endl;
 	box pbox = rotate(baseTransform, rotation * M_PI);
 	pbox = pbox + position;
 	collisionBox = pbox;
@@ -297,4 +258,11 @@ void Spaceship::updateCollisionBox() {
 	static point wh = { width, height };
 	torpedoOrigin = avgPosition + rotate(wh * tempTorpedoOrigin, rotation * M_PI);
 	bulletOrigin = avgPosition + rotate(wh * tempBulletOrigin, rotation * M_PI);
+}
+box Spaceship::getCollisionBox() {
+	//std::cout << "cbox1:" << collisionBox << std::endl;
+	if (!(position == prevPosition)) {
+		updateCollisionBox();
+	}
+	return collisionBox;
 }

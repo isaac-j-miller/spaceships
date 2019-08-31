@@ -10,6 +10,7 @@ class Bullet :
 	static sf::Texture texture;
 public:
 	Bullet(point pos, point traj, int dmg, Spaceship* f);
+	~Bullet();
 	void setImage();
 	static bool Init(const std::string& FileName);
 	

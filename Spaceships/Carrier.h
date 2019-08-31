@@ -15,7 +15,7 @@ public:
 	void move(point inputVector);
 	Carrier(point initPos, double initRotation, int d);
 	~Carrier();
-	bool isAlive();
+	bool isActive();
 	void updateCollisionBox();
 	void fireBullet();
 	void fireTorpedo();
