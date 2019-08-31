@@ -6,15 +6,18 @@ bool Bullet::Init(const std::string& FileName) {
 	return (image.loadFromFile(FileName) &&
 			texture.loadFromImage(image));
 }
+Bullet::~Bullet() {
+	//std::cout << "del bullet" << std::endl;
+}
 Bullet::Bullet(point pos, point traj, int dmg, Spaceship* f) :
 	Projectile(pos, traj, dmg, f) {
+	//std::cout << "new bullet" << std::endl;
 	speed = 10; //in pixels per frame
 	explosionDuration = 10;//frames
     explosionSize = 10;
 	width = 3;
 	height = 6;
-	baseTransform = { {-width / 2,-height / 2},{-height / 2,height / 2},{width / 2,height / 2},{width / 2,-height / 2} };
-	maxDimension = std::max(width, height);
+	setDims(width, height);
 	setImage();
 }
 void Bullet::setImage() {

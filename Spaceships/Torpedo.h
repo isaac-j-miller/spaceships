@@ -10,6 +10,7 @@ class Torpedo :
 	static sf::Texture texture;
 public:
 	Torpedo(point pos, point traj, int dmg, Spaceship* f);
+	~Torpedo();
 	void setImage();
 	static bool Init(const std::string& FileName);
 

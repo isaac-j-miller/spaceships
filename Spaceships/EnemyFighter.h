@@ -13,7 +13,7 @@ public:
 	void fireBullet();
 	void fireTorpedo();
 	void updateCollisionBox();
-	bool isAlive();
+	bool isActive() { return Fighter::isActive(); }
 	//static bool Init();
 	//void setImage();
 };

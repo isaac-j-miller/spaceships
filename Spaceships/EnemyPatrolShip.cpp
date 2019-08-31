@@ -2,8 +2,9 @@
 
 EnemyPatrolShip::EnemyPatrolShip(point initPos, double initRotation, int d): 
 	Spaceship(initPos,initRotation),
-	PatrolShip(initPos,initRotation),
-	EnemySpaceship(initPos,initRotation,d){
+	EnemySpaceship(initPos, initRotation, d),
+	PatrolShip(initPos,initRotation)
+	{
 	setImage();
 	//std::cout << "enemy patrol init at " << initPos << std::endl;
 
@@ -20,4 +21,3 @@ void EnemyPatrolShip::fireTorpedo() {
 void EnemyPatrolShip::updateCollisionBox() {
 	PatrolShip::updateCollisionBox();
 }
-bool EnemyPatrolShip::isAlive() { return Spaceship::isAlive(); }

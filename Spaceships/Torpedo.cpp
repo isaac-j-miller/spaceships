@@ -9,17 +9,21 @@ bool Torpedo::Init(const std::string& FileName) {
 			texture.loadFromImage(image));
 	
 }
+
+Torpedo::~Torpedo() {
+	std::cout << "del torpedo" << std::endl;
+}
 Torpedo::Torpedo(point pos, point traj, int dmg, Spaceship* f) :
 	Projectile(pos, traj, dmg, f) {
-
+	std::cout << "new torpedo" << std::endl;
 	speed = 7; //in pixels per frame
 	explosionDuration = 10;//frames
 	explosionSize = 20;
 	width = 10;
 	height = 15;
-	baseTransform = { {-width / 2,-height / 2},{-height / 2,height / 2},{width / 2,height / 2},{width / 2,-height / 2} };
+	
 	acceleration = 3E-2; // pixels/(frame^2)
-	maxDimension = std::max(width, height);
+	setDims(width, height);
 	setImage();
 
 }

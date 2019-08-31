@@ -43,15 +43,15 @@ Carrier::Carrier(point initPos, double initRotation, int d) :
 	activateShield();
 	tempTorpedoOrigin = { 0, .4 };
 	tempBulletOrigin = { .4, 0 };
-	setDims();
+	setDims(width, height);
 	setImage();
 	
 }
 Carrier::~Carrier() {
 
 }
-bool Carrier::isAlive() {
-	bool val = Spaceship::isAlive();
+bool Carrier::isActive() {
+	bool val = Spaceship::isActive();
 	if (!val) {
 		for (auto s : children) {
 			s->health = 0;
@@ -87,7 +87,7 @@ void Carrier::move(point inputVector) {
 		prevPosition = position;
 		elapsedFrames = moveClock.getTime();
 		position = position + inputVector * speed;
-		if (inRange(position, windowBounds.bottomRight)) {
+		if (!inRange(position, windowSize)) {
 			//if wrapped
 			position = getWrapped(position, windowBounds.bottomRight);
 			prevPosition = position - inputVector * speed;

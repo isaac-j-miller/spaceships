@@ -5,8 +5,7 @@
 #include "SpaceshipFactory.h"
 
 sf::Texture PowerUp::texture;
-std::vector<Spaceship*>* PowerUp::spaceships;
-std::vector<Explosion*>* PowerUp::explosions;
+
 //sf::Image PowerUp::image = sf::Image();
 PowerUp::PowerUp(point pos, int t, int v=0) {
 	position = pos;
@@ -72,27 +71,22 @@ PowerUp::~PowerUp() {
 bool PowerUp::isUpgrade() {
 	return false;
 }
-bool PowerUp::Init(const std::string& ImageFile, std::vector<Spaceship*>* s, std::vector<Explosion*>* ex) {
-	spaceships = s;
-	explosions = ex;
+bool PowerUp::Init(const std::string& ImageFile) {
+	
 	return texture.loadFromFile(ImageFile);
 }
 void PowerUp::explode() {
 	//std::cout << "powerUp at " << avgPosition << "exploding. type: "<<type <<" string: " << explosionString << std::endl;
 	explosions->push_back( new TextExplosion(explosionString, position, stringSize));
 }
-point PowerUp::getPosition() {
-	return position;
-}
+
 point PowerUp::getSize() {
 	return { size, size };
 }
 box PowerUp::getCollisionBox() {
 	return collisionBox;
 }
-point PowerUp::getAvgPosition() {
-	return avgPosition;
-}
+
 void PowerUp::animate() {
 	if (timer.getTime() >= pulsePeriod * 2.) {
 		timer.restart();

@@ -17,7 +17,7 @@ Cruiser::Cruiser(point initPos, double initRotation) :
 	tempTorpedoOrigin2 = { .5, 0 };
 	tempBulletOrigin2 = { .3, 0 };
 	
-	setDims();
+	setDims(width, height);
 	setImage();
 }
 Cruiser::~Cruiser() {
@@ -75,4 +75,3 @@ void Cruiser::updateCollisionBox() { // fix
 	//std::cout << "torpedo origins: " << torpedoOrigin << ", " << torpedoOrigin2 << std::endl;
 	//std::cout << "bullet origins: " << bulletOrigin << ", " << bulletOrigin2 << std::endl;
 }
-bool Cruiser::isAlive() { return Spaceship::isAlive(); }

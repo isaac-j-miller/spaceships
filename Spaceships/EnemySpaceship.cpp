@@ -104,7 +104,7 @@ point EnemySpaceship::getMoveVector() {
 }
 void EnemySpaceship::specialMove(){
 	bool atk = true;
-	if (player != nullptr && player->isAlive()) {	
+	if (player != nullptr && player->isActive()) {	
 		bool rotated = false;
 		point target = player->getAvgPosition() + player->getDisplacementVector()*moveClock.getTime();
 		//std::cout << "player"
@@ -189,4 +189,3 @@ void EnemySpaceship::fireBullet() {
 void EnemySpaceship::fireTorpedo() {
 	Spaceship::fireTorpedo();
 }
-bool EnemySpaceship::isAlive() { return Spaceship::isAlive(); }

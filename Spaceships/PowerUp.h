@@ -2,30 +2,30 @@
 #include <SFML/Graphics.hpp>
 #include "Tools.h"
 #include "FrameClock.h"
+#include "ScreenThing.h"
 #ifndef POWERUP_H
 #define POWERUP_H
 #define NUM_TYPES 8
 class Spaceship;
 class TextExplosion;
 class Explosion;
-class PowerUp
+class PowerUp: virtual public ScreenThing
 {
 
 	static sf::Texture texture;
 protected:
-	static std::vector<Spaceship*>* spaceships;
-	static std::vector<Explosion*>* explosions;
+	
 	//static sf::Image image;
 public:
 	PowerUp(point pos, int type, int value);
 	virtual ~PowerUp();
 	void setImage();
-	static bool Init(const std::string& ImageFile, std::vector<Spaceship*>* s, std::vector<Explosion*>* ex);
+	static bool Init(const std::string& ImageFile);
 	void explode();
-	point getPosition();
+	//point getPosition();
 	point getSize();
 	box getCollisionBox();
-	point getAvgPosition();
+	//point getAvgPosition();
 	void animate();
 	virtual bool isUpgrade();
 	virtual bool isActive();
@@ -42,11 +42,11 @@ protected:
 	float size = 15;
 	std::string explosionString;
 	float stringSize = 30;
-	point avgPosition;
-	point position;
-	sf::Sprite sprite;
+	//point avgPosition;
+	//point position;
+	//sf::Sprite sprite;
 	FrameClock timer;
-	box collisionBox = { {0,0}, {0,0 - size}, {0 + size,0 - size}, {0 + size,0} };
+	//box collisionBox = { {0,0}, {0,0 - size}, {0 + size,0 - size}, {0 + size,0} };
 };
 
 #endif // !POWERUP_H
