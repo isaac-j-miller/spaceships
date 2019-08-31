@@ -15,7 +15,7 @@
 #include <iostream>
 #include <fstream>
 #include <chrono>
-const int thresholds[] = { 0, 10000, 20000 };
+const int thresholds[] = { 4000, 10000, 20000 };
 const int MAX_LEVEL = 2;
 const int SPACESHIP_TYPES = MAX_LEVEL + 1;
 const char* logFile = "scores.txt";
@@ -255,7 +255,9 @@ void logScore() {
 
 int main()
 {
-	srand(std::chrono::system_clock::now().time_since_epoch().count());
+	unsigned int seed = (std::chrono::system_clock::now().time_since_epoch().count() - 15672112962443214) / 10E6;
+	std::cout << seed<< std::endl;
+	srand(seed);
 	bool logged = false;
 	bool levelUpActive = false;
 	int initPlayerLevel = 0;
@@ -476,7 +478,7 @@ int main()
 					(*it)->explode();
 				}
 				delete* it;
-				std::cout << "erasing projectile at " << *it << std::endl;
+				//std::cout << "erasing projectile at " << *it << std::endl;
 				it = ScreenThing::projectiles->erase(it);
 			}
 		}

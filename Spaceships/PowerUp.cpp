@@ -162,8 +162,8 @@ void PowerUp::upgradeSpaceship(Spaceship* s) {
 		break;
 	case 5:
 		// bullet ROF upgrade
-		if (s->torpedoPeriod > 20) {
-			s->bulletPeriod -= value / 5;
+		if (s->bulletPeriod > 20) {
+			s->bulletPeriod -= value / 10;
 		}
 		else {
 			s->health += value;
@@ -172,7 +172,7 @@ void PowerUp::upgradeSpaceship(Spaceship* s) {
 	case 6:
 		// torpedo ROF upgrade
 		if (s->torpedoPeriod > 15) {
-			s->torpedoPeriod -= value / 5;
+			s->torpedoPeriod -= value / 10;
 		}
 		else {
 			s->health += value;

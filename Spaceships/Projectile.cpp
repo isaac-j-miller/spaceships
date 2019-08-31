@@ -33,7 +33,7 @@ void Projectile::explode() {
 
 void Projectile::moveSprite() {
 	//sprite.setOrigin(sf::Vector2f(width / 2, height / 2));
-	sprite.setRotation((vectToAngle(trajectory) - M_PI_2) * 180 / M_PI);
+	sprite.setRotation((vectToAngle(trajectory) + M_PI_2) * 180 / M_PI);
 	//std::cout << "moving sprite. position is " << position << std::endl;
 	//sprite.setOrigin(sf::Vector2f(0,0));
 	sprite.setPosition(avgPosition.x,avgPosition.y);

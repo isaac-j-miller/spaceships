@@ -31,10 +31,10 @@ sf::Sprite ScreenThing::getSprite() {
 }
 
 void ScreenThing::InitGame(std::string shield, box windowB, point windowS, std::vector<Spaceship*>* s,
-std::vector<EnemySpaceship*>* e,
-std::vector<Projectile*>* p,
-std::vector<Explosion*>* ex,
-std::vector<PowerUp*>* pu)
+	std::vector<EnemySpaceship*>* e,
+	std::vector<Projectile*>* p,
+	std::vector<Explosion*>* ex,
+	std::vector<PowerUp*>* pu)
 {
 	shieldImageFileName = shield;
 	windowBounds = windowB;
@@ -44,11 +44,7 @@ std::vector<PowerUp*>* pu)
 	projectiles = p;
 	explosions = ex;
 	powerUps = pu;
-
-
-	
-
-	std::cout << windowB << std::endl << windowS << std::endl;
+	//std::cout << windowB << std::endl << windowS << std::endl;
 }
 
 
@@ -73,6 +69,6 @@ void ScreenThing::setDims(int w, int h) {
 	avgPosition = averagePosition(collisionBox);
 	maxDimension = std::max(width, height);
 
-	std::cout << "collisionBox: " << collisionBox << std::endl;
+	//std::cout << "collisionBox: " << collisionBox << std::endl;
 	setImage();
 }

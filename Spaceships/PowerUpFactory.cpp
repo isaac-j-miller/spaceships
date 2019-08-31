@@ -1,13 +1,13 @@
 #include "PowerUpFactory.h"
 #include "Upgrade.h"
-//#include <chrono>
+#include <chrono>
 std::vector<PowerUp*>* PowerUpFactory::powerUps;
 point PowerUpFactory::windowSize;
 int PowerUpFactory::factor = 5;
 
 void PowerUpFactory::Init(std::vector<PowerUp*>* powerUpsVect, point wSize) {
 	powerUps = powerUpsVect;
-	//srand(std::chrono::system_clock::now().time_since_epoch().count());
+	
 	windowSize = wSize;
 }
 PowerUp* PowerUpFactory::generateSpecific(point pos, int type, int value) {
@@ -15,6 +15,7 @@ PowerUp* PowerUpFactory::generateSpecific(point pos, int type, int value) {
 }
 PowerUp* PowerUpFactory::generateRandom() {
 	bool c = false; //used to make sure RNG doesn't place 2 spaceships in the same spot
+	
 	point randpos;
 		do {
 			randpos = { ((rand() % 80 + 10) / 100.f) * (windowSize.x),((rand() % 80 + 10) / 100.f) * (windowSize.y) };

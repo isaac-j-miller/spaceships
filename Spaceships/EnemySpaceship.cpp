@@ -33,7 +33,7 @@ point EnemySpaceship::getMoveVector() {
 		//first, move away from other close spaceships & windowbounds. If no close spaceships and not on course for edge of map, then dodge bullets
 		bool tooClose = false;
 		//first, check window bounds
-		displacementVector = getDisplacementVector();
+		//displacementVector = getDisplacementVector();
 		// disabling window bound part because adding wrapping
 		/*
 		static int threshold = 20;
