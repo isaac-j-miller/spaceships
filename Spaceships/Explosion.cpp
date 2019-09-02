@@ -39,6 +39,6 @@ void Explosion::setImage() {
 	sprite.setTexture(texture);
 	float xScale = size / image.getSize().x;
 	float yScale = size / image.getSize().y;
-	sprite.setScale(sf::Vector2f(xScale, yScale));
+	sprite.setScale(xScale, yScale);
 	sprite.setPosition(position.x-size/8, position.y-size/8);
 }

@@ -263,9 +263,9 @@ int main()
 	}
 	bool logged = false;
 	bool levelUpActive = false;
-	int initPlayerLevel = 0;
+	int initPlayerLevel = 2;
 	int playerLevel = initPlayerLevel;
-	int level = 0;
+	int level = 5;
 	//int numEnemies = 6;
 	int enemiesSpawnPeriod = getPeriod(1500);
 	int enemiesSpawnNumber = 2;
@@ -349,7 +349,7 @@ int main()
 	
 	PowerUpFactory::Init(&powerUps, size);
 	SpaceshipFactory::Init(1, size, &spaceships);
-	spaceships.push_back(SpaceshipFactory::generatePlayer(0));//instantiate player
+	spaceships.push_back(SpaceshipFactory::generatePlayer(initPlayerLevel));//instantiate player
 	
 	static Spaceship* player = spaceships.at(0);
 	//Projectile::Init(&explosions, &spaceships, size);
@@ -455,7 +455,7 @@ int main()
 				else if(*it != player) {
 					(*it)->explode();
 					//std::cout << "erasing spaceship at " << *it << std::endl;
-					delete (*it);
+					delete *(it);
 					(*it) = nullptr;
 					//std::cout << "removing it from spaceships" << std::endl;
 					it = spaceships.erase(it); //resize vector and adjust iterator
@@ -480,7 +480,7 @@ int main()
 				if ((*it)->getCollision()) {
 					(*it)->explode();
 				}
-				delete* it;
+				delete *it;
 				//std::cout << "erasing projectile at " << *it << std::endl;
 				it = projectiles.erase(it);
 			}
@@ -492,7 +492,7 @@ int main()
 				++it;
 			}
 			else {
-				delete* it;
+				delete *it;
 				//std::cout << "erasing explosion at " << it[0] << std::endl;
 				it = explosions.erase(it);
 			}
@@ -509,7 +509,7 @@ int main()
 				if ((*it)->isUpgrade()) {
 					player = spaceships.at(0); //need to fix the pointer to player so that the user inputs still map to the correct spaceship
 				}
-				delete* it;
+				delete *it;
 				//std::cout << "erasing powerup at " << *it << std::endl;
 				it = powerUps.erase(it);
 			}

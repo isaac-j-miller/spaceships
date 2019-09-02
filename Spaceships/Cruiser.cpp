@@ -38,14 +38,14 @@ void Cruiser::setImage() {
 	float xScale = 1.1 * width / texture.getSize().x;
 	float yScale = 1.1 * height / texture.getSize().y;
 
-	sprite.setScale(sf::Vector2f(xScale, yScale));
+	sprite.setScale(xScale, yScale);
 	//do the same for shield
 	xScale = 1.4 * width / shieldTexture.getSize().x;
 	yScale = 1.4 * height / shieldTexture.getSize().y;
-	shieldSprite.setOrigin(sf::Vector2f(shieldSprite.getTexture()->getSize().x * 0.5, shieldSprite.getTexture()->getSize().y * 0.5));
-	shieldSprite.setScale(sf::Vector2f(xScale, yScale));
+	shieldSprite.setOrigin(shieldSprite.getTexture()->getSize().x * 0.5, shieldSprite.getTexture()->getSize().y * 0.5);
+	shieldSprite.setScale(xScale, yScale);
 
-	sprite.setOrigin(sf::Vector2f(sprite.getTexture()->getSize().x * 0.5, sprite.getTexture()->getSize().y * 0.5));
+	sprite.setOrigin(sprite.getTexture()->getSize().x * 0.5, sprite.getTexture()->getSize().y * 0.5);
 	sprite.setPosition(avgPosition.x, avgPosition.y);
 	sprite.setRotation(180 * rotation);
 	shieldSprite.setPosition(avgPosition.x, avgPosition.y);

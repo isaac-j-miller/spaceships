@@ -48,6 +48,7 @@ Spaceship* SpaceshipFactory::upgradePlayer(Spaceship* p) {
 	player->ramDamage += (p->ramDamage - temp->ramDamage);
 	
 	delete temp;
+	delete p; //might misbehave
 	//delete p;
 	//spaceships->erase(spaceships->begin(), spaceships->begin() + 1);
 	
@@ -90,7 +91,7 @@ Spaceship* SpaceshipFactory::generatePlayer(int level) {
 		return new Cruiser(pos, 1.);
 		break;
 	default:
-		return new Spaceship(pos, 1.);
+		return new PatrolShip(pos, 1.);
 	}
 }
 
@@ -113,7 +114,7 @@ EnemySpaceship* SpaceshipFactory::generate(point pos, int initRotation, int d, i
 		return new Carrier(pos, 0, difficulty);
 		break;
 	default:
-		return new EnemySpaceship(pos, 0., difficulty);
+		return new EnemyPatrolShip(pos, 0., difficulty);
 		break;
 	}
 }

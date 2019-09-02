@@ -54,7 +54,7 @@ void Spaceship::incrementRotation(float rotationDir) {
 	std::cout << "collisionBox in bounds: " << collisionBox << std::endl;
 	*/
 	for (auto a : *spaceships) {
-		if (a != this && pointDistance(position, a->getPosition()) <1.5f*(getMaxDimension()+a->getMaxDimension()) ) {
+		if (a != this && pointDistance(position, a->getPosition()) <1.5f*(maxDimension+a->getMaxDimension()) ) {
 			if (boxOverlap(collisionBox, a->getCollisionBox())) {
 				rotation -= rotationDir * rotationIncrement;
 				updateCollisionBox();
@@ -150,7 +150,7 @@ int Spaceship::getHealth() {
 }
 void Spaceship::move(point inputVector) {
 	inputVector = normalizeVector(inputVector);
-	updateCollisionBox();
+	getCollisionBox();
 	if (health > 0) {
 		prevPosition = position;
 		elapsedFrames = moveClock.getTime();

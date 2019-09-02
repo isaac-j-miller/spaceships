@@ -16,8 +16,8 @@ void Upgrade::setImage() {
 	sprite.setTexture(upgradeTexture);
 	float xScale = size / upgradeTexture.getSize().x;
 	float yScale = size / upgradeTexture.getSize().y;
-	sprite.setScale(sf::Vector2f(xScale, yScale));
-	sprite.setOrigin(sf::Vector2f(sprite.getTexture()->getSize().x * 0.5, sprite.getTexture()->getSize().y * 0.5));
+	sprite.setScale(xScale, yScale);
+	sprite.setOrigin(sprite.getTexture()->getSize().x * 0.5, sprite.getTexture()->getSize().y * 0.5);
 	sprite.setPosition(avgPosition.x, avgPosition.y);
 }
 void Upgrade::upgradeSpaceship(Spaceship* s) {

@@ -20,13 +20,13 @@ void EnemySpaceship::Init(Spaceship* p) {
 point EnemySpaceship::getMoveVector() {
 	long long unsigned int time = moveTimer.getTime();
 	std::vector<line_segment> rays = {};
-	point projectilePoint;
-	point traj;
-	line_segment tempRay;
-	point collisionPoint;
+	static point projectilePoint;
+	static point traj;
+	static line_segment tempRay;
+	static point collisionPoint;
 	//point avg = averagePosition(collisionBox);
-	point difference;
-	updateCollisionBox();
+	static point difference;
+	getCollisionBox();
 	//okey dokey let's figure out how to not get stuck
 	if (time > movePeriod) {
 		//std::cout << "calculating projectile vectors" << std::endl;
@@ -59,7 +59,7 @@ point EnemySpaceship::getMoveVector() {
 		//then, check spaceships
 		for (auto s : *spaceships) {//iterate through spaceships and find those which overlap
 			point sAvgPos = s->getAvgPosition();
-			if (s != this && pointDistance(avgPosition, sAvgPos) < 2 * (getMaxDimension() + s->getMaxDimension())) {
+			if (s != this && pointDistance(avgPosition, sAvgPos) < 2 * (maxDimension + s->getMaxDimension())) {
 				// check if overlap
 				traj = s->getDisplacementVector();
 				projectilePoint = sAvgPos;
@@ -159,7 +159,7 @@ void EnemySpaceship::specialMove(){
 	//}
 }
 void EnemySpaceship::attack() {// update 
-	updateCollisionBox();
+	getCollisionBox();
 	bool br = bulletReady();
 	bool tr = torpedoReady();
 	int code = 0;

@@ -10,7 +10,7 @@
 #ifndef TOOLS_H
 #define TOOLS_H
 
-const unsigned int FRAMERATE = 256;
+const unsigned int FRAMERATE = 1024;
 const unsigned int FRAMEPERIOD = 10E6 / FRAMERATE;
 struct levelInfo
 {

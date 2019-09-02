@@ -84,13 +84,13 @@ protected:
 	point tempBulletOrigin = { .5,0 };
 	
 	sf::Sprite shieldSprite;
-	sf::Vector2f sizeVector;
+	//sf::Vector2f sizeVector;
 	FrameClock bulletClock;
 	FrameClock torpedoClock;
 	
 	point displacementVector = { 0,0 };
 	
-	sf::IntRect rect = sf::IntRect(0, 0, int(width), int(height));
+	//sf::IntRect rect = sf::IntRect(0, 0, int(width), int(height));
 	//point position = { 0,0 };
 	point prevPosition = { 0,0 };
 	int elapsedFrames = 1;

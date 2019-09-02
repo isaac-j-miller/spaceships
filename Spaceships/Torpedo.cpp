@@ -34,8 +34,8 @@ void Torpedo::setImage() {
 	sprite.setRotation(getRotation());
 	float xScale = 1.1 * width / image.getSize().x;
 	float yScale = 1.1 * height / image.getSize().y;
-	sprite.setOrigin(sf::Vector2f(sprite.getTexture()->getSize().x * 0.5, sprite.getTexture()->getSize().y * 0.5));
-	sprite.setScale(sf::Vector2f(xScale, yScale));
+	sprite.setOrigin(sprite.getTexture()->getSize().x * 0.5, sprite.getTexture()->getSize().y * 0.5);
+	sprite.setScale(xScale, yScale);
 	sprite.setPosition(avgPosition.x, avgPosition.y);
 	
 }

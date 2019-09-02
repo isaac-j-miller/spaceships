@@ -62,8 +62,8 @@ void PowerUp::setImage() {
 	sprite.setTexture(texture);
 	float xScale = size / texture.getSize().x;
 	float yScale = size / texture.getSize().y;
-	sprite.setScale(sf::Vector2f(xScale, yScale));
-	sprite.setOrigin(sf::Vector2f(sprite.getTexture()->getSize().x * 0.5, sprite.getTexture()->getSize().y * 0.5));
+	sprite.setScale(xScale, yScale);
+	sprite.setOrigin(sprite.getTexture()->getSize().x * 0.5, sprite.getTexture()->getSize().y * 0.5);
 	sprite.setPosition(avgPosition.x, avgPosition.y);
 }
 PowerUp::~PowerUp() {
@@ -105,7 +105,7 @@ void PowerUp::animate() {
 	collisionBox = collisionBox + avgPosition;
 	float xScale = size / texture.getSize().x;
 	float yScale = size / texture.getSize().y;
-	sprite.setScale(sf::Vector2f(xScale, yScale));
+	sprite.setScale(xScale, yScale);
 }
 
 bool PowerUp::isActive() {
