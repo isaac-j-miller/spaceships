@@ -35,11 +35,11 @@ Carrier::Carrier(point initPos, double initRotation, int d) :
 	width = 60;
 	height = 80;
 	health = 800;
-	bulletPeriod = 20;
-	speed = 3;
+	bulletPeriod = getPeriod(20);
+	speed = getFreq(3);
 	pointValue = 8000;
 	shieldStrength = 100;
-	shieldPeriod = 500;
+	shieldPeriod = getPeriod(500);
 	activateShield();
 	tempTorpedoOrigin = { 0, .4 };
 	tempBulletOrigin = { .4, 0 };

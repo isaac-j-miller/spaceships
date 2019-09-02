@@ -20,6 +20,7 @@ public:
 	static std::vector<Projectile*>* projectiles;
 	static std::vector<Explosion*>* explosions;
 	static std::vector<PowerUp*>* powerUps;
+	//static sf::RenderWindow window;
 protected:
 	static box windowBounds;
 	static point windowSize;
@@ -39,7 +40,7 @@ public:
 	point getAvgPosition() { return avgPosition; }
 	float getRotation() { return rotation; }
 	virtual sf::Sprite getSprite();
-	
+	//virtual void takeTurn();
 protected:
 	float rotation = 0;
 	point avgPosition;

@@ -1,6 +1,14 @@
 #include "Tools.h"
+const float infty = 10E4;
+const point endPoint = { infty, 0 };
 
 
+float getPeriod(float orig) {
+	return orig/512*FRAMERATE;
+}
+float getFreq(float orig) {
+	return orig*512/FRAMERATE;
+}
 
 levelInfo generateLevelInfo(int level) {
 	levelInfo out;
@@ -191,8 +199,7 @@ box inflate(const box& a, const float& factor) {
 }
 
 bool pointInBox(const point& a, const box& b2) {
-	const float infty = 10E4;
-	const point endPoint = { infty, 0 };
+	
 	const line_segment top = { b2.topLeft, b2.topRight };
 	const line_segment bottom = { b2.bottomLeft, b2.bottomRight };
 	const line_segment left = { b2.topLeft, b2.bottomLeft };
@@ -206,7 +213,11 @@ bool pointInBox(const point& a, const box& b2) {
 		//iterate through segments
 		if (linesIntersect(line, segments[j])) {
 			intersectionCount++;
+			if (intersectionCount > 1) {
+				return false;
+			}
 		}
+		
 		//std::cout << i << ',' << j << "count = " << intersectionCount[i] << std::endl;
 	}
 	return (intersectionCount == 1 ? true : false);
@@ -242,36 +253,18 @@ bool boxWithin(const box& b1,const box& b2) { // returns true if b1 is within b2
 	//do this by constructing rays for each point and counting how many times the rays intersect line segments of b2
 	//std::cout << "b1: " << b1 << std::endl << "b2: " << b2 << std::endl;
 	//std::cout << "in box within" << std::endl;
-	const float infty = 10E4;
-	const point endPoint = { infty, 0 };
+	
 	int intersectionCount[] = { 0,0,0,0 };
 	//segments
-	const line_segment top = { b2.topLeft, b2.topRight };
-	const line_segment bottom = { b2.bottomLeft, b2.bottomRight };
-	const line_segment left = { b2.topLeft, b2.bottomLeft };
-	const line_segment right = { b2.topRight, b2.bottomRight };
-	const line_segment segments[4] = { top, bottom, left, right };
-
-	const line_segment tl = { b1.topLeft, b1.topLeft + endPoint };
-	const line_segment bl = { b1.bottomLeft, b1.bottomLeft + endPoint };
-	const line_segment br = { b1.bottomRight, b1.bottomRight + endPoint };
-	const line_segment tr = { b1.topRight, b1.topRight + endPoint };
-	const line_segment rays[4] = { tl,bl,br,tr };
+	point points[] = { b1.topLeft, b1.bottomLeft, b1.bottomRight, b1.topRight };
 	//for each ray, if it intersects anything other than one segment, it is out of b2
 	for (int i = 0; i < 4; i++) {
 		//iterate through rays
 		//std::cout << "ray is " << rays[i] << std::endl;
-		for (int j = 0; j < 4; j++) {
-			//std::cout << "segment is " << segments[j] << std::endl;
-			//iterate through segments
-			if (linesIntersect(rays[i], segments[j])) {
-				intersectionCount[i]+=1;
-			}
-			//std::cout << i << ',' << j << "count = " << intersectionCount[i] << std::endl;
+		if (pointInBox(points[i], b2)) {
+			intersectionCount[i]++;
 		}
-
-		if (intersectionCount[i] != 1) {
-			//std::cout << "exit box within" << std::endl;
+		else {
 			return false;
 		}
 	}

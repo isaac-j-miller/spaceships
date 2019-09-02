@@ -149,8 +149,8 @@ void PowerUp::upgradeSpaceship(Spaceship* s) {
 		break;
 	case 3:
 		// speed upgrade
-		if (s->speed < 4) {
-			s->speed += float(value) / 10;
+		if (s->speed < getFreq(4)) {
+			s->speed += getFreq(static_cast<float>(value) / 10);
 		}
 		else {
 			s->health += value;
@@ -162,8 +162,8 @@ void PowerUp::upgradeSpaceship(Spaceship* s) {
 		break;
 	case 5:
 		// bullet ROF upgrade
-		if (s->bulletPeriod > 20) {
-			s->bulletPeriod -= value / 10;
+		if (s->bulletPeriod > getPeriod(20)) {
+			s->bulletPeriod -= getPeriod(value / 10);
 		}
 		else {
 			s->health += value;
@@ -171,8 +171,8 @@ void PowerUp::upgradeSpaceship(Spaceship* s) {
 		break;
 	case 6:
 		// torpedo ROF upgrade
-		if (s->torpedoPeriod > 15) {
-			s->torpedoPeriod -= value / 10;
+		if (s->torpedoPeriod > getPeriod(15)) {
+			s->torpedoPeriod -= getPeriod(value / 10);
 		}
 		else {
 			s->health += value;
@@ -180,8 +180,8 @@ void PowerUp::upgradeSpaceship(Spaceship* s) {
 		break;
 	case 7:
 		// rotation speed upgrade
-		if (s->rotationIncrement > .08) {
-			s->rotationIncrement -= static_cast<float>(value) / 500.;
+		if (s->rotationIncrement > getFreq(.08)) {
+			s->rotationIncrement -= static_cast<float>(getFreq(value)) / 500.;
 		}
 		else {
 			s->health += value/100;

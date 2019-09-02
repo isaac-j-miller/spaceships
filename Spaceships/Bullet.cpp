@@ -12,8 +12,8 @@ Bullet::~Bullet() {
 Bullet::Bullet(point pos, point traj, int dmg, Spaceship* f) :
 	Projectile(pos, traj, dmg, f) {
 	//std::cout << "new bullet" << std::endl;
-	speed = 10; //in pixels per frame
-	explosionDuration = 10;//frames
+	speed = getFreq(10); //in pixels per frame
+	explosionDuration = getPeriod(10);//frames
     explosionSize = 10;
 	width = 3;
 	height = 6;

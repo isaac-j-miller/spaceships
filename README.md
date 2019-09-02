@@ -34,6 +34,8 @@ This is still a work-in-progress. Current to-do list:
 
 -make levels less about attacking hordes of enemies and more about the challenge
 
+-encapsulate turn functions
+
 CONTROLS:
 
 W: move forward (up)

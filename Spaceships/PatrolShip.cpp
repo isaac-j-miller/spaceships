@@ -6,7 +6,7 @@ PatrolShip::PatrolShip(point initPos, double initRotation):
 	level = 0;
 	width = 30;
 	height = 30;
-	speed = 4;
+	speed = getFreq(4);
 	point tempTorpedoOrigin = { -.5,0 };
 	point tempBulletOrigin = { .5,0 };
 	setDims(width, height);

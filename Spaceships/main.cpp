@@ -21,8 +21,8 @@ const int SPACESHIP_TYPES = MAX_LEVEL + 1;
 const char* logFile = "scores.txt";
 unsigned long long int frame = 0;
 unsigned int highScore;
-const float framerate = 512; //fps
-float framePeriodMicroSeconds = (1 / framerate) * 10E6;
+//const float framerate = 512; //fps
+//float framePeriodMicroSeconds = (1 / framerate) * 10E6;
 unsigned int prevScore = 0;
 bool paused = false;
 const point size = { 1280, 960 };
@@ -119,23 +119,23 @@ unsigned int generateLevel(int l) {
 	SpaceshipFactory::setDifficulty(info.difficulty);
 	for (int i = 0; i <info.patrols; i++) { // generate enemies
 		EnemySpaceship* e = SpaceshipFactory::generateRandomEnemy(0);//instantiate enemies
-		ScreenThing::spaceships->push_back(e);
-		ScreenThing::enemySpaceships->push_back(e);
+		spaceships.push_back(e);
+		enemySpaceships.push_back(e);
 	}
 	for (int i = 0; i < info.fighters; i++) { // generate enemies
 		EnemySpaceship* e = SpaceshipFactory::generateRandomEnemy(1);//instantiate enemies
-		ScreenThing::spaceships->push_back(e);
-		ScreenThing::enemySpaceships->push_back(e);
+		spaceships.push_back(e);
+		enemySpaceships.push_back(e);
 	}
 	for (int i = 0; i < info.cruisers; i++) { // generate enemies
 		EnemySpaceship* e = SpaceshipFactory::generateRandomEnemy(2);//instantiate enemies
-		ScreenThing::spaceships->push_back(e);
-		ScreenThing::enemySpaceships->push_back(e);
+		spaceships.push_back(e);
+		enemySpaceships.push_back(e);
 	}
 	for (int i = 0; i < info.carriers; i++) { // generate enemies
 		EnemySpaceship* e = SpaceshipFactory::generateRandomEnemy(3);//instantiate enemies
-		ScreenThing::spaceships->push_back(e);
-		ScreenThing::enemySpaceships->push_back(e);
+		spaceships.push_back(e);
+		enemySpaceships.push_back(e);
 	}
 	return ++l;
 }
@@ -256,10 +256,10 @@ void logScore() {
 int main()
 {
 	unsigned int seed = (std::chrono::system_clock::now().time_since_epoch().count() - 15672112962443214) / 10E6;
-	std::cout << seed<< std::endl;
+	std::cout << "seed:" << seed<< std::endl;
 	srand(seed);
 	for (int i = 0; i < 20; i++) {
-		rand();
+		std::cout << rand() << std::endl;
 	}
 	bool logged = false;
 	bool levelUpActive = false;
@@ -267,13 +267,13 @@ int main()
 	int playerLevel = initPlayerLevel;
 	int level = 0;
 	//int numEnemies = 6;
-	int enemiesSpawnPeriod = 1500;
+	int enemiesSpawnPeriod = getPeriod(1500);
 	int enemiesSpawnNumber = 2;
 	//int difficulty = 2;
 	//int difficultyIncrement = 1;
 	int powerUpsInit = 4;
 	int powerUpSpawnNumber = 1;
-	int powerUpPeriod = 1250;
+	int powerUpPeriod = getPeriod(1250);
 	//unsigned int levelUpScore = 10000;
 	highScore = getHighScore();
 	
@@ -347,11 +347,11 @@ int main()
 	Upgrade::Init("levelup.png");
 	TextExplosion::Init("pixel_font.ttf", sf::Color::Green);
 	
-	PowerUpFactory::Init(ScreenThing::powerUps, size);
-	SpaceshipFactory::Init(1, size, ScreenThing::spaceships);
+	PowerUpFactory::Init(&powerUps, size);
+	SpaceshipFactory::Init(1, size, &spaceships);
 	spaceships.push_back(SpaceshipFactory::generatePlayer(0));//instantiate player
 	
-	static Spaceship* player = ScreenThing::spaceships->at(0);
+	static Spaceship* player = spaceships.at(0);
 	//Projectile::Init(&explosions, &spaceships, size);
 	EnemySpaceship::Init(player); // initialize enemySpaceships with player as the target
 	point randpos;
@@ -360,7 +360,7 @@ int main()
 	level = generateLevel(level);
 	
 	for (float i = 0; i < powerUpsInit; i++) { // generate powerups
-		ScreenThing::powerUps->push_back(PowerUpFactory::generateRandom());
+		powerUps.push_back(PowerUpFactory::generateRandom());
 	}
 	
 	powerUpTimer.restart();
@@ -386,12 +386,12 @@ int main()
 	
 		if (powerUpTimer.getTime() > powerUpPeriod && player->isActive()) {
 			for (int i = 0; i < powerUpSpawnNumber; i++) { // generate powerups
-				ScreenThing::powerUps->push_back(PowerUpFactory::generateRandom());
+				powerUps.push_back(PowerUpFactory::generateRandom());
 			}
-			ScreenThing::powerUps->push_back(PowerUpFactory::generateSpecificTypeRandom(4));//guaranteed to generate health powerup
+			powerUps.push_back(PowerUpFactory::generateSpecificTypeRandom(4));//guaranteed to generate health powerup
 			powerUpTimer.restart();
 		}
-		if ((enemyTimer.getTime() > enemiesSpawnPeriod && ScreenThing::enemySpaceships->size() == 0) && player->isActive()) {
+		if ((enemyTimer.getTime() > enemiesSpawnPeriod && enemySpaceships.size() == 0) && player->isActive()) {
 			level = generateLevel(level);
 			enemyTimer.restart();
 		}
@@ -403,7 +403,7 @@ int main()
 			playerLevel = player->getLevel();
 		}
 		if (player->isActive() && player->getScore() >= thresholds[player->getLevel()] && !levelUpActive && player->getLevel() < MAX_LEVEL) {
-			ScreenThing::powerUps->push_back(PowerUpFactory::generateSpecificTypeRandom(-1)); //generate levelup powerup
+			powerUps.push_back(PowerUpFactory::generateSpecificTypeRandom(-1)); //generate levelup powerup
 			levelUpActive = true;
 		}
 		if (!player->isActive()&& !logged) {
@@ -414,35 +414,35 @@ int main()
 		
 		//make sure the frame doesn't draw too fast
 		//std::cout << "Player level: " << player->getLevel() << std::endl;
-		while (masterClock.getElapsedTime().asMicroseconds() < framePeriodMicroSeconds) {}
+		
 		window.clear();
 		window.draw(bSprite);//draw the background
 		//manage all the spaceships and projectiles
 		static int code;
 		int loc = 0;
-		for (auto it = ScreenThing::enemySpaceships->begin(); it != ScreenThing::enemySpaceships->end();) { //iterate through enemy spaceships and remove the dead ones (doesn't delete; next block does that) and AI the alive ones
+		for (auto it = enemySpaceships.begin(); it != enemySpaceships.end();) { //iterate through enemy spaceships and remove the dead ones (doesn't delete; next block does that) and AI the alive ones
 			
-			if ((*it) && ScreenThing::spaceships->size() > 1) {
+			if ((*it) && spaceships.size() > 1) {
 				if ((*it)->isActive()) {
-					int vSize = ScreenThing::enemySpaceships->size();
+					int vSize = enemySpaceships.size();
 					
 					(*it)->specialMove();
-					if (ScreenThing::enemySpaceships->size() != vSize) { // if carrier spawns new enemies and resizes vector
+					if (enemySpaceships.size() != vSize) { // if carrier spawns new enemies and resizes vector
 						//std::cout << "resized" << std::endl;
-						it = ScreenThing::enemySpaceships->begin();
+						it = enemySpaceships.begin();
 						it += loc;
 					}
 					++it;
 				}
 				else {
 					//std::cout << "erasing enemy spaceship at " << *it << std::endl;
-					it = ScreenThing::enemySpaceships->erase(it);
+					it = enemySpaceships.erase(it);
 				}
 			}
 			loc++;
 		}
 
-		for (auto it = ScreenThing::spaceships->begin(); it != ScreenThing::spaceships->end();) { //iterate through all spaceships and draw the alive ones and explode the dead ones
+		for (auto it = spaceships.begin(); it != spaceships.end();) { //iterate through all spaceships and draw the alive ones and explode the dead ones
 			if (*it) {
 				if ((*it)->isActive()) {
 					window.draw((*it)->getSprite());
@@ -458,7 +458,7 @@ int main()
 					delete (*it);
 					(*it) = nullptr;
 					//std::cout << "removing it from spaceships" << std::endl;
-					it = ScreenThing::spaceships->erase(it); //resize vector and adjust iterator
+					it = spaceships.erase(it); //resize vector and adjust iterator
 					
 				}
 				else {
@@ -468,7 +468,7 @@ int main()
 		}
 
 
-		for (auto it = ScreenThing::projectiles->begin(); it != ScreenThing::projectiles->end();) {//iterate through projectiles and draw the active ones and explode/disappear the dead/OOB ones
+		for (auto it = projectiles.begin(); it != projectiles.end();) {//iterate through projectiles and draw the active ones and explode/disappear the dead/OOB ones
 			if (!(*it)->move()) {
 				if ((*it)->getCounter() > 1) {
 					window.draw((*it)->getSprite());
@@ -482,10 +482,10 @@ int main()
 				}
 				delete* it;
 				//std::cout << "erasing projectile at " << *it << std::endl;
-				it = ScreenThing::projectiles->erase(it);
+				it = projectiles.erase(it);
 			}
 		}
-		for (auto it = ScreenThing::explosions->begin(); it != ScreenThing::explosions->end();) { //draw/disappear all explosions
+		for (auto it = explosions.begin(); it != explosions.end();) { //draw/disappear all explosions
 			if ((*it)->isActive()) {
 				//std::cout << "drawing explosion" << std::endl;
 				window.draw((*it)->getSprite());
@@ -494,11 +494,11 @@ int main()
 			else {
 				delete* it;
 				//std::cout << "erasing explosion at " << it[0] << std::endl;
-				it = ScreenThing::explosions->erase(it);
+				it = explosions.erase(it);
 			}
 		}
 		
-		for (auto it = ScreenThing::powerUps->begin(); it != ScreenThing::powerUps->end();) { //iterate through all powerups, draw the alive ones and explode the dead ones
+		for (auto it = powerUps.begin(); it != powerUps.end();) { //iterate through all powerups, draw the alive ones and explode the dead ones
 			if ((*it)->isActive()) {
 				window.draw((*it)->getSprite());
 				//showBounds(*it);
@@ -507,11 +507,11 @@ int main()
 			else if (player->isActive()){
 				(*it)->explode();
 				if ((*it)->isUpgrade()) {
-					player = ScreenThing::spaceships->at(0); //need to fix the pointer to player so that the user inputs still map to the correct spaceship
+					player = spaceships.at(0); //need to fix the pointer to player so that the user inputs still map to the correct spaceship
 				}
 				delete* it;
 				//std::cout << "erasing powerup at " << *it << std::endl;
-				it = ScreenThing::powerUps->erase(it);
+				it = powerUps.erase(it);
 			}
 		}
 		//Spaceship* player = spaceships[0];
@@ -548,7 +548,7 @@ int main()
 		window.draw(healthReadout);
 		window.draw(levelDisplay);
 		window.draw(score);
-		if (!player->isActive()&& ScreenThing::explosions->size()==0) {
+		if (!player->isActive()&& explosions.size()==0) {
 			sf::Event event;
 			while (window.pollEvent(event)) {
 				if (event.type == sf::Event::Closed) {
@@ -562,7 +562,8 @@ int main()
 				}
 			}
 		}
-		
+		while (masterClock.getElapsedTime().asMicroseconds() < FRAMEPERIOD) {}
+		std::cout << masterClock.getElapsedTime().asMicroseconds() << std::endl;
 		window.display(); //show the window
 		frame++; //increment the frame counter
 	}

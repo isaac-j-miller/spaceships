@@ -13,16 +13,17 @@ bool Torpedo::Init(const std::string& FileName) {
 Torpedo::~Torpedo() {
 	//std::cout << "del torpedo" << std::endl;
 }
+
 Torpedo::Torpedo(point pos, point traj, int dmg, Spaceship* f) :
 	Projectile(pos, traj, dmg, f) {
 	//std::cout << "new torpedo" << std::endl;
-	speed = 7; //in pixels per frame
-	explosionDuration = 10;//frames
+	speed = getFreq(7); //in pixels per frame
+	explosionDuration = getPeriod(10);//frames
 	explosionSize = 20;
 	width = 10;
 	height = 15;
 	
-	acceleration = 3E-2; // pixels/(frame^2)
+	acceleration = getFreq(3E-2); // pixels/(frame^2)
 	setDims(width, height);
 	setImage();
 

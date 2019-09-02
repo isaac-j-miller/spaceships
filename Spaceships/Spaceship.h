@@ -69,13 +69,13 @@ protected:
 	//float width = 30;
 	
 	//float speed = 4;
-	float rotationIncrement = .02;
+	float rotationIncrement = getFreq(.02);
 	int ramDamage = 0;
 	int bulletDamage = 10;
 	int torpedoDamage = 20;
-	int bulletPeriod = 10; //in frames
-	int torpedoPeriod = 25;
-	int explosionDuration = 50; //in frames
+	int bulletPeriod = getPeriod(10); //in frames
+	int torpedoPeriod = getPeriod(25);
+	int explosionDuration = getPeriod(50); //in frames
 	int health = 100;
 	point bulletOrigin;
 	point torpedoOrigin;

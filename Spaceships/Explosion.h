@@ -23,7 +23,7 @@ protected:
 	//sf::Sprite sprite;
 	FrameClock clock;
 	float size = 10;
-	float duration = 20; //in frames
+	float duration = getPeriod(20); //in frames
 	bool active = true;
 };
 #endif

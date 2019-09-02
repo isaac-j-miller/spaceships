@@ -10,6 +10,8 @@
 #ifndef TOOLS_H
 #define TOOLS_H
 
+const unsigned int FRAMERATE = 256;
+const unsigned int FRAMEPERIOD = 10E6 / FRAMERATE;
 struct levelInfo
 {
 	int patrols = 0;
@@ -93,4 +95,7 @@ bool lineIntersectBox(line_segment a, box b);
 point lineBoxIntersection(line_segment a, box b, float xPriority, float yPriority);
 
 bool boxWithin(const box& b1,const box& b2);
+
+float getPeriod(float orig);
+float getFreq(float orig);
 #endif
