@@ -108,8 +108,27 @@ float magnitude(const point& a) {
 	return sqrt(pow(a.x, 2) + pow(a.y, 2));
 }
 float vectToAngle(const point& a) {
-	point normV = { a.x / magnitude(a), a.y / magnitude(a) };
-	return atan(a.y / a.x);
+	//float mag = magnitude(a);
+	//point normV = { a.x / mag, a.y / mag };
+	float angle =abs(atan(a.y/a.x));
+	
+	if (a.x >= 0 && a.y >= 0) {
+		//std::cout << "q1" << std::endl;
+		return angle;
+	}
+	else if (a.x >= 0 && a.y < 0) {
+		//std::cout << "q4" << std::endl;
+		return M_PI*2 - angle;
+	}
+	else if (a.x < 0 && a.y >= 0) {
+		//std::cout << "q2" << std::endl;
+		return M_PI - angle;
+	}
+	else { // a.x <0 && a.y < 0
+		//std::cout << "q3" << std::endl;
+		return angle + M_PI;
+	}
+	return angle;
 }
 std::ostream& operator<<(std::ostream& os, const point& a) {
 	return os << '(' << a.x << ',' << a.y << ')';
