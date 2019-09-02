@@ -37,7 +37,7 @@ public:
 	float getMaxDimension();
 	int getCounter();
 protected:
-	
+	float rotationDeg;
 	int counter = 0;
 	int damage = 0;
 	//int loops = 0; //num times it can wrap

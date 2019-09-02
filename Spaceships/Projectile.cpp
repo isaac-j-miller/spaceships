@@ -9,10 +9,13 @@ Projectile::Projectile(point pos, point traj, int dmg, Spaceship* f) {
 	position = pos;
 	damage = dmg;
 	fatherSpeed = f->getDisplacementVector();
-	point offset = {0,0};
-	trajectory = round_down(traj) + offset;
-	rotation = asin(trajectory.x / magnitude(trajectory));
-	
+	//point offset = {1,1};
+	trajectory = round_down(traj);
+	//rotation = asin(trajectory.x / magnitude(trajectory));
+	rotation = vectToAngle(trajectory);
+	//std::cout << "rotation: " << vectToAngle(trajectory) << std::endl;
+	rotationDeg = rotation*180.f/static_cast<float>(M_PI) + 90;
+	//std::cout << "angle: " << rotationDeg<< std::endl;
 	//std::cout << "creating projectile with trajectory " << trajectory << std::endl;
 	//std::cout << '(' << position.x << ',' << position.y << ')' << std::endl;
 	collisionBox = getCollisionBox();
@@ -33,7 +36,8 @@ void Projectile::explode() {
 
 void Projectile::moveSprite() {
 	//sprite.setOrigin(sf::Vector2f(width / 2, height / 2));
-	sprite.setRotation((vectToAngle(trajectory) + M_PI_2) * 180 / M_PI);
+	//std::cout << "angle: " << (vectToAngle(trajectory))<< std::endl;
+	sprite.setRotation(rotationDeg);
 	//std::cout << "moving sprite. position is " << position << std::endl;
 	//sprite.setOrigin(sf::Vector2f(0,0));
 	sprite.setPosition(avgPosition.x,avgPosition.y);
