@@ -18,8 +18,6 @@ This is still a work-in-progress. Current to-do list:
 
 -clean up powerup situation
 
--make framerate-related functions dependent on framerate
-
 -make some powerups more rare
 
 -work out maximum values for powerups (the current system is spaghetti and very arbitrary)
@@ -33,6 +31,8 @@ This is still a work-in-progress. Current to-do list:
 -add powerups which give the player new abilities
 
 -make levels less about attacking hordes of enemies and more about the challenge
+
+-revamp geometry and collision detection
 
 CONTROLS:
 
@@ -52,6 +52,8 @@ E: rotate clockwise
 
 ]: fire torpedo
 
+NOTES:
+Presence of suspected memory leak was denied. Performance drop is likely due to inefficient use of the GPU and CPU to calculate geometries.
 
 If anyone has questions or suggestions, please email millerij@dukes.jmu.edu
 
