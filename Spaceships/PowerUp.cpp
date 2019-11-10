@@ -112,7 +112,7 @@ bool PowerUp::isActive() {
 	// check for collision 
 	box cbox = spaceships->at(0)->getCollisionBox();
 	Spaceship* player = spaceships->at(0);
-	if (boxOverlap(collisionBox, cbox)) {
+	if (player->getSprite().getGlobalBounds().intersects(sprite.getGlobalBounds())/*boxOverlap(collisionBox, cbox)*/) {
 		//if collision
 		collision = true;
 	}

@@ -42,6 +42,7 @@ public:
 	
 protected:
 	float rotation = 0;
+	float oldRotation = 0;
 	point avgPosition;
 	point position;
 	point prevPosition;

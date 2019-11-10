@@ -51,8 +51,12 @@ void ScreenThing::InitGame(std::string shield, box windowB, point windowS, std::
 box ScreenThing::getCollisionBox() {
 	//std::cout << "base class cbox" << std::endl;
 	if (!(position == prevPosition)) {
-		box pbox = rotate(baseTransform, getRotation() * M_PI);
-		pbox = pbox + position;
+		box pbox = baseTransform;
+		if (oldRotation != rotation) {
+			pbox = rotate(baseTransform, getRotation() * M_PI);
+			pbox = pbox + position;
+			
+		}
 		collisionBox = pbox;
 		avgPosition = averagePosition(collisionBox);
 		return pbox;

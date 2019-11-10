@@ -12,6 +12,7 @@ public:
 	//virtual void moveSprite() {};
 	point getTrajectory();
 	point getDisplacementVector() { return displacementVector; }
+	
 protected:
 	float speed = 0; //in pixels per frame
 	point trajectory = { 0,0 };

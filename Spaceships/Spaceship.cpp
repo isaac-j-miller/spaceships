@@ -9,10 +9,10 @@ Spaceship::Spaceship() {
 }
 Spaceship::Spaceship(point initPos, double initRotation) {
 	rotation = initRotation;
-	position = initPos;
+	position = initPos; 
 	point tempTorpedoOrigin = { .5,0 };
 	point tempBulletOrigin = { -.5,0 };
-	//std::cout << "spaceship init w/ position " << position << ", rotation " << rotation*180 << " deg, address: " << this;
+	std::cout << "spaceship init w/ position " << position << ", rotation " << rotation*180 << " deg, address: " << this <<std::endl;
 	//setDims(width, height);
 	shieldTimer.restart();
 }
@@ -35,6 +35,7 @@ unsigned int Spaceship::getLevel() {
 }
 void Spaceship::incrementRotation(float rotationDir) {
 	//float oldR = rotation;
+	oldRotation = rotation;
 	rotation += rotationDir * static_cast<float>(rotationIncrement);
 	if (rotation < 0) {
 		rotation = rotation + 2;
@@ -42,6 +43,7 @@ void Spaceship::incrementRotation(float rotationDir) {
 	if (rotation > 2) {
 		rotation = rotation - 2;
 	}
+	
 	updateCollisionBox();
 	/*
 	std::cout << "collisionBox: " << collisionBox << std::endl;
@@ -54,8 +56,10 @@ void Spaceship::incrementRotation(float rotationDir) {
 	std::cout << "collisionBox in bounds: " << collisionBox << std::endl;
 	*/
 	for (auto a : *spaceships) {
-		if (a != this && pointDistance(position, a->getPosition()) <1.5f*(getMaxDimension()+a->getMaxDimension()) ) {
-			if (boxOverlap(collisionBox, a->getCollisionBox())) {
+		if (a != this /*&& pointDistance(position, a->getPosition()) <1.5f*(getMaxDimension()+a->getMaxDimension())*/ ) {
+			//boxOverlap(collisionBox, a->getCollisionBox())
+			sf::Sprite aSprite = a->getSprite();
+			if (sprite.getGlobalBounds().intersects(aSprite.getGlobalBounds())) {
 				rotation -= rotationDir * rotationIncrement;
 				updateCollisionBox();
 				break;
@@ -69,9 +73,8 @@ void Spaceship::incrementRotation(float rotationDir) {
 	//std::cout << "rotation incremented by " << rotationDir * rotationIncrement<<"; new rotation is " << rotation << std::endl;
 }
 bool Spaceship::setRotation(float newRotation) {
-	float oldRotation = rotation;
 	bool set = true;
-	
+	oldRotation = rotation;
 	rotation = newRotation;
 	if (rotation < 0) {
 		rotation = rotation + 2;
@@ -83,8 +86,9 @@ bool Spaceship::setRotation(float newRotation) {
 	
 	for (auto a : *spaceships) {
 		
-		if (a != this && pointDistance(avgPosition, a->getAvgPosition()) < .75f * (getMaxDimension() + a->getMaxDimension())) {
-			if (boxOverlap(collisionBox, a->getCollisionBox())) {
+		if (a != this /*&& pointDistance(avgPosition, a->getAvgPosition()) < .75f * (getMaxDimension() + a->getMaxDimension())*/) {
+			sf::Sprite aSprite = a->getSprite();
+			if (sprite.getGlobalBounds().intersects(aSprite.getGlobalBounds())) {
 				rotation = oldRotation;
 				set = false;
 				break;
@@ -151,6 +155,7 @@ int Spaceship::getHealth() {
 void Spaceship::move(point inputVector) {
 	inputVector = normalizeVector(inputVector);
 	updateCollisionBox();
+	//std::cout << "pos: " << position << collisionBox << std::endl;
 	if (health > 0) {
 		prevPosition = position;
 		elapsedFrames = moveClock.getTime();
@@ -251,17 +256,30 @@ sf::Sprite Spaceship::getSprite() {
 }
 void Spaceship::updateCollisionBox() {
 	//std::cout << "basetransform:" << baseTransform << std::endl;
-	box pbox = rotate(baseTransform, rotation * M_PI);
-	pbox = pbox + position;
-	collisionBox = pbox;
+	float rotRadians = rotation * M_PI;
+	if(oldRotation!=rotation){
+		box pbox = rotate(baseTransform, rotRadians);
+		pbox = pbox + position;
+		collisionBox = pbox;
+	}
+	
 	avgPosition = averagePosition(collisionBox);
 	static point wh = { width, height };
-	torpedoOrigin = avgPosition + rotate(wh * tempTorpedoOrigin, rotation * M_PI);
-	bulletOrigin = avgPosition + rotate(wh * tempBulletOrigin, rotation * M_PI);
+	if (oldRotation != rotation) {
+		torpedoOrigin = avgPosition + rotate(wh * tempTorpedoOrigin, rotRadians);
+		bulletOrigin = avgPosition + rotate(wh * tempBulletOrigin, rotRadians);
+	}
+	else {
+		torpedoOrigin = torpedoOrigin + position - prevPosition;
+		bulletOrigin = bulletOrigin + position - prevPosition;
+	}
+	
+	moveSprite();
 }
 box Spaceship::getCollisionBox() {
 	//std::cout << "cbox1:" << collisionBox << std::endl;
-	if (!(position == prevPosition)) {
+	if ((!(position == prevPosition))|(rotation!=oldRotation)) {
+		//std::cout << "updating" << std::endl;
 		updateCollisionBox();
 	}
 	return collisionBox;

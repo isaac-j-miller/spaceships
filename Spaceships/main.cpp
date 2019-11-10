@@ -15,6 +15,8 @@
 #include <iostream>
 #include <fstream>
 #include <chrono>
+#include <thread>
+
 const int thresholds[] = { 4000, 10000, 20000 };
 const int MAX_LEVEL = 2;
 const int SPACESHIP_TYPES = MAX_LEVEL + 1;
@@ -441,7 +443,7 @@ int main()
 			}
 			loc++;
 		}
-
+		//std::cout << "spaceships: " << ScreenThing::spaceships->size() << std::endl;
 		for (auto it = ScreenThing::spaceships->begin(); it != ScreenThing::spaceships->end();) { //iterate through all spaceships and draw the alive ones and explode the dead ones
 			if (*it) {
 				if ((*it)->isActive()) {

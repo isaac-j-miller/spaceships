@@ -1,6 +1,6 @@
 #include "Tools.h"
-
-
+#include <SFML/Graphics.hpp>
+#include <cmath>
 
 levelInfo generateLevelInfo(int level) {
 	levelInfo out;
@@ -105,7 +105,8 @@ bool box::operator==(const box& a)const {
 }
 
 float magnitude(const point& a) {
-	return sqrt(pow(a.x, 2) + pow(a.y, 2));
+	return hypotf(a.x, a.y);
+	//return sqrt(pow(a.x, 2) + pow(a.y, 2));
 }
 float vectToAngle(const point& a) {
 	//float mag = magnitude(a);
@@ -161,12 +162,16 @@ point getComponents(const float& r) {
 
 point rotate(const point& init, const float&r) {
 	//std::cout << "rotating point " << init << " " << r * 180 / M_PI << " degrees" << std::endl;
-	float cosine = round_down(cos(r));
-	float sine = round_down(sin(r));
+	float cosine = cos(r);
+	float sine = sin(r);
+	sf::Transform t =sf::Transform(cosine, -sine, 0, sine, cosine, 0, 0, 0, 1);
+	sf::Vector2f output = sf::Vector2f(init.x,init.y);
+	output = t.transformPoint(output);
+	return { output.x, output.y };
 	//std::cout << "cos(r), sin(r) = " << cosine << ',' << sine << std::endl;
-	point out = { init.x * cosine - init.y * sine, init.x * sine + init.y * cosine };
+	//point out = { init.x * cosine - init.y * sine, init.x * sine + init.y * cosine };
 	//std::cout << "output position is " << out << std::endl;
-	return out;
+	//return out;
 }
 box rotate(const box& init, const float& r) {
 	//std::cout << "rotating " << init << std::endl;

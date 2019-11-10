@@ -9,6 +9,12 @@ EnemySpaceship::EnemySpaceship(point initPos, double initRotation,int d) :
 	enemy = true;
 	score += difficulty * 100;
 	moveTimer.restart();
+	
+	oldRotation = 1;
+	point tempPoint = { 0.001, 0.001 };
+	prevPosition = initPos - tempPoint;
+	updateCollisionBox();
+	
 }
 EnemySpaceship::~EnemySpaceship() {
 
@@ -27,6 +33,8 @@ point EnemySpaceship::getMoveVector() {
 	//point avg = averagePosition(collisionBox);
 	point difference;
 	updateCollisionBox();
+	
+	
 	//okey dokey let's figure out how to not get stuck
 	if (time > movePeriod) {
 		//std::cout << "calculating projectile vectors" << std::endl;

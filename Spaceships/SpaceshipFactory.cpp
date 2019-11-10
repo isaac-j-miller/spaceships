@@ -97,19 +97,19 @@ Spaceship* SpaceshipFactory::generatePlayer(int level) {
 EnemySpaceship* SpaceshipFactory::generate(point pos, int initRotation, int d, int level) {
 	switch (level) {
 	case 0:
-		//std::cout << "generating enemy patrol ship at " << pos << std::endl;
+		std::cout << "generating enemy patrol ship at " << pos << std::endl;
 		return new EnemyPatrolShip(pos, 0., difficulty);
 		break;
 	case 1:
-		//std::cout << "generating enemy fighter at " << pos << std::endl;
+		std::cout << "generating enemy fighter at " << pos << std::endl;
 		return new EnemyFighter(pos, 0, difficulty);
 		break;
 	case 2:
-		//std::cout << "generating enemy cruiser at " << pos << std::endl;
+		std::cout << "generating enemy cruiser at " << pos << std::endl;
 		return new EnemyCruiser(pos, 0, difficulty);
 		break;
 	case 3:
-		//std::cout << "generating enemy cruiser at " << pos << std::endl;
+		std::cout << "generating enemy cruiser at " << pos << std::endl;
 		return new Carrier(pos, 0, difficulty);
 		break;
 	default:
