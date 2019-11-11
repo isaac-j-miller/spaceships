@@ -179,28 +179,32 @@ void Spaceship::move(point inputVector) {
 		*/
 		//else {// if (boxWithin(collisionBox, inflate(windowBounds, .93))){ // if within bounds and 
 			//iterate over other spaceships
-			for (auto a : *spaceships) {
-				if (a != this) {
-					point aPos = a ->getAvgPosition();
+		//std::cout << "s projectiles:" << projectiles->size() << std::endl;
+		for (auto a : *spaceships) {
+			if (a != this) {
+				point aPos = a ->getAvgPosition();
 					
-					if (pointDistance(avgPosition, aPos) < (getMaxDimension() + a->getMaxDimension())) { // if spaceship is close
-						box aBox = a->getCollisionBox();
-						point direction = (avgPosition - aPos) * inputVector;
-						if (boxOverlap(collisionBox, aBox)) {
-							if (direction.x < 0 || direction.y < 0) { // moving in wrong direction
-								position = prevPosition;
-							}
-							break;
+				if (pointDistance(avgPosition, aPos) < (getMaxDimension() + a->getMaxDimension())) { // if spaceship is close
+					box aBox = a->getCollisionBox();
+
+					point direction = (avgPosition - aPos) * inputVector;
+					if (getSprite().getGlobalBounds().intersects(a->getSprite().getGlobalBounds())/*boxOverlap(collisionBox, aBox)*/) {
+						if (direction.x < 0 || direction.y < 0) { // moving in wrong direction
+							position = prevPosition;
 						}
-						else if (boxWithin(collisionBox, aBox)) {
-							if (direction.x < 0 || direction.y < 0) { // moving in wrong direction
-								position = prevPosition;
-							}
-							break;
-						}
+						break;
 					}
+					/*
+					else if (boxWithin(collisionBox, aBox)) {
+						if (direction.x < 0 || direction.y < 0) { // moving in wrong direction
+							position = prevPosition;
+						}
+						break;
+					}
+					*/
 				}
 			}
+		}
 		//}
 	}
 	//calculate displacement vector

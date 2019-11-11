@@ -9,6 +9,7 @@ Projectile::Projectile(point pos, point traj, int dmg, Spaceship* f) {
 	position = pos;
 	damage = dmg;
 	fatherSpeed = f->getDisplacementVector();
+	windowSize = ScreenThing::windowSize;
 	//point offset = {1,1};
 	trajectory = round_down(traj);
 	//rotation = asin(trajectory.x / magnitude(trajectory));
@@ -144,8 +145,8 @@ bool Projectile::move() {
 		//}
 		moveClock.restart();
 		moveSprite();
-		//std::cout << "inrange: " << (inRange(position, windowSize) ? "yes" : "no") << std::endl;
-		return (inRange(position, windowSize) ? true : false);
+		//std::cout << "coords: " << position << ", inrange: " << (inRange(position, windowSize) ? "yes" : "no") << std::endl;
+		return !inRange(position, windowSize);
 	}
 	else {
 		return false;

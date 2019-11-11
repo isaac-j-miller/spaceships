@@ -229,6 +229,8 @@ float wrapValue(float a, const float& min, const float& max) {
 
 bool inRange(const point& a, const point& bounds) {
 	//std::cout << a << "," << bounds << std::endl;
+	//std::cout << 0 << "<" << a.x<< "<" << bounds.x <<": "<< (a.x < bounds.x && a.x>0.) <<std::endl;
+	//std::cout << 0 << "<" << a.y << "<" << bounds.y << ": " << (a.y < bounds.y && a.y>0.) << std::endl;
 	return ((a.x < bounds.x && a.x>0.) && (a.y < bounds.y && a.y>0.));
 }
 

@@ -10,11 +10,11 @@ box ScreenThing::windowBounds;
 point ScreenThing::windowSize;
 
 ScreenThing::ScreenThing() {
-
+	
 }
 
 ScreenThing::~ScreenThing() {
-
+	//internalThread.join();
 }
 
 void ScreenThing::setImage() {
@@ -38,7 +38,7 @@ void ScreenThing::InitGame(std::string shield, box windowB, point windowS, std::
 {
 	shieldImageFileName = shield;
 	windowBounds = windowB;
-	windowS = windowS;
+	windowSize = windowS;
 	spaceships = s;
 	enemySpaceships = e;
 	projectiles = p;
