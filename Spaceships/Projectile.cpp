@@ -2,6 +2,7 @@
 #include <iostream>
 #include "Spaceship.h"
 #include "Explosion.h"
+#include "BlackHole.h"
 
 Projectile::Projectile(point pos, point traj, int dmg, Spaceship* f) {
 	father = f;
@@ -59,12 +60,21 @@ Spaceship* Projectile::getFather() {
 bool Projectile::move() {
 	counter++;
 	unsigned long long int timeElapsed = moveClock.getTime();
+	if (eaten) {
+		return true;
+	}
 	if (timeElapsed != 0) {
+		point gravAccel = { 0,0 };
+		if (blackHole != nullptr) {
+			gravAccel = blackHole->getAccelerationVector(this);
+			//std::cout << "gravAccel: " << gravAccel << std::endl;
+		}
 		prevPosition = position;
 		//std::cout << "Elapsed time: " << timeElapsed << "; ";
 		//std::cout << "orig cBox: " << iB << std::endl;
 		//std::cout << "moving from (" << position.x << ',' << position.y << ") to (";
-		position = position + trajectory * ((float)pow(timeElapsed, 2) * acceleration / 2 + speed * timeElapsed);
+		//std::cout << "grav contrib: " << gravAccel * ((float)pow(timeElapsed, 2) / 2) << std::endl;
+		position = position +  gravAccel*((float)pow(timeElapsed, 2)/ 2) + trajectory * ((float)pow(timeElapsed, 2) * acceleration / 2 + speed * timeElapsed);
 		//position.y += trajectory.y * (pow(timeElapsed, 2) * acceleration / 2 + speed * timeElapsed);
 		if (counter == 2) {
 			position = fatherSpeed * timeElapsed + position;

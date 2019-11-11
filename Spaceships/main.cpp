@@ -12,10 +12,10 @@
 #include "EnemyCruiser.h"
 #include "Carrier.h"
 #include "Mini.h"
+#include "BlackHole.h"
 #include <iostream>
 #include <fstream>
 #include <chrono>
-#include <thread>
 
 const int thresholds[] = { 4000, 10000, 20000 };
 const int MAX_LEVEL = 2;
@@ -47,7 +47,7 @@ std::vector<EnemySpaceship*> enemySpaceships;
 std::vector<Projectile*> projectiles;
 std::vector<Explosion*> explosions;
 std::vector<PowerUp*> powerUps;
-std::thread projectilesThread;
+
 
 void showBounds(Spaceship* s) {
 	auto c = s->getCollisionBox();
@@ -139,6 +139,9 @@ unsigned int generateLevel(int l) {
 		EnemySpaceship* e = SpaceshipFactory::generateRandomEnemy(3);//instantiate enemies
 		ScreenThing::spaceships->push_back(e);
 		ScreenThing::enemySpaceships->push_back(e);
+	}
+	for (int i = 0; i < info.blackHoles; i++) { // generate blackholes
+		ScreenThing::blackHole = new BlackHole(size * (1.f / 2.f));
 	}
 	return ++l;
 }
@@ -349,7 +352,7 @@ int main()
 	PowerUp::Init("powerup.png");
 	Upgrade::Init("levelup.png");
 	TextExplosion::Init("pixel_font.ttf", sf::Color::Green);
-	
+	BlackHole::Init("blackhole.png");
 	PowerUpFactory::Init(ScreenThing::powerUps, size);
 	SpaceshipFactory::Init(1, size, ScreenThing::spaceships);
 	spaceships.push_back(SpaceshipFactory::generatePlayer(0));//instantiate player
@@ -424,6 +427,12 @@ int main()
 		static int code;
 		int loc = 0;
 		
+		if (ScreenThing::blackHole != nullptr) {
+			ScreenThing::blackHole->eatSpaceships();
+			ScreenThing::blackHole->eatProjectiles();
+			window.draw(ScreenThing::blackHole->getSprite());
+		}
+
 		for (auto it = ScreenThing::enemySpaceships->begin(); it != ScreenThing::enemySpaceships->end();) { //iterate through enemy spaceships and remove the dead ones (doesn't delete; next block does that) and AI the alive ones
 			if ((*it) && ScreenThing::spaceships->size() > 1) {
 				if ((*it)->isActive()) {

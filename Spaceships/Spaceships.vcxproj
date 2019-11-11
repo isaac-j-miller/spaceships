@@ -163,6 +163,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="BlackHole.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Carrier.cpp" />
     <ClCompile Include="Cruiser.cpp" />
@@ -189,6 +190,7 @@
     <ClCompile Include="Upgrade.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BlackHole.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="Carrier.h" />
     <ClInclude Include="Cruiser.h" />

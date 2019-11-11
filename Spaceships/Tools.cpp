@@ -25,6 +25,12 @@ levelInfo generateLevelInfo(int level) {
 	if (out.carriers > 1) {
 		out.carriers = 1;
 	}
+	if (level == 0) {
+		out.blackHoles = 1;
+	}
+	else {
+		out.blackHoles = 0;
+	}
 	return out;
 }
 

@@ -10,6 +10,7 @@
 
 class Spaceship;
 class Explosion;
+class BlackHole;
 class Projectile: virtual public Moveable
 {
 protected:
@@ -42,7 +43,7 @@ protected:
 	int damage = 0;
 	//int loops = 0; //num times it can wrap
 	//int maxLoops = 2;
-	
+	bool eaten = false;
 	point fatherSpeed;
 	float acceleration = 0.;
 	//point position = { 0,0 };
@@ -59,6 +60,7 @@ protected:
 	float explosionDuration = 20;//frames
 	float explosionSize = 8;
 	bool collision = false;
+	friend class BlackHole;
 	point collisionCoords = { 0,0 };
 	//box baseTransform = { {0,0},{0,height},{width,height},{width,0} };
 	//box collisionBox = baseTransform + position;

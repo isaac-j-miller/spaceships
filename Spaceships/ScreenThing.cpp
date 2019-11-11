@@ -8,6 +8,7 @@ std::vector<Explosion*>* ScreenThing::explosions;
 std::vector<PowerUp*>* ScreenThing::powerUps;
 box ScreenThing::windowBounds;
 point ScreenThing::windowSize;
+BlackHole* ScreenThing::blackHole = nullptr;
 
 ScreenThing::ScreenThing() {
 	

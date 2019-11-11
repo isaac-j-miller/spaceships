@@ -17,6 +17,7 @@ struct levelInfo
 	int cruisers = 0;
 	int carriers = 0;
 	unsigned int difficulty = 2;
+	int blackHoles = 0;
 };
 
 struct point

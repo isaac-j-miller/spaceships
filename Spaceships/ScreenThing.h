@@ -10,6 +10,7 @@ class PowerUp;
 class Explosion;
 class Projectile;
 class EnemySpaceship;
+class BlackHole;
 
 class ScreenThing
 {
@@ -20,6 +21,7 @@ public:
 	static std::vector<Projectile*>* projectiles;
 	static std::vector<Explosion*>* explosions;
 	static std::vector<PowerUp*>* powerUps;
+	static BlackHole* blackHole;
 protected:
 	static box windowBounds;
 	static point windowSize;

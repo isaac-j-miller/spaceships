@@ -39,6 +39,7 @@ EnemySpaceship(initPos, initRotation,d){
 	bulletPeriod = 7;
 	speed = 5.6;
 	pointValue = 400;
+	difficulty *= 3;
 	mini = true;
 	tempTorpedoOrigin = { 0, 0 };
 	tempBulletOrigin = { 0, 0 };
@@ -77,8 +78,12 @@ void Mini::move(point inputVector) {
 	updateCollisionBox();
 	if (health > 0) {
 		prevPosition = position;
-		elapsedFrames = moveClock.getTime();
-		position = position + inputVector * speed;
+		elapsedFrames = moveClock.getTime(); 
+		point gravAccel = { 0,0 };
+		if (blackHole != nullptr) {
+			gravAccel = blackHole->getAccelerationVector(this);
+		}
+		position = position + inputVector * speed + gravAccel * 0.5;
 		if (!inRange(position, windowSize)) {
 			//if wrapped
 			position = getWrapped(position, windowBounds.bottomRight);
@@ -97,6 +102,7 @@ void Mini::move(point inputVector) {
 		}
 		*/
 		//else {// if (boxWithin(collisionBox, inflate(windowBounds, .93))){ // if within bounds and 
+		/*
 			//iterate over other spaceships
 			for (auto a : *spaceships) {
 				if (a != this && a!=father) { // can pass through father
@@ -120,6 +126,7 @@ void Mini::move(point inputVector) {
 					}
 				}
 			}
+			*/
 		//}
 	}
 	//calculate displacement vector

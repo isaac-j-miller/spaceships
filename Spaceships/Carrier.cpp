@@ -58,7 +58,6 @@ bool Carrier::isActive() {
 			s->fatherAlive = false;
 		}
 	}
-	
 	return val;
 }
 void Carrier::updateCollisionBox() {
@@ -86,50 +85,40 @@ void Carrier::move(point inputVector) {
 	if (health > 0) {
 		prevPosition = position;
 		elapsedFrames = moveClock.getTime();
-		position = position + inputVector * speed;
+		point gravAccel = { 0,0 };
+		if (blackHole != nullptr) {
+			gravAccel = blackHole->getAccelerationVector(this);
+		}
+		position = position + inputVector * speed + gravAccel * 0.5;
 		if (!inRange(position, windowSize)) {
-			//if wrapped
 			position = getWrapped(position, windowBounds.bottomRight);
 			prevPosition = position - inputVector * speed;
 		}
-		//disable bc wrapping
+		
 		/*
-		//check if within bounds
-		if (!boxWithin(collisionBox, windowBounds)) { // if the collisionbox is not fully within the bounds
-			// check which direction the thing is going and figure out which edge it's closest to & block if moving closer to edge
-			point direction = (avgPosition - averagePosition(windowBounds)) * inputVector;
-			if (direction.x > 0 || direction.y > 0) { // moving in wrong direction
-				position = prevPosition;
-			}
-
-		}
-		*/
-		//else {// if (boxWithin(collisionBox, inflate(windowBounds, .93))){ // if within bounds and 
-			//iterate over other spaceships
-			//int pointsThresh = difficulty + 400;
-			for (auto a : *spaceships) {
-				if (a != this && !(a->isMini())) { // quickly filter out minis
-					point aPos = a->getAvgPosition();
-
-					if (pointDistance(avgPosition, aPos) < (getMaxDimension() + a->getMaxDimension())) { // if spaceship is close
-						box aBox = a->getCollisionBox();
-						point direction = (avgPosition - aPos) * inputVector;
-						if (boxOverlap(collisionBox, aBox)) {
-							if (direction.x < 0 || direction.y < 0) { // moving in wrong direction
-								position = prevPosition;
-							}
-							break;
+		for (auto a : *spaceships) {
+			if (a != this && !(a->isMini())) { // quickly filter out minis
+				point aPos = a->getAvgPosition();
+				if (pointDistance(avgPosition, aPos) < (getMaxDimension() + a->getMaxDimension())) { // if spaceship is close
+					box aBox = a->getCollisionBox();
+					point direction = (avgPosition - aPos) * inputVector;
+					if (boxOverlap(collisionBox, aBox)) {
+						if (direction.x < 0 || direction.y < 0) { // moving in wrong direction
+							position = prevPosition;
 						}
-						else if (boxWithin(aBox, collisionBox)) {
-							if (direction.x < 0 || direction.y < 0) { // moving in wrong direction
-								position = prevPosition;
-							}
-							break;
+						break;
+					}
+					else if (boxWithin(aBox, collisionBox)) {
+						if (direction.x < 0 || direction.y < 0) { // moving in wrong direction
+							position = prevPosition;
 						}
+						break;
 					}
 				}
-			//}
+			}
 		}
+		*/
+
 	}
 	//calculate displacement vector
 	if (elapsedFrames != 0) {

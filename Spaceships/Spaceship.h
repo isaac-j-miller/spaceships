@@ -5,6 +5,7 @@
 #include "Torpedo.h"
 #include "Explosion.h"
 #include "Moveable.h"
+#include "BlackHole.h"
 
 #define _USE_MATH_DEFINES
 #include <math.h>
@@ -60,6 +61,7 @@ protected:
 	bool mini = false;
 	bool enemy = false;
 	unsigned int level = 0;
+	friend class BlackHole;
 	friend class PowerUp;
 	friend class SpaceshipFactory;
 	unsigned int score = 0;
@@ -68,7 +70,7 @@ protected:
 	int shieldStrength = 0;
 	//float height = 30;
 	//float width = 30;
-	
+	//bool stuck = false;
 	//float speed = 4;
 	float rotationIncrement = .02;
 	int ramDamage = 0;
