@@ -56,6 +56,7 @@ public:
 	void destroy();
 	bool isMini() { return mini; }
 protected:
+	
 	bool mini = false;
 	bool enemy = false;
 	unsigned int level = 0;

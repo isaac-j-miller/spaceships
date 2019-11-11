@@ -42,6 +42,7 @@ public:
 	
 protected:
 	float rotation = 0;
+	float oldRotation = 0;
 	point avgPosition;
 	point position;
 	point prevPosition;
@@ -51,6 +52,7 @@ protected:
 	box baseTransform = { {-width / 2,-height / 2},{-height / 2,height / 2},{width / 2,height / 2},{width / 2,-height / 2} };
 	float maxDimension = std::max(width, height);
 	sf::Sprite sprite;
+	//std::thread internalThread;
 };
 
 #endif

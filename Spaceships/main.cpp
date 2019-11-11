@@ -15,6 +15,8 @@
 #include <iostream>
 #include <fstream>
 #include <chrono>
+#include <thread>
+
 const int thresholds[] = { 4000, 10000, 20000 };
 const int MAX_LEVEL = 2;
 const int SPACESHIP_TYPES = MAX_LEVEL + 1;
@@ -45,6 +47,7 @@ std::vector<EnemySpaceship*> enemySpaceships;
 std::vector<Projectile*> projectiles;
 std::vector<Explosion*> explosions;
 std::vector<PowerUp*> powerUps;
+std::thread projectilesThread;
 
 void showBounds(Spaceship* s) {
 	auto c = s->getCollisionBox();
@@ -420,8 +423,8 @@ int main()
 		//manage all the spaceships and projectiles
 		static int code;
 		int loc = 0;
+		
 		for (auto it = ScreenThing::enemySpaceships->begin(); it != ScreenThing::enemySpaceships->end();) { //iterate through enemy spaceships and remove the dead ones (doesn't delete; next block does that) and AI the alive ones
-			
 			if ((*it) && ScreenThing::spaceships->size() > 1) {
 				if ((*it)->isActive()) {
 					int vSize = ScreenThing::enemySpaceships->size();
@@ -441,7 +444,7 @@ int main()
 			}
 			loc++;
 		}
-
+		//std::cout << "spaceships: " << ScreenThing::spaceships->size() << std::endl;
 		for (auto it = ScreenThing::spaceships->begin(); it != ScreenThing::spaceships->end();) { //iterate through all spaceships and draw the alive ones and explode the dead ones
 			if (*it) {
 				if ((*it)->isActive()) {
@@ -466,8 +469,9 @@ int main()
 				}
 			}
 		}
-
-
+		
+		//std::cout << "projectiles:" << ScreenThing::projectiles->size() << std::endl;
+		//std::cout << "m projectiles:" << projectiles.size() << std::endl;
 		for (auto it = ScreenThing::projectiles->begin(); it != ScreenThing::projectiles->end();) {//iterate through projectiles and draw the active ones and explode/disappear the dead/OOB ones
 			if (!(*it)->move()) {
 				if ((*it)->getCounter() > 1) {
@@ -481,10 +485,12 @@ int main()
 					(*it)->explode();
 				}
 				delete* it;
+				(*it) = nullptr;
 				//std::cout << "erasing projectile at " << *it << std::endl;
 				it = ScreenThing::projectiles->erase(it);
 			}
 		}
+			
 		for (auto it = ScreenThing::explosions->begin(); it != ScreenThing::explosions->end();) { //draw/disappear all explosions
 			if ((*it)->isActive()) {
 				//std::cout << "drawing explosion" << std::endl;
@@ -493,6 +499,7 @@ int main()
 			}
 			else {
 				delete* it;
+				(*it) = nullptr;
 				//std::cout << "erasing explosion at " << it[0] << std::endl;
 				it = ScreenThing::explosions->erase(it);
 			}

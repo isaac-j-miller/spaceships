@@ -9,6 +9,12 @@ EnemySpaceship::EnemySpaceship(point initPos, double initRotation,int d) :
 	enemy = true;
 	score += difficulty * 100;
 	moveTimer.restart();
+	
+	oldRotation = 1;
+	point tempPoint = { 0.001, 0.001 };
+	prevPosition = initPos - tempPoint;
+	updateCollisionBox();
+	
 }
 EnemySpaceship::~EnemySpaceship() {
 
@@ -27,6 +33,8 @@ point EnemySpaceship::getMoveVector() {
 	//point avg = averagePosition(collisionBox);
 	point difference;
 	updateCollisionBox();
+	
+	
 	//okey dokey let's figure out how to not get stuck
 	if (time > movePeriod) {
 		//std::cout << "calculating projectile vectors" << std::endl;
@@ -71,23 +79,19 @@ point EnemySpaceship::getMoveVector() {
 			}
 		}
 		
-		//if (!tooClose) {
-			
-			//then dodge bullets
-			for (auto r : *projectiles) {//iterate through projectiles and find those that intersect this
-				if (r->getFather() != this && pointDistance(avgPosition, r->getAvgPosition()) < 2 * (getMaxDimension() + r->getMaxDimension())) {
-					traj = r->getTrajectory();
-					projectilePoint = r->getAvgPosition();
-					tempRay = { projectilePoint, traj * 10E4 + projectilePoint };
-					if (lineIntersectBox(tempRay, inflated)) {
-						rays.push_back(tempRay);
-					}
+		for (auto r : *projectiles) {//iterate through projectiles and find those that intersect this
+			if (r->getFather() != this && pointDistance(avgPosition, r->getAvgPosition()) < 2 * (getMaxDimension() + r->getMaxDimension())) {
+				traj = r->getTrajectory();
+				projectilePoint = r->getAvgPosition();
+				tempRay = { projectilePoint, traj * 10E4 + projectilePoint };
+				if (lineIntersectBox(tempRay, inflated)) {
+					rays.push_back(tempRay);
 				}
 			}
-			//std::cout << "rays: " << rays.size() << std::endl;
-			//now rays contains all the rays that intersect the collisionBox
+		}
 			
-		//}
+		//now rays contains all the rays that intersect the collisionBox
+			
 		for (auto r : rays) { //iterate over rays that intersect the collisionBox
 			collisionPoint = collisionPoint + rayBoxIntersection(r, inflated);
 		}
