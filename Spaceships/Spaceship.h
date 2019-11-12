@@ -26,6 +26,7 @@ public:
 	void moveSprite();
 	virtual void fireBullet(); //must be virtual for different attack types
 	virtual void fireTorpedo(); //same
+	virtual void layMine();
 	void explode();
 	//point getPosition();
 	point getSize();
@@ -35,6 +36,7 @@ public:
 	//point getAvgPosition();
 	bool bulletReady();
 	bool torpedoReady();
+	bool mineReady();
 	virtual bool isActive();
 	int getHealth();
 	void takeDamage(int dmg);
@@ -56,6 +58,7 @@ public:
 	bool getEnemy();
 	void destroy();
 	bool isMini() { return mini; }
+	point getDisplacementVector();
 protected:
 	
 	bool mini = false;
@@ -68,16 +71,14 @@ protected:
 	unsigned int pointValue = 1000;
 	bool shieldUp = false;
 	int shieldStrength = 0;
-	//float height = 30;
-	//float width = 30;
-	//bool stuck = false;
-	//float speed = 4;
 	float rotationIncrement = .02;
 	int ramDamage = 0;
 	int bulletDamage = 10;
 	int torpedoDamage = 20;
+	int mineDamage = 100;
 	int bulletPeriod = 10; //in frames
 	int torpedoPeriod = 25;
+	int minePeriod = 50; //in frames
 	int explosionDuration = 50; //in frames
 	int health = 100;
 	point bulletOrigin;
@@ -90,14 +91,13 @@ protected:
 	sf::Vector2f sizeVector;
 	FrameClock bulletClock;
 	FrameClock torpedoClock;
+	FrameClock mineClock;
 	
 	point displacementVector = { 0,0 };
 	
 	sf::IntRect rect = sf::IntRect(0, 0, int(width), int(height));
-	//point position = { 0,0 };
 	point prevPosition = { 0,0 };
 	int elapsedFrames = 1;
-	//box collisionBox = { {0,0}, {0,0 - height}, {0 + width,0 - height}, {0 + width,0} };
 	int shieldPeriod = 2000; //frames to wait to activate shield
 	int baseShieldStrength = 50;
 	FrameClock shieldTimer;

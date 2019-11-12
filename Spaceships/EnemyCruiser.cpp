@@ -16,6 +16,9 @@ void EnemyCruiser::fireBullet() {
 void EnemyCruiser::fireTorpedo() {
 	Cruiser::fireTorpedo();
 }
+void EnemyCruiser::layMine() {
+	Spaceship::layMine();
+}
 void EnemyCruiser::updateCollisionBox() {
 	Cruiser::updateCollisionBox();
 }

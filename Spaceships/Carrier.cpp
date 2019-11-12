@@ -79,6 +79,9 @@ void Carrier::fireTorpedo() {
 	children.push_back(temp);
 	torpedoClock.restart();
 }
+void Carrier::layMine() {
+	Spaceship::layMine();
+}
 void Carrier::move(point inputVector) {
 	inputVector = normalizeVector(inputVector);
 	updateCollisionBox();

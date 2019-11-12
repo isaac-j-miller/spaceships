@@ -12,10 +12,8 @@ public:
 	void move(point inputVector) { PatrolShip::move(inputVector); };
 	void fireBullet();
 	void fireTorpedo();
+	void layMine();
 	void updateCollisionBox();
 	bool isActive() { return PatrolShip::isActive(); }
-	//static bool Init();
-	//void setImage();
-};
 
 #endif

@@ -55,3 +55,6 @@ void Fighter::fireTorpedo() {
 void Fighter::updateCollisionBox() {
 	Spaceship::updateCollisionBox();
 }
+void Fighter::layMine() {
+	Spaceship::layMine();
+}

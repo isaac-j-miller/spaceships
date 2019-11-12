@@ -15,6 +15,7 @@ public:
 	virtual void updateCollisionBox();
 	virtual void fireBullet();
 	virtual void fireTorpedo();
+	virtual void layMine();
 	bool isActive() { return Spaceship::isActive(); }
 	void specialMove();
 	void attack();

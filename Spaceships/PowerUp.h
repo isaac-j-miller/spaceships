@@ -12,21 +12,15 @@ class Explosion;
 class BlackHole;
 class PowerUp: virtual public ScreenThing
 {
-
 	static sf::Texture texture;
-protected:
-	
-	//static sf::Image image;
 public:
 	PowerUp(point pos, int type, int value);
 	virtual ~PowerUp();
 	void setImage();
 	static bool Init(const std::string& ImageFile);
 	void explode();
-	//point getPosition();
 	point getSize();
 	box getCollisionBox();
-	//point getAvgPosition();
 	void animate();
 	virtual bool isUpgrade();
 	virtual bool isActive();
@@ -45,12 +39,7 @@ protected:
 	std::string explosionString;
 	float stringSize = 30;
 	friend class BlackHole;
-	
-	//point avgPosition;
-	//point position;
-	//sf::Sprite sprite;
 	FrameClock timer;
-	//box collisionBox = { {0,0}, {0,0 - size}, {0 + size,0 - size}, {0 + size,0} };
 };
 
 #endif // !POWERUP_H

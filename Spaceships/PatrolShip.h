@@ -13,9 +13,9 @@ public:
 	void move(point inputVector) { Spaceship::move(inputVector); };
 	PatrolShip(point initPos, double initRotation);
 	virtual ~PatrolShip();
-	//void setImage();
 	void fireBullet();
 	void fireTorpedo();
+	void layMine();
 	void updateCollisionBox();
 	bool isActive() { return Spaceship::isActive(); }
 protected:

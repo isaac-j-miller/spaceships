@@ -18,6 +18,10 @@ void EnemyPatrolShip::fireBullet() {
 void EnemyPatrolShip::fireTorpedo() {
 	PatrolShip::fireTorpedo();
 }
+void EnemyPatrolShip::layMine() {
+	Spaceship::layMine();
+}
 void EnemyPatrolShip::updateCollisionBox() {
 	PatrolShip::updateCollisionBox();
 }
+

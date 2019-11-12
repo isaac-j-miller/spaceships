@@ -22,7 +22,7 @@ Torpedo::Torpedo(point pos, point traj, int dmg, Spaceship* f) :
 	width = 10;
 	height = 15;
 	
-	acceleration = 3E-2; // pixels/(frame^2)
+	acceleration = 5E-3; // pixels/(frame^2)
 	setDims(width, height);
 	setImage();
 

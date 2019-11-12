@@ -23,10 +23,11 @@ public:
 private:
 	void updateSize();
 	unsigned long long int pointsAccumulated = 50000;
-	const float gravitationalConstant = 5E-1;
-	const float growthConstant =1E-3;
+	const float gravitationalConstant = 3.5E-1;
+	const float growthConstant =0.05;
 	const float initialSize = 20;
 	const float angularMomentum = 100;
+	const float projectilePoints = 10;
 	float polarMomentOfInertia = 1;
 	float rotationSpeed = 0; //angular velocity
 	float size = 0;

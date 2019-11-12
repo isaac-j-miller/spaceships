@@ -12,8 +12,6 @@ Consume powerups by colliding with them. Question mark powerups give the player 
 OTHER INFO:
 Some projectiles move slower or faster than others. This is because the projectile's initial velocity is dependent upon that of the spaceship which fired it.
 
-Currently, the highest level I have gotten to is level 10.
-
 This is still a work-in-progress. Current to-do list:
 
 -clean up powerup situation
@@ -26,13 +24,13 @@ This is still a work-in-progress. Current to-do list:
 
 -add more user spaceships
 
--give levels more variety
-
 -add powerups which give the player new abilities
 
--make levels less about attacking hordes of enemies and more about the challenge
+-add lasers
 
--revamp geometry and collision detection
+-add mines
+
+-get new artwork?
 
 CONTROLS:
 
@@ -51,9 +49,6 @@ E: rotate clockwise
 [: fire bullet
 
 ]: fire torpedo
-
-NOTES:
-Presence of suspected memory leak was denied. Performance drop is likely due to inefficient use of the GPU and CPU to calculate geometries.
 
 If anyone has questions or suggestions, please email millerij@dukes.jmu.edu
 

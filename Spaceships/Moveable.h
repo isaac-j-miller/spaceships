@@ -9,7 +9,6 @@ class Moveable :
 public:
 	Moveable() {}
 	virtual ~Moveable() {}
-	//virtual void moveSprite() {};
 	point getTrajectory();
 	point getDisplacementVector() { return displacementVector; }
 	

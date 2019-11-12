@@ -61,6 +61,9 @@ void Cruiser::fireTorpedo() {
 	projectiles->push_back(new Torpedo(torpedoOrigin, getTrajectory(), torpedoDamage, this));
 	projectiles->push_back(new Torpedo(torpedoOrigin2, getTrajectory(), torpedoDamage, this));
 }
+void Cruiser::layMine() {
+	Spaceship::layMine();
+}
 void Cruiser::updateCollisionBox() { // fix
 	box pbox = rotate(baseTransform, rotation * M_PI);
 	pbox = pbox + position;

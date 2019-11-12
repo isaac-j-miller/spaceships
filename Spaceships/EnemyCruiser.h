@@ -12,6 +12,7 @@ public:
 	~EnemyCruiser();
 	void fireBullet();
 	void fireTorpedo();
+	void layMine();
 	void updateCollisionBox();
 	bool isActive() { return Cruiser::isActive(); }
 };

@@ -12,9 +12,8 @@ public:
 	void move(point inputVector) { Fighter::move(inputVector); };
 	void fireBullet();
 	void fireTorpedo();
+	void layMine();
 	void updateCollisionBox();
 	bool isActive() { return Fighter::isActive(); }
-	//static bool Init();
-	//void setImage();
 };
 #endif

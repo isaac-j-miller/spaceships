@@ -16,6 +16,9 @@ void EnemyFighter::fireBullet() {
 void EnemyFighter::fireTorpedo() {
 	Fighter::fireTorpedo();
 }
+void EnemyFighter::layMine() {
+	Spaceship::layMine();
+}
 void EnemyFighter::updateCollisionBox() {
 	Fighter::updateCollisionBox();
 }

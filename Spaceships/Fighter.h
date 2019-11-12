@@ -13,6 +13,7 @@ public:
 	virtual ~Fighter();
 	void fireBullet();
 	void fireTorpedo();
+	void layMine();
 	void updateCollisionBox();
 	bool isActive() { return Spaceship::isActive(); }
 protected:
@@ -20,6 +21,5 @@ protected:
 	static sf::Texture shieldTexture;
 	point tempTorpedoOrigin = { -.5,0 };
 	point tempBulletOrigin = { .5,0 };
-	//static std::string imageFile;
 };
 #endif

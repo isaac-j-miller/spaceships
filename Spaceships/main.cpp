@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include "Bullet.h"//includes projectile
 #include "Torpedo.h"
+#include "Mine.h"
 #include "TextExplosion.h"
 //#include "EnemySpaceship.h" // includes spaceship
 #include "PowerUp.h"
@@ -13,6 +14,7 @@
 #include "Carrier.h"
 #include "Mini.h"
 #include "BlackHole.h"
+
 #include <iostream>
 #include <fstream>
 #include <chrono>
@@ -189,7 +191,11 @@ void getUserInput(Spaceship* player) {
 		if (player->torpedoReady()) {
 			player->fireTorpedo();
 		}
-
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::SemiColon)) {
+		if (player->mineReady()&&player->getLevel() >= 1) {
+			player->layMine();
+		}
 	}
 }
 
@@ -269,7 +275,7 @@ void intro(sf::Font f) {
 											"and slow the black hole's growth for as long as possible",
 											"to provide the refugees enough time to escape.",
 											"Good luck."};
-	std::string controlsTextLines = "CONTROLS:\nMOVEMENT: WASD\nROTATE LEFT: Q\nROTATE RIGHT: E\nFIRE CANNON: [\nFIRE TORPEDO: ]";
+	std::string controlsTextLines = "CONTROLS:\nMOVEMENT: WASD\nROTATE LEFT: Q\nROTATE RIGHT: E\nFIRE CANNON: [\nFIRE TORPEDO: ]\nDROP MINE: ; (AFTER 2ND UPGRADE)";
 	int timeCount = 5000;
 	sf::Text introText = sf::Text();
 	sf::Text controlsText = sf::Text(controlsTextLines,f);
@@ -395,7 +401,7 @@ int main()
 	//Spaceship::Init("shield.png", &spaceships, &enemySpaceships, &projectiles, &explosions, windowBox); 
 	
 	ScreenThing::InitGame("shield.png", windowBox, size,&spaceships,&enemySpaceships,&projectiles, &explosions, &powerUps);
-
+	
 	PatrolShip::Init("patrolship.png");
 	Fighter::Init("fighter.png");
 	Cruiser::Init("cruiser.png");
@@ -405,6 +411,8 @@ int main()
 	
 	Bullet::Init("bullet.png");
 	Torpedo::Init("torpedo.png");
+	Mine::Init("mine.png");
+
 	Explosion::Init("explosion.png");
 	PowerUp::Init("powerup.png");
 	Upgrade::Init("levelup.png");

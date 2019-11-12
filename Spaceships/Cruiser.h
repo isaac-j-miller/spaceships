@@ -13,6 +13,7 @@ public:
 	virtual ~Cruiser();
 	void fireBullet();
 	void fireTorpedo();
+	void layMine();
 	void updateCollisionBox();
 	bool isActive() { return Spaceship::isActive(); }
 protected:
@@ -20,11 +21,6 @@ protected:
 	static sf::Texture shieldTexture;
 	point bulletOrigin2;
 	point torpedoOrigin2;
-
-	//const float bulletSpacingFactor2 = .3; //bullet/torpedo will spawn % of the length from the corner
-	//const float torpedoSpacingFactor2 = 1.1;
-	//float torpedoPosition2 = width * (1 - torpedoSpacingFactor);
-	//float bulletPosition2 = width * (1 - bulletSpacingFactor);
 	point tempTorpedoOrigin2 = { -.3,0 };
 	point tempBulletOrigin2 = { .3,0 };
 	point tempTorpedoOrigin = { -.4,0 };

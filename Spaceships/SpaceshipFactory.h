@@ -5,7 +5,6 @@
 class SpaceshipFactory
 {
 	static int difficulty;
-	//static int level;
 	static point windowSize;
 	static std::vector<Spaceship*>* spaceships;
 public:

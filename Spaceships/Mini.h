@@ -18,6 +18,7 @@ public:
 	void updateCollisionBox();
 	void fireBullet();
 	void fireTorpedo();
+	void layMine();
 	bool isActive();
 private:
 	bool fatherAlive = true;

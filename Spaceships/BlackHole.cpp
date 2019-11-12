@@ -43,7 +43,7 @@ void BlackHole::eatSpaceships() {
 		if (Collision::PixelPerfectTest(sprite, a->getSprite())) {
 		//if (cBox.intersects(a->getSprite().getGlobalBounds())) {
 			a->health = 0;
-			size += a->getPointsValue() * growthConstant;
+			size += a->getPointsValue() * growthConstant/size;
 			pointsAccumulated += a->getPointsValue();
 			//std::cout << "spaceship eaten, size:" << size <<std::endl;
 
@@ -57,10 +57,12 @@ void BlackHole::eatProjectiles() {
 		if (Collision::PixelPerfectTest(sprite, a->getSprite())) {
 			a->collision = true;
 			a->eaten = true;
+			pointsAccumulated += projectilePoints;
+			size += projectilePoints * growthConstant / size;
 			//std::cout << "projectile eaten" << std::endl;
 		}
 	}
-	//updateSize();
+	updateSize();
 }
 void BlackHole::eatPowerUps() {
 	//auto cBox = getSprite().getGlobalBounds();
@@ -76,6 +78,7 @@ void BlackHole::eatPowerUps() {
 void BlackHole::updateSize() {
 	width = size;
 	height = size;
+	std::cout << "blackhole size:" << size << std::endl;
 	polarMomentOfInertia = M_PI * pow(size / 2, 2) / 2;
 	rotationSpeed = angularMomentum / (polarMomentOfInertia);
 	rotation = oldRotation + rotationSpeed;

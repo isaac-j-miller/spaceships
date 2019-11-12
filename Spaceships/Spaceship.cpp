@@ -1,6 +1,7 @@
 #include "Spaceship.h"
 #include "EnemySpaceship.h"
 #include "PowerUp.h"
+#include "Mine.h"
 #include <iostream>
 
 
@@ -19,7 +20,9 @@ Spaceship::Spaceship(point initPos, double initRotation) {
 Spaceship::~Spaceship() {
 
 }
-
+point Spaceship::getDisplacementVector() {
+	return displacementVector;
+}
 void Spaceship::explode() {
 	explosions->push_back( new Explosion(explosionDuration, getMaxDimension(), getAvgPosition()));
 }
@@ -146,8 +149,18 @@ void Spaceship::fireTorpedo() {
 	torpedoClock.restart();
 	projectiles->push_back( new Torpedo(torpedoOrigin, getTrajectory(), torpedoDamage, this));
 }
+void Spaceship::layMine() {
+	//std::cout << "Firing Torpedo" << std::endl;
+	//std::cout << "rotation =" << rotation * 180 <<std::endl;
+	mineClock.restart();
+	projectiles->push_back(new Mine(avgPosition, getTrajectory(), mineDamage, this));
+}
 bool Spaceship::torpedoReady() {
 	return (torpedoClock.getTime() >= torpedoPeriod);
+}
+bool Spaceship::mineReady() {
+	return (mineClock.getTime() >= minePeriod);
+
 }
 
 int Spaceship::getHealth() {

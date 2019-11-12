@@ -19,6 +19,7 @@ public:
 	void updateCollisionBox();
 	void fireBullet();
 	void fireTorpedo();
+	void layMine();
 private:
 	std::vector<Mini*> children;
 	

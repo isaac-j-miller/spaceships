@@ -54,7 +54,6 @@ protected:
 	box baseTransform = { {-width / 2,-height / 2},{-height / 2,height / 2},{width / 2,height / 2},{width / 2,-height / 2} };
 	float maxDimension = std::max(width, height);
 	sf::Sprite sprite;
-	//std::thread internalThread;
 };
 
 #endif

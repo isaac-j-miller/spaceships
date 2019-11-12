@@ -136,3 +136,6 @@ void Mini::move(point inputVector) {
 	moveSprite();
 	moveClock.restart();
 }
+void Mini::layMine() {
+	Spaceship::layMine();
+}

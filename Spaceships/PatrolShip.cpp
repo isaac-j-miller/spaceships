@@ -48,6 +48,10 @@ void PatrolShip::fireBullet() {
 void PatrolShip::fireTorpedo() {
 	Spaceship::fireTorpedo();
 }
+void PatrolShip::layMine() {
+	Spaceship::layMine();
+}
 void PatrolShip::updateCollisionBox() {
 	Spaceship::updateCollisionBox();
 }
+

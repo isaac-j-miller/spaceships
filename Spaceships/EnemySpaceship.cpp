@@ -201,3 +201,6 @@ void EnemySpaceship::fireBullet() {
 void EnemySpaceship::fireTorpedo() {
 	Spaceship::fireTorpedo();
 }
+void EnemySpaceship::layMine() {
+	Spaceship::layMine();
+}
