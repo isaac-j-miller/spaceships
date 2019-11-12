@@ -340,6 +340,8 @@ int main()
 	int powerUpsInit = 4;
 	int powerUpSpawnNumber = 1;
 	int powerUpPeriod = 1250;
+	int warningFlashPeriod = 50;
+	bool warningState = false;
 	//unsigned int levelUpScore = 10000;
 	highScore = getHighScore();
 	
@@ -398,6 +400,7 @@ int main()
 	FrameClock::Init(frame);
 	FrameClock powerUpTimer;
 	FrameClock enemyTimer;
+	FrameClock warningFlasher;
 
 	background.loadFromFile("background1.png");
 	backgroundTexture.loadFromImage(background);
@@ -623,7 +626,17 @@ int main()
 		highScoreText.setString("High Score: " + std::to_string(highScore));
 		levelDisplay.setString("Level: " + std::to_string(level));
 		if (level == BLACKHOLE_LEVEL) {
-			warningDisplay.setString("BLACK HOLE IN CENTER IMMINENT");
+			if (warningFlasher.getTime() > warningFlashPeriod && !warningState) {
+				warningDisplay.setString("BLACK HOLE IN CENTER IMMINENT");
+				warningFlasher.restart();
+				warningState = true;
+			}
+			else if(warningFlasher.getTime() > warningFlashPeriod &&warningState) {
+				warningDisplay.setString("");
+				warningFlasher.restart();
+				warningState = false;
+			}
+			
 		}
 		else if (ScreenThing::blackHole == nullptr) {
 			warningDisplay.setString("");
