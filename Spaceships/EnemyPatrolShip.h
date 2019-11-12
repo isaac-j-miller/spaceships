@@ -15,5 +15,5 @@ public:
 	void layMine();
 	void updateCollisionBox();
 	bool isActive() { return PatrolShip::isActive(); }
-
+};
 #endif

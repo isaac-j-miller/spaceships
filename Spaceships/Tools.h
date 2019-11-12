@@ -3,6 +3,9 @@
 #ifndef FP_0
 #define FP_0 1E-6
 #endif
+#ifndef BLACKHOLE_LEVEL
+#define BLACKHOLE_LEVEL 3
+#endif
 #ifndef _USE_MATH_DEFINES
 #define _USE_MATH_DEFINES
 #endif

@@ -19,6 +19,7 @@ Projectile::Projectile(point pos, point traj, int dmg, Spaceship* f) {
 	rotation = vectToAngle(trajectory);
 	//std::cout << "rotation: " << vectToAngle(trajectory) << std::endl;
 	rotationDeg = rotation*180.f/static_cast<float>(M_PI) + 90;
+	displacementVector = trajectory;
 	//std::cout << "angle: " << rotationDeg<< std::endl;
 	//std::cout << "creating projectile with trajectory " << trajectory << std::endl;
 	//std::cout << '(' << position.x << ',' << position.y << ')' << std::endl;
@@ -77,7 +78,8 @@ bool Projectile::move() {
 		//std::cout << "orig cBox: " << iB << std::endl;
 		//std::cout << "moving from (" << position.x << ',' << position.y << ") to (";
 		//std::cout << "grav contrib: " << gravAccel * ((float)pow(timeElapsed, 2) / 2) << std::endl;
-		position = position + gravAccel*((float)pow(timeElapsed, 2)/ 2) + trajectory * ((float)pow(counter, 2) * acceleration / 2 + speed * timeElapsed);
+		
+		position = position + gravAccel*((float)pow(timeElapsed, 2)/ 2) + normalizeVector(displacementVector) * ((float)pow(counter, 2) * acceleration / 2 + speed * timeElapsed);
 		//position.y += trajectory.y * (pow(timeElapsed, 2) * acceleration / 2 + speed * timeElapsed);
 		if (counter == 2 || speed < FP_0) {
 			//std::cout << "fatherSpeed: " << fatherSpeed << std::endl;
@@ -93,8 +95,11 @@ bool Projectile::move() {
 		*/
 		point difference = position - prevPosition;
 		float mag = magnitude(difference);
-		currentSpeed = mag / timeElapsed;
+		//currentSpeed = mag / timeElapsed;
 		displacementVector = difference *(1/ timeElapsed);
+		rotation = vectToAngle(displacementVector);
+		//std::cout << "rotation: " << vectToAngle(trajectory) << std::endl;
+		rotationDeg = rotation * 180.f / static_cast<float>(M_PI) + 90;
 		//std::cout << "current speed: " << currentSpeed << "px/frame" << std::endl;
 		//std::cout << '(' <<position.x << ',' << position.y << ')' << std::endl;
 		//std::cout << "displacement vector: " << displacementVector << "px/frame" << std::endl;

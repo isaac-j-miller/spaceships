@@ -24,7 +24,7 @@ BlackHole::BlackHole(point pos) {
 
 	setImage();
 	
-	std::cout << "black hole init at" << avgPosition << ", size:" << size << std::endl;
+	//std::cout << "black hole init at" << avgPosition << ", size:" << size << std::endl;
 }
 void BlackHole::setImage() {
 	sprite.setTexture(texture);
@@ -70,15 +70,19 @@ void BlackHole::eatPowerUps() {
 		if (Collision::PixelPerfectTest(sprite, a->getSprite())) {
 			a->collision = true;
 			a->eaten = true;
-			std::cout << "powerup eaten" << std::endl;
+			//std::cout << "powerup eaten" << std::endl;
 		}
 	}
 	//updateSize();
 }
+
+unsigned long int BlackHole::getMass() {
+	return pointsAccumulated;
+}
 void BlackHole::updateSize() {
 	width = size;
 	height = size;
-	std::cout << "blackhole size:" << size << std::endl;
+	//std::cout << "blackhole size:" << size << std::endl;
 	polarMomentOfInertia = M_PI * pow(size / 2, 2) / 2;
 	rotationSpeed = angularMomentum / (polarMomentOfInertia);
 	rotation = oldRotation + rotationSpeed;

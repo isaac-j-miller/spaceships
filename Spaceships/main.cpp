@@ -41,6 +41,7 @@ sf::Text highScoreText;
 sf::Text pauseText;
 sf::Text endText;
 sf::Text levelDisplay;
+sf::Text warningDisplay;
 sf::Image background;
 sf::Texture backgroundTexture;
 sf::Sprite bSprite;
@@ -373,6 +374,12 @@ int main()
 	levelDisplay.setCharacterSize(30);
 	levelDisplay.setFillColor(sf::Color::Red);
 	levelDisplay.setStyle(sf::Text::Bold);
+	
+	warningDisplay.setFont(font);
+	warningDisplay.setPosition(900, 0);
+	warningDisplay.setCharacterSize(30);
+	warningDisplay.setFillColor(sf::Color::Red);
+	warningDisplay.setStyle(sf::Text::Bold);
 
 	pauseText.setString("Paused");
 	pauseText.setFont(font);
@@ -615,13 +622,22 @@ int main()
 		}
 		highScoreText.setString("High Score: " + std::to_string(highScore));
 		levelDisplay.setString("Level: " + std::to_string(level));
+		if (level == BLACKHOLE_LEVEL) {
+			warningDisplay.setString("BLACK HOLE IN CENTER IMMINENT");
+		}
+		else if (ScreenThing::blackHole == nullptr) {
+			warningDisplay.setString("");
+		}
+		else {
+			warningDisplay.setString("BLACK HOLE MASS: " + std::to_string(ScreenThing::blackHole->getMass()));
+		}
 		if (!player->isActive()) {
 			if (prevScore == highScore) {
 				endText.setString("New High Score: " + std::to_string(highScore) + "! Press Esc to exit.");
 			}
 			else {
 
-				endText.setString("Game Over. Press Esc to exit.");
+				endText.setString("Game Over. Press [Esc] to exit.");
 			}
 			endText.setOrigin(endText.getLocalBounds().width / 2, pauseText.getLocalBounds().height / 2);
 			endText.setPosition(size.x / 2, size.y / 2);
@@ -632,6 +648,7 @@ int main()
 		window.draw(healthReadout);
 		window.draw(levelDisplay);
 		window.draw(score);
+		window.draw(warningDisplay);
 		if (!player->isActive()&& ScreenThing::explosions->size()==0) {
 			sf::Event event;
 			while (window.pollEvent(event)) {

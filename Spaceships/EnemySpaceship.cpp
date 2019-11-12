@@ -174,6 +174,7 @@ void EnemySpaceship::attack() {// update
 	updateCollisionBox();
 	bool br = bulletReady();
 	bool tr = torpedoReady();
+	bool mr = mineReady();
 	int code = 0;
 	if (br && !tr) {
 		code = 1;
@@ -185,10 +186,13 @@ void EnemySpaceship::attack() {// update
 		code =(rand() % 2);
 	}
 	switch (code) {
-	case 0:
-		fireTorpedo();
-	default:
-		fireBullet();
+		case 0:
+			fireTorpedo();
+		default:
+			fireBullet();
+	}
+	if (getLevel() >= 1 && mr) {
+		layMine();
 	}
 } 
 
