@@ -1,6 +1,7 @@
 #include "PowerUpFactory.h"
 #include "Upgrade.h"
 #include <chrono>
+#include "BlackHole.h"
 std::vector<PowerUp*>* PowerUpFactory::powerUps;
 point PowerUpFactory::windowSize;
 int PowerUpFactory::factor = 5;
@@ -29,9 +30,11 @@ PowerUp* PowerUpFactory::generateRandom() {
 		do {
 			randpos = { ((rand() % 80 + 10) / 100.f) * (windowSize.x),((rand() % 80 + 10) / 100.f) * (windowSize.y) };
 			c = false;
-			for (auto s : *powerUps) {
-				if (pointDistance(s->getPosition(), randpos) < 2.1 * s->getSize().x) {
-					c = true;
+			if (ScreenThing::blackHole == nullptr || !pointInBox(randpos, ScreenThing::blackHole->getCollisionBox())) {
+				for (auto s : *powerUps) {
+					if (pointDistance(s->getPosition(), randpos) < 2.1 * s->getSize().x) {
+						c = true;
+					}
 				}
 			}
 		} while (c);

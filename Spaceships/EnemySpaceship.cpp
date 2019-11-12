@@ -89,6 +89,14 @@ point EnemySpaceship::getMoveVector() {
 				}
 			}
 		}
+		if (blackHole != nullptr) {
+			traj = getTrajectory() - blackHole->getPosition();
+			projectilePoint = blackHole->getPosition();
+			tempRay = { projectilePoint, traj * 10E4 + projectilePoint };
+			if (lineIntersectBox(tempRay, inflated)) {
+				rays.push_back(tempRay);
+			}
+		}
 			
 		//now rays contains all the rays that intersect the collisionBox
 			

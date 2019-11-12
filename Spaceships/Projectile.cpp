@@ -3,6 +3,7 @@
 #include "Spaceship.h"
 #include "Explosion.h"
 #include "BlackHole.h"
+#include "Collision.h"
 
 Projectile::Projectile(point pos, point traj, int dmg, Spaceship* f) {
 	father = f;
@@ -67,6 +68,7 @@ bool Projectile::move() {
 		point gravAccel = { 0,0 };
 		if (blackHole != nullptr) {
 			gravAccel = blackHole->getAccelerationVector(this);
+			
 			//std::cout << "gravAccel: " << gravAccel << std::endl;
 		}
 		prevPosition = position;
@@ -74,7 +76,7 @@ bool Projectile::move() {
 		//std::cout << "orig cBox: " << iB << std::endl;
 		//std::cout << "moving from (" << position.x << ',' << position.y << ") to (";
 		//std::cout << "grav contrib: " << gravAccel * ((float)pow(timeElapsed, 2) / 2) << std::endl;
-		position = position +  gravAccel*((float)pow(timeElapsed, 2)/ 2) + trajectory * ((float)pow(timeElapsed, 2) * acceleration / 2 + speed * timeElapsed);
+		position = position + gravAccel*((float)pow(timeElapsed, 2)/ 2) + trajectory * ((float)pow(timeElapsed, 2) * acceleration / 2 + speed * timeElapsed);
 		//position.y += trajectory.y * (pow(timeElapsed, 2) * acceleration / 2 + speed * timeElapsed);
 		if (counter == 2) {
 			position = fatherSpeed * timeElapsed + position;
@@ -98,42 +100,19 @@ bool Projectile::move() {
 		//const point points[] = { collisionBox.topLeft, collisionBox.bottomLeft, collisionBox.bottomRight, collisionBox.topRight };
 		//for (int i = 0; i < 4;i++) {
 			//temp assign 
-			if (father == spaceships->at(0)) {
-				for (auto s : *spaceships) {
-					sf::Sprite sSprite = s->getSprite();
-					//box c = s->getCollisionBox();
-					//std::cout <<"line: "<< l << "; " << std::endl;
-					if (s != father/* && pointDistance(position, s->getPosition()) < 1.5f * (getMaxDimension() + s->getMaxDimension())*/) {
-						//std::cout << "current spaceship ("<<i<<") to check has bbox: " << c << std::endl;
-						if (sprite.getGlobalBounds().intersects(sSprite.getGlobalBounds())/*pointInBox(points[i], c)*/) {//if collision
-							// make the ship take damage
-							s->takeDamage(damage);
-							if (s->getHealth() <= 0) {
-								father->increaseScore(s->getPointsValue());
-							}
-							//std::cout << "spaceship at " << s << " taking damage" << std::endl;
-							// create explosion at point of intersection given priority, which comes from trajectory
-							collision = true;
-							//collisionCoords = points[i];
-							collisionCoords = avgPosition;
-							//std::cout << "Collision at " << collisionCoords << std::endl;
-							return true;
-							//std::cout << std::endl << "done with this spaceship. Collision true" << std::endl;
-						}
-						else {
-							//std::cout << std::endl << "done with this spaceship. Collision false" << std::endl;
-						}
-					}
-				}
-			}
-			else {
-				auto s = spaceships->at(0);
+		if (counter > lifetime) {
+			collision = true;
+			collisionCoords = avgPosition;
+			return true;
+		}
+		if (father == spaceships->at(0)) {
+			for (auto s : *spaceships) {
 				sf::Sprite sSprite = s->getSprite();
 				//box c = s->getCollisionBox();
 				//std::cout <<"line: "<< l << "; " << std::endl;
-				if (s != father /*&& pointDistance(position, s->getPosition()) < 1.5f * (getMaxDimension() + s->getMaxDimension())*/) {
+				if (s != father/* && pointDistance(position, s->getPosition()) < 1.5f * (getMaxDimension() + s->getMaxDimension())*/) {
 					//std::cout << "current spaceship ("<<i<<") to check has bbox: " << c << std::endl;
-					if (sprite.getGlobalBounds().intersects(sSprite.getGlobalBounds()) ){//if collision
+					if (Collision::PixelPerfectTest(sprite, sSprite)) {//if collision
 						// make the ship take damage
 						s->takeDamage(damage);
 						if (s->getHealth() <= 0) {
@@ -142,6 +121,7 @@ bool Projectile::move() {
 						//std::cout << "spaceship at " << s << " taking damage" << std::endl;
 						// create explosion at point of intersection given priority, which comes from trajectory
 						collision = true;
+						//collisionCoords = points[i];
 						collisionCoords = avgPosition;
 						//std::cout << "Collision at " << collisionCoords << std::endl;
 						return true;
@@ -152,6 +132,33 @@ bool Projectile::move() {
 					}
 				}
 			}
+		}
+		else {
+			auto s = spaceships->at(0);
+			sf::Sprite sSprite = s->getSprite();
+			//box c = s->getCollisionBox();
+			//std::cout <<"line: "<< l << "; " << std::endl;
+			if (s != father /*&& pointDistance(position, s->getPosition()) < 1.5f * (getMaxDimension() + s->getMaxDimension())*/) {
+				//std::cout << "current spaceship ("<<i<<") to check has bbox: " << c << std::endl;
+				if (Collision::PixelPerfectTest(sprite, sSprite) ){//if collision
+					// make the ship take damage
+					s->takeDamage(damage);
+					if (s->getHealth() <= 0) {
+						father->increaseScore(s->getPointsValue());
+					}
+					//std::cout << "spaceship at " << s << " taking damage" << std::endl;
+					// create explosion at point of intersection given priority, which comes from trajectory
+					collision = true;
+					collisionCoords = avgPosition;
+					//std::cout << "Collision at " << collisionCoords << std::endl;
+					return true;
+					//std::cout << std::endl << "done with this spaceship. Collision true" << std::endl;
+				}
+				else {
+					//std::cout << std::endl << "done with this spaceship. Collision false" << std::endl;
+				}
+			}
+		}
 		//}
 		moveClock.restart();
 		moveSprite();

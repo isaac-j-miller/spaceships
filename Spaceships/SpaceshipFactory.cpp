@@ -60,14 +60,17 @@ EnemySpaceship* SpaceshipFactory::generateRandomEnemy(int level) {
 	//std::cout << "generating enemy" << std::endl;
 	do {
 		randpos = { ((rand() % 80 + 10) / 100.f) * (windowSize.x),((rand() % 80 + 10) / 100.f) * (windowSize.y) };
+
 		c = false;
 		//std::cout << "Temp pos: " << randpos << std::endl;
-		for (auto s : *spaceships) {
-			//std::cout << "distance: " << pointDistance(s->getAvgPosition(), randpos) << " max dim: " << s->getMaxDimension() << std::endl;
-			if (pointDistance(s->getAvgPosition(), randpos) < 2.1 * s->getMaxDimension()) {
-				c = true;
-				//std::cout << "Collision" << std::endl;
-				break;
+		if (ScreenThing::blackHole ==nullptr||!pointInBox(randpos, ScreenThing::blackHole->getCollisionBox())) {
+			for (auto s : *spaceships) {
+				//std::cout << "distance: " << pointDistance(s->getAvgPosition(), randpos) << " max dim: " << s->getMaxDimension() << std::endl;
+				if (pointDistance(s->getAvgPosition(), randpos) < 2.1 * s->getMaxDimension()) {
+					c = true;
+						//std::cout << "Collision" << std::endl;
+					break;
+				}
 			}
 		}
 	} while (c);

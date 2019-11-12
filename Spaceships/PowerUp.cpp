@@ -110,6 +110,9 @@ void PowerUp::animate() {
 
 bool PowerUp::isActive() {
 	// check for collision 
+	if (eaten) {
+		return false;
+	}
 	box cbox = spaceships->at(0)->getCollisionBox();
 	Spaceship* player = spaceships->at(0);
 	if (player->getSprite().getGlobalBounds().intersects(sprite.getGlobalBounds())/*boxOverlap(collisionBox, cbox)*/) {
@@ -127,6 +130,7 @@ bool PowerUp::isActive() {
 			upgradeSpaceship(player);
 		}
 	}
+	
 	return !collision;
 }
 

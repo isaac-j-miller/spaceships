@@ -17,6 +17,8 @@
 #include <fstream>
 #include <chrono>
 
+
+
 const int thresholds[] = { 4000, 10000, 20000 };
 const int MAX_LEVEL = 2;
 const int SPACESHIP_TYPES = MAX_LEVEL + 1;
@@ -259,6 +261,57 @@ void logScore() {
 	log.close();
 }
 
+void intro(sf::Font f) {
+	std::vector<std::string> introLines = { "YOU ARE HUMANITY'S LAST HOPE.",
+											"Scientists have determined that a black hole will appear in the area.",
+											"Nearby populations are fleeing the inevitable catastrophe while an enemy armada pursues them.",
+											"Your mission is to defeat the enemy armada", 
+											"and slow the black hole's growth for as long as possible",
+											"to provide the refugees enough time to escape.",
+											"Good luck."};
+	std::string controlsTextLines = "CONTROLS:\nMOVEMENT: WASD\nROTATE LEFT: Q\nROTATE RIGHT: E\nFIRE CANNON: [\nFIRE TORPEDO: ]";
+	int timeCount = 5000;
+	sf::Text introText = sf::Text();
+	sf::Text controlsText = sf::Text(controlsTextLines,f);
+	sf::Text enter = sf::Text("Press [Enter] to continue", f);
+	introText.setFont(f);
+	
+	//controlsText.setOrigin(controlsText.getLocalBounds().width / 2, controlsText.getLocalBounds().height/2);
+	controlsText.setPosition(/*window.getSize().x/2*/ 10, window.getSize().y * 3.f / 4.f);
+	
+	enter.setOrigin(enter.getLocalBounds().width / 2, enter.getLocalBounds().height / 2);
+	enter.setPosition(window.getSize().x/2, window.getSize().y * 5.f / 8.f);
+	for (auto s : introLines) {
+		introText.setString(s);
+		introText.setOrigin(introText.getLocalBounds().width / 2, introText.getLocalBounds().height / 2);
+		introText.setPosition(window.getSize().x / 2, window.getSize().y / 2);
+		
+		window.draw(introText);
+		window.draw(enter);
+		window.draw(controlsText);
+		window.display();
+		bool done = false;
+		while (!done) {
+			sf::Event event;
+			done = false;
+			while (window.pollEvent(event)) {
+				if (event.type == sf::Event::Closed) {
+					window.close();
+				}
+				else if (event.type == sf::Event::KeyPressed) {
+					if (event.key.code == sf::Keyboard::Enter) {
+						done = true;
+						break;
+					}
+
+				}
+			}
+			
+		}
+		window.clear();
+	}
+}
+
 int main()
 {
 	unsigned int seed = (std::chrono::system_clock::now().time_since_epoch().count() - 15672112962443214) / 10E6;
@@ -287,6 +340,10 @@ int main()
 	//std::cout << "spaceship size: " << sizeof(Spaceship) << " enemyspaceship size: " << sizeof(EnemySpaceship) << " patrolship size: " << sizeof(PatrolShip) << "enemypatrolship size: " << sizeof(EnemyPatrolShip) << std::endl;
 	font.loadFromFile("pixel_font.ttf");
 	
+
+	intro(font);
+
+
 	healthReadout.setFont(font);
 	healthReadout.setPosition(0, 0);
 	healthReadout.setCharacterSize(30);
@@ -430,6 +487,7 @@ int main()
 		if (ScreenThing::blackHole != nullptr) {
 			ScreenThing::blackHole->eatSpaceships();
 			ScreenThing::blackHole->eatProjectiles();
+			ScreenThing::blackHole->eatPowerUps();
 			window.draw(ScreenThing::blackHole->getSprite());
 		}
 
@@ -521,7 +579,9 @@ int main()
 				++it;
 			}
 			else if (player->isActive()){
-				(*it)->explode();
+				if (!(*it)->eaten) {
+					(*it)->explode();
+				}
 				if ((*it)->isUpgrade()) {
 					player = ScreenThing::spaceships->at(0); //need to fix the pointer to player so that the user inputs still map to the correct spaceship
 				}

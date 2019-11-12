@@ -1,5 +1,6 @@
 #include "ScreenThing.h"
 #include "SpaceshipFactory.h"
+#include "Collision.h"
 std::string ScreenThing::shieldImageFileName;
 std::vector<Spaceship*>* ScreenThing::spaceships;
 std::vector<EnemySpaceship*>* ScreenThing::enemySpaceships;

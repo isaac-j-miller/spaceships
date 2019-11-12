@@ -182,6 +182,7 @@
     <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ScreenThing.cpp" />
+    <ClCompile Include="Collision.cpp" />
     <ClCompile Include="Spaceship.cpp" />
     <ClCompile Include="SpaceshipFactory.cpp" />
     <ClCompile Include="TextExplosion.cpp" />
@@ -201,6 +202,7 @@
     <ClInclude Include="EnemySpaceship.h" />
     <ClInclude Include="Explosion.h" />
     <ClInclude Include="FrameClock.h" />
+    <ClInclude Include="Collision.h" />
     <ClInclude Include="Mini.h" />
     <ClInclude Include="Moveable.h" />
     <ClInclude Include="PatrolShip.h" />

@@ -62,6 +62,7 @@ protected:
 	bool collision = false;
 	friend class BlackHole;
 	point collisionCoords = { 0,0 };
+	unsigned long int lifetime = 1000; //number of frames before destruction
 	//box baseTransform = { {0,0},{0,height},{width,height},{width,0} };
 	//box collisionBox = baseTransform + position;
 	Spaceship* father;

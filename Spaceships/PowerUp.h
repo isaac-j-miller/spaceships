@@ -9,6 +9,7 @@
 class Spaceship;
 class TextExplosion;
 class Explosion;
+class BlackHole;
 class PowerUp: virtual public ScreenThing
 {
 
@@ -31,6 +32,7 @@ public:
 	virtual bool isActive();
 	virtual void upgradeSpaceship(Spaceship* s);
 	sf::Sprite getSprite();
+	bool eaten = false;
 protected:
 	int type;
 	int value;
@@ -42,6 +44,8 @@ protected:
 	float size = 15;
 	std::string explosionString;
 	float stringSize = 30;
+	friend class BlackHole;
+	
 	//point avgPosition;
 	//point position;
 	//sf::Sprite sprite;
