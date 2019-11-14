@@ -4,7 +4,7 @@
 #define FP_0 1E-6
 #endif
 #ifndef BLACKHOLE_LEVEL
-#define BLACKHOLE_LEVEL 2 
+#define BLACKHOLE_LEVEL 3 
 #endif
 #ifndef _USE_MATH_DEFINES
 #define _USE_MATH_DEFINES
@@ -68,6 +68,8 @@ std::ostream& operator<<(std::ostream& os, const point& a);
 std::ostream& operator<<(std::ostream& os, const line_segment& a);
 std::ostream& operator<<(std::ostream& os, const box& a);
 
+float getSign(const float& f);
+bool pointInRangeOfAngle(const point& home, const point& direction, const float& maxAngle, const point& target);
 bool inRange(const point& a, const point& bounds);
 float wrapValue(float a, const float& min, const float& max);
 point getWrapped(const point& a, const point& bounds);

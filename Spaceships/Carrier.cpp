@@ -40,6 +40,8 @@ Carrier::Carrier(point initPos, double initRotation, int d) :
 	pointValue = 8000;
 	shieldStrength = 100;
 	shieldPeriod = 500;
+	numMines = 100;
+	numGuidedMissiles = 0;
 	activateShield();
 	tempTorpedoOrigin = { 0, .4 };
 	tempBulletOrigin = { .4, 0 };

@@ -12,6 +12,7 @@ public:
 	Torpedo(point pos, point traj, int dmg, Spaceship* f);
 	~Torpedo();
 	void setImage();
+	bool move() { return Projectile::move(); }
 	static bool Init(const std::string& FileName);
 
 

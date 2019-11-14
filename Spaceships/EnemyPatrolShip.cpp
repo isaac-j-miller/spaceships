@@ -1,5 +1,5 @@
 #include "EnemyPatrolShip.h"
-
+#include "GuidedMissile.h"
 EnemyPatrolShip::EnemyPatrolShip(point initPos, double initRotation, int d): 
 	Spaceship(initPos,initRotation),
 	EnemySpaceship(initPos, initRotation, d),
@@ -17,6 +17,7 @@ void EnemyPatrolShip::fireBullet() {
 }
 void EnemyPatrolShip::fireTorpedo() {
 	PatrolShip::fireTorpedo();
+	
 }
 void EnemyPatrolShip::layMine() {
 	Spaceship::layMine();

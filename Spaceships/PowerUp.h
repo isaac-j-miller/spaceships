@@ -5,7 +5,7 @@
 #include "ScreenThing.h"
 #ifndef POWERUP_H
 #define POWERUP_H
-#define NUM_TYPES 8
+#define NUM_TYPES 10
 class Spaceship;
 class TextExplosion;
 class Explosion;

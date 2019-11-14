@@ -58,8 +58,15 @@ void Cruiser::fireBullet() {
 }
 void Cruiser::fireTorpedo() {
 	torpedoClock.restart();
-	projectiles->push_back(new Torpedo(torpedoOrigin, getTrajectory(), torpedoDamage, this));
-	projectiles->push_back(new Torpedo(torpedoOrigin2, getTrajectory(), torpedoDamage, this));
+	if (numGuidedMissiles < 2) {
+		projectiles->push_back(new Torpedo(torpedoOrigin, getTrajectory(), torpedoDamage, this));
+		projectiles->push_back(new Torpedo(torpedoOrigin2, getTrajectory(), torpedoDamage, this));
+	}
+	else {
+		projectiles->push_back(new GuidedMissile(torpedoOrigin, getTrajectory(), torpedoDamage, this));
+		projectiles->push_back(new GuidedMissile(torpedoOrigin2, getTrajectory(), torpedoDamage, this));
+		numGuidedMissiles -= 2;
+	}
 }
 void Cruiser::layMine() {
 	Spaceship::layMine();

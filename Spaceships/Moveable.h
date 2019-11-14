@@ -16,6 +16,7 @@ protected:
 	float speed = 0; //in pixels per frame
 	point trajectory = { 0,0 };
 	point displacementVector = { 0,0 };
+
 	FrameClock moveClock;
 };
 #endif

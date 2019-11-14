@@ -2,6 +2,7 @@
 #include "EnemySpaceship.h"
 #include "PowerUp.h"
 #include "Mine.h"
+#include "GuidedMissile.h"
 #include <iostream>
 
 
@@ -16,9 +17,10 @@ Spaceship::Spaceship(point initPos, double initRotation) {
 	std::cout << "spaceship init w/ position " << position << ", rotation " << rotation*180 << " deg, address: " << this <<std::endl;
 	//setDims(width, height);
 	shieldTimer.restart();
+	displacementVector = { 0,0 };
 }
 Spaceship::~Spaceship() {
-
+	setTargetNull();
 }
 point Spaceship::getDisplacementVector() {
 	return displacementVector;
@@ -144,16 +146,21 @@ void Spaceship::takeDamage(int dmg) {
 	}
 }
 void Spaceship::fireTorpedo() {
-	//std::cout << "Firing Torpedo" << std::endl;
-	//std::cout << "rotation =" << rotation * 180 <<std::endl;
 	torpedoClock.restart();
-	projectiles->push_back( new Torpedo(torpedoOrigin, getTrajectory(), torpedoDamage, this));
+	if (!numGuidedMissiles) {
+		projectiles->push_back(new Torpedo(torpedoOrigin, getTrajectory(), torpedoDamage, this));
+	}
+	else {
+		projectiles->push_back(new GuidedMissile(torpedoOrigin, getTrajectory(), torpedoDamage, this));
+		numGuidedMissiles--;
+	}
 }
 void Spaceship::layMine() {
-	//std::cout << "Firing Torpedo" << std::endl;
-	//std::cout << "rotation =" << rotation * 180 <<std::endl;
-	mineClock.restart();
-	projectiles->push_back(new Mine(avgPosition, getTrajectory(), mineDamage, this));
+	if (numMines) {
+		mineClock.restart();
+		projectiles->push_back(new Mine(avgPosition, getTrajectory(), mineDamage, this));
+		numMines--;
+	}
 }
 bool Spaceship::torpedoReady() {
 	return (torpedoClock.getTime() >= torpedoPeriod);
@@ -167,76 +174,39 @@ int Spaceship::getHealth() {
 	return health;
 }
 void Spaceship::move(point inputVector) {
-	inputVector = normalizeVector(inputVector);
+	if (!enemy) {
+		inputVector = rotate(normalizeVector(inputVector), rotation * M_PI - M_PI);
+	}
 	updateCollisionBox();
 	//std::cout << "pos: " << position << collisionBox << std::endl;
 	if (health > 0) {
 		prevPosition = position;
 		elapsedFrames = moveClock.getTime();
-		point gravAccel = { 0,0 };
+		static point gravAccel = { 0,0 };
 		if (blackHole != nullptr) {
 			gravAccel = blackHole->getAccelerationVector(this);
 		}
-		position = position + inputVector * speed +gravAccel*0.5;
+		point accelerationDisplacement = inputVector*acceleration ;
+		point totalDelta = (accelerationDisplacement +gravAccel)*0.5+ displacementVector;
+		point totalDeltaMinusBlackHole = displacementVector + accelerationDisplacement * 0.5;
+		if (magnitude(totalDeltaMinusBlackHole) > speed) {
+			point normalizedDisplacement = normalizeVector(totalDeltaMinusBlackHole);
+			totalDeltaMinusBlackHole = normalizedDisplacement * speed;
+			totalDelta = totalDeltaMinusBlackHole + gravAccel * 0.5;
+		}
+		position = position + totalDelta;
 		if (!inRange(position, windowSize)) {
 			//if wrapped
 			position = getWrapped(position, windowBounds.bottomRight);
-			prevPosition = position - inputVector * speed;
+			prevPosition = position - totalDelta;
 		}
-		//disable bc wrapping
-		/*
-		//check if within bounds
-		if (!boxWithin(collisionBox, windowBounds)) { // if the collisionbox is not fully within the bounds
-			// check which direction the thing is going and figure out which edge it's closest to & block if moving closer to edge
-			point direction = (avgPosition - averagePosition(windowBounds)) * inputVector;
-			if (direction.x > 0 || direction.y > 0) { // moving in wrong direction
-				position = prevPosition;
-			}
-			
-		}
-		*/
-		//else {// if (boxWithin(collisionBox, inflate(windowBounds, .93))){ // if within bounds and 
-			//iterate over other spaceships
-		//std::cout << "s projectiles:" << projectiles->size() << std::endl;
 		
-		/*
-		for (auto a : *spaceships) {
-			if (a != this) {
-				point aPos = a->getAvgPosition();
-
-				if (pointDistance(avgPosition, aPos) < (getMaxDimension() + a->getMaxDimension())) { // if spaceship is close
-					box aBox = a->getCollisionBox();
-
-					point direction = (avgPosition - aPos) * inputVector;
-					if (getSprite().getGlobalBounds().intersects(a->getSprite().getGlobalBounds())) {
-						static int signs[] = { -1,1 };
-						int index = rand() % 2 - 1;
-						int sign = signs[index];
-						std::cout << direction << std::endl;
-						if (direction.x < 0 || direction.y < 0) { // moving in wrong direction
-							position = prevPosition + normalizeVector(direction) * speed * sign;
-							std::cout << "case a, vect=" << normalizeVector(direction) * speed * sign << std::endl;
-								
-						}
-						if (abs(direction.x) <= FP_0 && abs(direction.y) <= FP_0) {
-							position = prevPosition + normalizeVector(direction) * speed * sign;
-							std::cout << "case b, vect=" << normalizeVector(direction) * speed * sign << std::endl;
-								
-						}
-						break;
-					}
-
-					
-				}
-			}
-		}
-		*/
-		//}
 	}
 	//calculate displacement vector
 	if (elapsedFrames != 0) {
 		displacementVector = (position - prevPosition) * (1 / elapsedFrames);
 	}
+	updateCollisionBox();
 	moveSprite();
 	moveClock.restart();
 }
@@ -287,11 +257,11 @@ sf::Sprite Spaceship::getSprite() {
 void Spaceship::updateCollisionBox() {
 	//std::cout << "basetransform:" << baseTransform << std::endl;
 	float rotRadians = rotation * M_PI;
-	if(oldRotation!=rotation){
+	//if(oldRotation!=rotation){
 		box pbox = rotate(baseTransform, rotRadians);
 		pbox = pbox + position;
 		collisionBox = pbox;
-	}
+	//}
 	
 	avgPosition = averagePosition(collisionBox);
 	static point wh = { width, height };
@@ -313,4 +283,36 @@ box Spaceship::getCollisionBox() {
 		updateCollisionBox();
 	}
 	return collisionBox;
+}
+
+void Spaceship::delChasedBy(GuidedMissile* g) {
+	for (auto it = chasedBy.begin(); it != chasedBy.end();) {
+		if ((*it) == g) {
+			it = chasedBy.erase(it);
+			return;
+		}
+		else {
+			it++;
+		}
+	}
+}
+void Spaceship::addChasedBy(GuidedMissile* g) {
+	chasedBy.push_back(g);
+}
+void Spaceship::setTargetNull() {
+	for (auto it = chasedBy.begin(); it != chasedBy.end();) {
+		(*it)->target = nullptr;
+		(*it)->targetAlive = false;
+		it++;
+	}
+	
+}
+int Spaceship::getGuidedMissileCount() {
+	return numGuidedMissiles;
+}
+int Spaceship::getMineCount() {
+	return numMines;
+}
+int Spaceship::getChasedByCount() {
+	return chasedBy.size();
 }

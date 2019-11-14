@@ -110,6 +110,10 @@ bool box::operator==(const box& a)const {
 	return out;
 }
 
+float getSign(const float& f) {
+	return (f < 0) ? -1 : 1;
+}
+
 float magnitude(const point& a) {
 	return hypotf(a.x, a.y);
 	//return sqrt(pow(a.x, 2) + pow(a.y, 2));
@@ -548,4 +552,11 @@ point rayBoxIntersection(const line_segment& a, const box& b2) {
 	else {
 		return intersections[0];
 	}
+}
+
+bool pointInRangeOfAngle(const point& home, const point& direction, const float& maxAngle, const point& target) {
+	point translatedTarget = target - home;
+	float lowerVectorSubtract = vectToAngle(translatedTarget) - vectToAngle(rotate(direction, -maxAngle / 2));
+	float upperVectorSubtract = vectToAngle(translatedTarget) - vectToAngle(rotate(direction, maxAngle / 2));
+	return lowerVectorSubtract >= 0 && upperVectorSubtract <= 0; 
 }

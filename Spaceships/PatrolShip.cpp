@@ -1,4 +1,5 @@
 #include "PatrolShip.h"
+#include "GuidedMissile.h"
 sf::Texture PatrolShip::texture;
 sf::Texture PatrolShip::shieldTexture;
 PatrolShip::PatrolShip(point initPos, double initRotation):
@@ -7,6 +8,8 @@ PatrolShip::PatrolShip(point initPos, double initRotation):
 	width = 30;
 	height = 30;
 	speed = 4;
+	numMines = 0;
+	numGuidedMissiles = 0;
 	point tempTorpedoOrigin = { -.5,0 };
 	point tempBulletOrigin = { .5,0 };
 	setDims(width, height);
@@ -46,6 +49,7 @@ void PatrolShip::fireBullet() {
 	Spaceship::fireBullet();
 }
 void PatrolShip::fireTorpedo() {
+	
 	Spaceship::fireTorpedo();
 }
 void PatrolShip::layMine() {

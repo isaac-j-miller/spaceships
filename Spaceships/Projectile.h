@@ -20,13 +20,14 @@ public:
 	void moveSprite();
 	void setImage();
 	sf::Sprite getSprite();
-	bool move(); //returns true if out of bounds or collides
+	virtual bool move(); //returns true if out of bounds or collides
 	void explode();
 	bool getCollision();
 	point getCollisionCoords();
 	Spaceship* getFather();
 	float getMaxDimension();
 	int getCounter();
+
 protected:
 	float rotationDeg;
 	int counter = 0;
@@ -42,6 +43,5 @@ protected:
 	point collisionCoords = { 0,0 };
 	unsigned long int lifetime = 1000; //number of frames before destruction
 	Spaceship* father;
-
 };
 #endif

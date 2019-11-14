@@ -51,6 +51,14 @@ PowerUp::PowerUp(point pos, int t, int v=0) {
 			// torpedo RoF upgrade
 			explosionString = "Rotation Speed + ";
 			break;
+		case 8:
+			// torpedo RoF upgrade
+			explosionString = "Mines + ";
+			break;
+		case 9:
+			// torpedo RoF upgrade
+			explosionString = "Guided Missiles + ";
+			break;
 		default:
 			explosionString = "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! type " + std::to_string(t);
 			break;
@@ -190,6 +198,14 @@ void PowerUp::upgradeSpaceship(Spaceship* s) {
 		else {
 			s->health += value/100;
 		}
+		break;
+	case 8:
+		// bullet damage upgrade
+		s->numMines += value;
+		break;
+	case 9:
+		// torpedo damage upgrade
+		s->numGuidedMissiles += value;
 		break;
 	default:
 		break;

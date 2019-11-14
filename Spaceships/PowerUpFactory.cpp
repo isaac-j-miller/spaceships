@@ -11,7 +11,7 @@ void PowerUpFactory::Init(std::vector<PowerUp*>* powerUpsVect, point wSize) {
 	
 	windowSize = wSize;
 	unsigned int seed = (std::chrono::system_clock::now().time_since_epoch().count() - 15672112962443214) / 10E6;
-	std::cout << seed << std::endl;
+	//std::cout << seed << std::endl;
 	srand(seed);
 	for (int i = 0; i < 5; i++) {
 		std::cout<< rand() << std::endl;
@@ -77,6 +77,7 @@ PowerUp* PowerUpFactory::generateSpecificTypeRandom(int type) {
 std::tuple<int,int> PowerUpFactory::getValue(int type) {
 	int minValue = 1;
 	int maxValue = 5;
+	factor = 5;
 	switch (type)
 	{
 	case 0:
@@ -118,6 +119,18 @@ std::tuple<int,int> PowerUpFactory::getValue(int type) {
 		// rotation speed upgrade
 		minValue = 1;
 		maxValue = 2;
+		break;
+	case 8:
+		// mine refill
+		minValue = 2;
+		maxValue = 6;
+		factor = 1;
+		break;
+	case 9:
+		// guided missile refill
+		minValue = 5;
+		maxValue = 10;
+		factor = 1;
 		break;
 	default:
 		break;

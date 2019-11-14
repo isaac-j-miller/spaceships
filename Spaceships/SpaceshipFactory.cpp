@@ -46,10 +46,9 @@ Spaceship* SpaceshipFactory::upgradePlayer(Spaceship* p) {
 	player->health += (p->health - temp->health);
 	player->score += (p->score - temp->score);
 	player->ramDamage += (p->ramDamage - temp->ramDamage);
-	
+	player->numMines += (p->numMines);
+	player->numGuidedMissiles += (p->numGuidedMissiles);
 	delete temp;
-	//delete p;
-	//spaceships->erase(spaceships->begin(), spaceships->begin() + 1);
 	
 	return player;
 }
@@ -63,7 +62,7 @@ EnemySpaceship* SpaceshipFactory::generateRandomEnemy(int level) {
 
 		c = false;
 		//std::cout << "Temp pos: " << randpos << std::endl;
-		if (ScreenThing::blackHole ==nullptr||!pointInBox(randpos, inflate(ScreenThing::blackHole->getCollisionBox(),1.5))) {
+		if (ScreenThing::blackHole ==nullptr||!pointInBox(randpos, inflate(ScreenThing::blackHole->getCollisionBox(),2))) {
 			for (auto s : *spaceships) {
 				//std::cout << "distance: " << pointDistance(s->getAvgPosition(), randpos) << " max dim: " << s->getMaxDimension() << std::endl;
 				if (pointDistance(s->getAvgPosition(), randpos) < 2.1 * s->getMaxDimension()) {

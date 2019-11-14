@@ -12,6 +12,7 @@ public:
 	Bullet(point pos, point traj, int dmg, Spaceship* f);
 	~Bullet();
 	void setImage();
+	bool move() { return Projectile::move(); }
 	static bool Init(const std::string& FileName);
 	
 };

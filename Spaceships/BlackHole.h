@@ -21,10 +21,11 @@ public:
 	float getAngle(Moveable*);
 	unsigned long int getMass();
 	sf::Sprite getSprite();
+	float getRadius() { return size / 2; }
 private:
 	void updateSize();
-	unsigned long long int pointsAccumulated = 50000;
-	const float gravitationalConstant = 2E-1;
+	unsigned long long int pointsAccumulated = 20000;
+	const float gravitationalConstant = 5E-2;
 	const float growthConstant =0.05;
 	const float initialSize = 20;
 	const float angularMomentum = 100;

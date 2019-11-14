@@ -9,6 +9,8 @@ Fighter::Fighter(point initPos, double initRotation) :
 	health = 150;
 	speed = 5;
 	pointValue = 2000;
+	numMines = 0;
+	numGuidedMissiles = 5;
 	point tempTorpedoOrigin = { -.5,0 };
 	point tempBulletOrigin = { .5,0 };
 	setDims(width, height);
@@ -51,6 +53,7 @@ void Fighter::fireBullet(){
 }
 void Fighter::fireTorpedo() {
 	Spaceship::fireTorpedo();
+	
 }
 void Fighter::updateCollisionBox() {
 	Spaceship::updateCollisionBox();

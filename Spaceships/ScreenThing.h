@@ -41,7 +41,7 @@ public:
 	point getAvgPosition() { return avgPosition; }
 	float getRotation() { return rotation; }
 	virtual sf::Sprite getSprite();
-	
+	point rotateLocalToGlobal(point inputVector);
 protected:
 	float rotation = 0;
 	float oldRotation = 0;

@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include "Bullet.h"//includes projectile
 #include "Torpedo.h"
+#include "GuidedMissile.h"
 #include "Mine.h"
 #include "TextExplosion.h"
 //#include "EnemySpaceship.h" // includes spaceship
@@ -42,6 +43,8 @@ sf::Text pauseText;
 sf::Text endText;
 sf::Text levelDisplay;
 sf::Text warningDisplay;
+sf::Text controlsText;
+sf::Text playerStatus;
 sf::Image background;
 sf::Texture backgroundTexture;
 sf::Sprite bSprite;
@@ -194,7 +197,7 @@ void getUserInput(Spaceship* player) {
 		}
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::SemiColon)) {
-		if (player->mineReady()&&player->getLevel() >= 1) {
+		if (player->mineReady()) {
 			player->layMine();
 		}
 	}
@@ -210,7 +213,7 @@ void checkPause(sf::Event event) {
 	}
 	while (paused) {
 		window.draw(pauseText);
-		
+		window.draw(controlsText);
 		sf::Event newEvent;
 		while (window.pollEvent(newEvent)) {
 			if (event.type == sf::Event::Closed)
@@ -268,7 +271,7 @@ void logScore() {
 	log.close();
 }
 
-void intro(sf::Font f) {
+void intro(sf::Font f, sf::Text controlsText) {
 	std::vector<std::string> introLines = { "YOU ARE HUMANITY'S LAST HOPE.",
 											"Scientists have determined that a black hole will appear in the area.",
 											"Nearby populations are fleeing the inevitable catastrophe while an enemy armada pursues them.",
@@ -276,15 +279,14 @@ void intro(sf::Font f) {
 											"and slow the black hole's growth for as long as possible",
 											"to provide the refugees enough time to escape.",
 											"Good luck."};
-	std::string controlsTextLines = "CONTROLS:\nMOVEMENT: WASD\nROTATE LEFT: Q\nROTATE RIGHT: E\nFIRE CANNON: [\nFIRE TORPEDO: ]\nDROP MINE: ; (AFTER 2ND UPGRADE)";
+	//std::string controlsTextLines = "CONTROLS:\nMOVEMENT: WASD\nROTATE LEFT: Q\nROTATE RIGHT: E\nFIRE CANNON: [\nFIRE TORPEDO: ]\nDROP MINE: ;\nPAUSE: [SPACE]";
 	int timeCount = 5000;
 	sf::Text introText = sf::Text();
-	sf::Text controlsText = sf::Text(controlsTextLines,f);
+	//sf::Text controlsText = sf::Text(controlsTextLines,f);
 	sf::Text enter = sf::Text("Press [Enter] to continue", f);
 	introText.setFont(f);
 	
-	//controlsText.setOrigin(controlsText.getLocalBounds().width / 2, controlsText.getLocalBounds().height/2);
-	controlsText.setPosition(/*window.getSize().x/2*/ 10, window.getSize().y * 3.f / 4.f);
+	
 	
 	enter.setOrigin(enter.getLocalBounds().width / 2, enter.getLocalBounds().height / 2);
 	enter.setPosition(window.getSize().x/2, window.getSize().y * 5.f / 8.f);
@@ -342,6 +344,15 @@ int main()
 	int powerUpPeriod = 1250;
 	int warningFlashPeriod = 50;
 	bool warningState = false;
+
+	std::string controlsTextLines = "CONTROLS:\nMOVEMENT: WASD\nROTATE LEFT: Q\nROTATE RIGHT: E\nFIRE CANNON: [\nFIRE TORPEDO: ]\nDROP MINE: ;\nPAUSE: [SPACE]";
+	
+	controlsText = sf::Text(controlsTextLines, font);
+	
+
+
+	//controlsText.setOrigin(controlsText.getLocalBounds().width / 2, controlsText.getLocalBounds().height/2);
+	
 	//unsigned int levelUpScore = 10000;
 	highScore = getHighScore();
 	
@@ -350,7 +361,7 @@ int main()
 	font.loadFromFile("pixel_font.ttf");
 	
 
-	intro(font);
+	
 
 
 	healthReadout.setFont(font);
@@ -370,6 +381,14 @@ int main()
 	highScoreText.setCharacterSize(30);
 	highScoreText.setFillColor(sf::Color::Red);
 	highScoreText.setStyle(sf::Text::Bold);
+
+	playerStatus.setFont(font);
+	//playerStatus.setOrigin(playerStatus.getLocalBounds().width, playerStatus.getLocalBounds().height);
+	playerStatus.setPosition(window.getSize().x-340, window.getSize().y -140);
+	
+	playerStatus.setCharacterSize(30);
+	playerStatus.setFillColor(sf::Color::Red);
+	playerStatus.setStyle(sf::Text::Bold);
 
 	levelDisplay.setFont(font);
 	levelDisplay.setPosition(750, 0);
@@ -391,12 +410,17 @@ int main()
 	pauseText.setOrigin(pauseText.getLocalBounds().width / 2, pauseText.getLocalBounds().height / 2);
 	pauseText.setPosition(size.x / 2, size.y / 2);
 
+	//controlsText.setOrigin(controlsText.getLocalBounds().width / 2, controlsText.getLocalBounds().height / 2);
+	controlsText.setPosition(10, window.getSize().y * 5.f / 8.f);
+	
+
 	endText.setFont(font);
 	endText.setCharacterSize(60);
 	endText.setFillColor(sf::Color::Red);
 	endText.setStyle(sf::Text::Bold);
 	
-
+	intro(font, controlsText);
+	controlsText.setFillColor(sf::Color::Red);
 	FrameClock::Init(frame);
 	FrameClock powerUpTimer;
 	FrameClock enemyTimer;
@@ -422,6 +446,7 @@ int main()
 	Bullet::Init("bullet.png");
 	Torpedo::Init("torpedo.png");
 	Mine::Init("mine.png");
+	GuidedMissile::Init("torpedo.png");
 
 	Explosion::Init("explosion.png");
 	PowerUp::Init("powerup.png");
@@ -542,6 +567,7 @@ int main()
 				}
 				else if(*it != player) {
 					(*it)->explode();
+					
 					//std::cout << "erasing spaceship at " << *it << std::endl;
 					delete (*it);
 					(*it) = nullptr;
@@ -614,6 +640,12 @@ int main()
 			healthReadout.setString("Player health: " + std::to_string(player->getHealth()));
 			score.setString("Score: " + std::to_string(player->getScore()));
 			prevScore = player->getScore();
+			std::string statusString = "MINES: " + std::to_string(player->getMineCount()) +
+				"\nGUIDED MISSILES: " + std::to_string(player->getGuidedMissileCount());
+			if (player->getChasedByCount()) {
+				statusString.append("\nLOCKED ENEMY MISSILES: " + std::to_string(player->getChasedByCount()));
+			}
+			playerStatus.setString(statusString);
 
 		}
 		else {
@@ -662,6 +694,7 @@ int main()
 		window.draw(levelDisplay);
 		window.draw(score);
 		window.draw(warningDisplay);
+		window.draw(playerStatus);
 		if (!player->isActive()&& ScreenThing::explosions->size()==0) {
 			sf::Event event;
 			while (window.pollEvent(event)) {

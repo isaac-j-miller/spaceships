@@ -5,6 +5,7 @@
 #include "Torpedo.h"
 #include "Explosion.h"
 #include "Moveable.h"
+#include "GuidedMissile.h"
 #include "BlackHole.h"
 
 #define _USE_MATH_DEFINES
@@ -59,6 +60,12 @@ public:
 	void destroy();
 	bool isMini() { return mini; }
 	point getDisplacementVector();
+	void addChasedBy(GuidedMissile*);
+	void delChasedBy(GuidedMissile*);
+	void setTargetNull();
+	int getGuidedMissileCount();
+	int getMineCount();
+	int getChasedByCount();
 protected:
 	
 	bool mini = false;
@@ -81,6 +88,9 @@ protected:
 	int minePeriod = 50; //in frames
 	int explosionDuration = 50; //in frames
 	int health = 100;
+	float acceleration = 2;
+	int numMines = 5;
+	int numGuidedMissiles = 10;
 	point bulletOrigin;
 	point torpedoOrigin;
 
@@ -94,7 +104,7 @@ protected:
 	FrameClock mineClock;
 	
 	point displacementVector = { 0,0 };
-	
+	std::vector<GuidedMissile*> chasedBy;
 	sf::IntRect rect = sf::IntRect(0, 0, int(width), int(height));
 	point prevPosition = { 0,0 };
 	int elapsedFrames = 1;

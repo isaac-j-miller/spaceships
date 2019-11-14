@@ -78,3 +78,7 @@ void ScreenThing::setDims(int w, int h) {
 	//std::cout << "collisionBox: " << collisionBox << std::endl;
 	setImage();
 }
+
+point ScreenThing::rotateLocalToGlobal(point inputVector) {
+	return rotate(normalizeVector(inputVector), rotation * M_PI - M_PI);
+}
