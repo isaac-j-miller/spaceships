@@ -209,11 +209,14 @@ void checkPause(sf::Event event) {
 		if (event.key.code==sf::Keyboard::Space) {
 			paused = !paused;
 			//std::cout << "Pause toggled" << std::endl;
+			if (paused) {
+				window.draw(pauseText);
+				window.draw(controlsText);
+			}
 		}
 	}
 	while (paused) {
-		window.draw(pauseText);
-		window.draw(controlsText);
+		
 		sf::Event newEvent;
 		while (window.pollEvent(newEvent)) {
 			if (event.type == sf::Event::Closed)

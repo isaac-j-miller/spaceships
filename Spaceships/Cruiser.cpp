@@ -11,7 +11,8 @@ Cruiser::Cruiser(point initPos, double initRotation) :
 	bulletPeriod = 9;
 	speed = 5;
 	pointValue = 4000;
-	
+	numMines = 10;
+	numGuidedMissiles = 20;
 	tempTorpedoOrigin = { -.5, 0 };
 	tempBulletOrigin = { -.3, 0 };
 	tempTorpedoOrigin2 = { .5, 0 };
