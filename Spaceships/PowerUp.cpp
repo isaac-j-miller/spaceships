@@ -121,22 +121,27 @@ bool PowerUp::isActive() {
 	if (eaten) {
 		return false;
 	}
-	box cbox = spaceships->at(0)->getCollisionBox();
-	Spaceship* player = spaceships->at(0);
-	if (player->getSprite().getGlobalBounds().intersects(sprite.getGlobalBounds())/*boxOverlap(collisionBox, cbox)*/) {
-		//if collision
-		collision = true;
-	}
-	else if (boxWithin(collisionBox, cbox)) {
-		collision = true;
+	if (EnemySpaceship::player != nullptr) {
+		box cbox = spaceships->at(0)->getCollisionBox();
+		Spaceship* player = EnemySpaceship::player;
+		if (player->getSprite().getGlobalBounds().intersects(sprite.getGlobalBounds())/*boxOverlap(collisionBox, cbox)*/) {
+			//if collision
+			collision = true;
+		}
+		else if (boxWithin(collisionBox, cbox)) {
+			collision = true;
+		}
+		else {
+			collision = false;
+		}
+		if (collision) {
+			if (!isUpgrade()) {
+				upgradeSpaceship(player);
+			}
+		}
 	}
 	else {
 		collision = false;
-	}
-	if (collision) {
-		if (!isUpgrade()) {
-			upgradeSpaceship(player);
-		}
 	}
 	
 	return !collision;

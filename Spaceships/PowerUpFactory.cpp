@@ -10,13 +10,8 @@ void PowerUpFactory::Init(std::vector<PowerUp*>* powerUpsVect, point wSize) {
 	powerUps = powerUpsVect;
 	
 	windowSize = wSize;
-	unsigned int seed = (std::chrono::system_clock::now().time_since_epoch().count() - 15672112962443214) / 10E6;
 	//std::cout << seed << std::endl;
-	srand(seed);
-	for (int i = 0; i < 5; i++) {
-		std::cout<< rand() << std::endl;
-		
-	}
+	
 }
 PowerUp* PowerUpFactory::generateSpecific(point pos, int type, int value) {
 	return new PowerUp(pos, type, value);

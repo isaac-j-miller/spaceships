@@ -1,8 +1,9 @@
 #include "EnemyCruiser.h"
-EnemyCruiser::EnemyCruiser(point initPos, double initRotation, int d) :
+EnemyCruiser::EnemyCruiser(point initPos, double initRotation, int d, int s) :
 	Spaceship(initPos, initRotation),
 	Cruiser(initPos, initRotation),
-	EnemySpaceship(initPos, initRotation, d) {
+	EnemySpaceship(initPos, initRotation, d,s) {
+	movePeriod -= 2;
 	setImage();
 	//std::cout << "enemy cruiser init at " << initPos << std::endl;
 }

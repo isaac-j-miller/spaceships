@@ -7,7 +7,7 @@ class EnemyFighter :
 	public Fighter, public EnemySpaceship
 {
 public:
-	EnemyFighter(point initPos, double initRotation, int d);
+	EnemyFighter(point initPos, double initRotation, int d, int s);
 	~EnemyFighter();
 	void move(point inputVector) { Fighter::move(inputVector); };
 	void fireBullet();

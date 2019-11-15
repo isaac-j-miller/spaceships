@@ -7,7 +7,7 @@ class EnemyPatrolShip :
 	public PatrolShip, public EnemySpaceship
 {
 public:
-	EnemyPatrolShip(point initPos, double initRotation, int d);
+	EnemyPatrolShip(point initPos, double initRotation, int d, int s);
 	~EnemyPatrolShip();
 	void move(point inputVector) { PatrolShip::move(inputVector); };
 	void fireBullet();

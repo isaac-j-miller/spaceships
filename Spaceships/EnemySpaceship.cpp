@@ -1,15 +1,15 @@
 #include "EnemySpaceship.h"
 #include <random>
 Spaceship* EnemySpaceship::player = nullptr;
-EnemySpaceship::EnemySpaceship(point initPos, double initRotation,int d) :
+EnemySpaceship::EnemySpaceship(point initPos, double initRotation,int d, int s) :
 	Spaceship(initPos, initRotation) {
 	sprite.setColor(sf::Color(255,150,150,255));
-	srand(initRotation);
-	difficulty = d;
-	enemy = true;
-	score += difficulty * 100;
-	moveTimer.restart();
 	
+	aggressiveness = d;
+	enemy = true;
+	score += aggressiveness * 100;
+	moveTimer.restart();
+	movePeriod = s;
 	oldRotation = 1;
 	point tempPoint = { 0.001, 0.001 };
 	prevPosition = initPos - tempPoint;
@@ -25,58 +25,64 @@ void EnemySpaceship::Init(Spaceship* p) {
 
 point EnemySpaceship::getMoveVector() {
 	long long unsigned int time = moveTimer.getTime();
-	std::vector<line_segment> rays = {};
-	point projectilePoint;
-	point traj;
-	line_segment tempRay;
-	point collisionPoint;
-	point difference;
-	updateCollisionBox();
-	
-	box inflated = inflate(collisionBox, 4);
-		
-	for (auto r : *projectiles) {//iterate through projectiles and find those that intersect this
-		if (r->getFather() != this && pointDistance(avgPosition, r->getAvgPosition()) < 4 * (getMaxDimension() + r->getMaxDimension())) {
-			traj = r->getTrajectory();
-			projectilePoint = r->getAvgPosition();
-			tempRay = { projectilePoint, traj * 10E4 + projectilePoint };
-			if (lineIntersectBox(tempRay, inflated)) {
-				rays.push_back(tempRay);
-			}
-		}
-	}
-	if (blackHole != nullptr) {
-		traj = avgPosition - blackHole->getPosition();
-		if (magnitude(traj) < 4 * blackHole->getRadius()) {
-			traj = normalizeVector(traj)*-1;
-			projectilePoint = blackHole->getPosition();
-			tempRay = { avgPosition, traj * 10E4 + avgPosition };
-			if (lineIntersectBox(tempRay, inflated)) {
-				for (int i = 0; i < 5; i++) {
+	if (time > movePeriod) {
+		std::vector<line_segment> rays = {};
+		point projectilePoint;
+		point traj;
+		line_segment tempRay;
+		point collisionPoint;
+		point difference;
+		updateCollisionBox();
+
+		box inflated = inflate(collisionBox, 4);
+
+		for (auto r : *projectiles) {//iterate through projectiles and find those that intersect this
+			if (r->getFather() != this && pointDistance(avgPosition, r->getAvgPosition()) < 4 * (getMaxDimension() + r->getMaxDimension())) {
+				traj = r->getTrajectory();
+				projectilePoint = r->getAvgPosition();
+				tempRay = { projectilePoint, traj * 10E4 + projectilePoint };
+				if (lineIntersectBox(tempRay, inflated)) {
 					rays.push_back(tempRay);
 				}
 			}
 		}
-	}
-			
-	//now rays contains all the rays that intersect the collisionBox
-			
-	for (auto r : rays) { //iterate over rays that intersect the collisionBox
-		collisionPoint = collisionPoint + rayBoxIntersection(r, inflated);
-	}
-	if (rays.size() > 0) {
-		collisionPoint = collisionPoint * (1.f / (rays.size())); //get average collision point
-		difference = avgPosition - collisionPoint;
-		//std::cout <<"num rays: "<<rays.size()<< "; collision point: " << collisionPoint << "; vector = " << moveVector << std::endl;
-		if (difference.x != 0 || difference.y != 0) {
-			moveVector = normalizeVector(difference);
+		if (blackHole != nullptr) {
+			traj = avgPosition - blackHole->getPosition();
+			if (magnitude(traj) < 4 * blackHole->getRadius()) {
+				traj = normalizeVector(traj) * -1;
+				projectilePoint = blackHole->getPosition();
+				tempRay = { avgPosition, traj * 10E4 + avgPosition };
+				if (lineIntersectBox(tempRay, inflated)) {
+					for (int i = 0; i < 5; i++) {
+						rays.push_back(tempRay);
+					}
+				}
+			}
 		}
-	}
 
-	//else {
-	//	moveVector = { 0,0 };
-	//}
-	//std::cout << moveVector<<","<<position<< std::endl;
+		//now rays contains all the rays that intersect the collisionBox
+
+		for (auto r : rays) { //iterate over rays that intersect the collisionBox
+			collisionPoint = collisionPoint + rayBoxIntersection(r, inflated);
+		}
+		if (rays.size() > 0) {
+			collisionPoint = collisionPoint * (1.f / (rays.size())); //get average collision point
+			difference = avgPosition - collisionPoint;
+			//std::cout <<"num rays: "<<rays.size()<< "; collision point: " << collisionPoint << "; vector = " << moveVector << std::endl;
+			if (difference.x != 0 || difference.y != 0) {
+				moveVector = normalizeVector(difference);
+			}
+		}
+
+		//else {
+		//	moveVector = { 0,0 };
+		//}
+		//std::cout << moveVector<<","<<position<< std::endl;
+		moveTimer.restart();
+	}
+	else {
+		moveVector = { 0,0 };
+	}
 	return moveVector;
 }
 void EnemySpaceship::specialMove(){
@@ -101,7 +107,7 @@ void EnemySpaceship::specialMove(){
 		}
 		move(getMoveVector());
 		rotated = setRotation(angle);
-		if (rand() % 1000 < difficulty) { // determine whether or not to fire
+		if (rand() % 1000 < aggressiveness) { // determine whether or not to fire
 			attack();
 		}
 	}

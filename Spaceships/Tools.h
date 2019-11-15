@@ -4,7 +4,7 @@
 #define FP_0 1E-6
 #endif
 #ifndef BLACKHOLE_LEVEL
-#define BLACKHOLE_LEVEL 3 
+#define BLACKHOLE_LEVEL 6
 #endif
 #ifndef _USE_MATH_DEFINES
 #define _USE_MATH_DEFINES
@@ -19,7 +19,8 @@ struct levelInfo
 	int fighters = 0;
 	int cruisers = 0;
 	int carriers = 0;
-	unsigned int difficulty = 2;
+	int aggressiveness = 2;
+	int sluggishness = 0;
 	int blackHoles = 0;
 };
 

@@ -27,8 +27,8 @@ void Mini::setImage() {
 	shieldSprite.setPosition(avgPosition.x, avgPosition.y);
 	shieldSprite.setRotation(180 * rotation);
 }
-Mini::Mini(point initPos, double initRotation, int d, Carrier* papa):
-EnemySpaceship(initPos, initRotation,d){
+Mini::Mini(point initPos, double initRotation, int d,int s, Carrier* papa):
+EnemySpaceship(initPos, initRotation,d,s){
 	//std::cout << "mini init" << std::endl;
 	father = papa;
 	position = initPos;
@@ -39,7 +39,7 @@ EnemySpaceship(initPos, initRotation,d){
 	bulletPeriod = 7;
 	speed = 5.6;
 	pointValue = 400;
-	difficulty *= 3;
+	aggressiveness *= 3;
 	mini = true;
 	tempTorpedoOrigin = { 0, 0 };
 	tempBulletOrigin = { 0, 0 };

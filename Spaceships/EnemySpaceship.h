@@ -8,7 +8,7 @@ class EnemySpaceship :
 	
 public:
 	static Spaceship* player;
-	EnemySpaceship(point initPos, double initRotation, int d);
+	EnemySpaceship(point initPos, double initRotation, int d, int s);
 	~EnemySpaceship();
 	void move(point inputVector) { Spaceship::move(inputVector); };
 	static void Init(Spaceship* p);
@@ -21,10 +21,10 @@ public:
 	void attack();
 	point getMoveVector();
 protected:
-	int difficulty = 10;
+	int aggressiveness = 10;
 	FrameClock moveTimer;
 	float moveMod = 1;
-	int movePeriod = 0;
+	int movePeriod = 1;
 	point moveVector = {0,0};
 };
 #endif

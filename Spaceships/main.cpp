@@ -19,10 +19,11 @@
 #include <iostream>
 #include <fstream>
 #include <chrono>
+#include <ctime>
 
 
 
-const int thresholds[] = { 4000, 10000, 20000 };
+const int thresholds[] = { 4000, 15000, 45000 };
 const int MAX_LEVEL = 2;
 const int SPACESHIP_TYPES = MAX_LEVEL + 1;
 const char* logFile = "scores.txt";
@@ -127,7 +128,7 @@ void showBounds(Projectile* s) {
 
 unsigned int generateLevel(int l) {
 	levelInfo info = generateLevelInfo(l);
-	SpaceshipFactory::setDifficulty(info.difficulty);
+	SpaceshipFactory::setDifficulty(info.aggressiveness, info.sluggishness);
 	for (int i = 0; i <info.patrols; i++) { // generate enemies
 		EnemySpaceship* e = SpaceshipFactory::generateRandomEnemy(0);//instantiate enemies
 		ScreenThing::spaceships->push_back(e);
@@ -326,12 +327,12 @@ void intro(sf::Font f, sf::Text controlsText) {
 
 int main()
 {
-	unsigned int seed = (std::chrono::system_clock::now().time_since_epoch().count() - 15672112962443214) / 10E6;
-	std::cout << seed<< std::endl;
-	srand(seed);
-	for (int i = 0; i < 20; i++) {
-		rand();
-	}
+	//unsigned int seed = (std::chrono::system_clock::now().time_since_epoch().count() - 15672112962443214) / 10E6;
+	//std::cout << seed<< std::endl;
+	srand(time(0));
+	//for (int i = 0; i < 20; i++) {
+	//	rand();
+	//}
 	bool logged = false;
 	bool levelUpActive = false;
 	int initPlayerLevel = 0;
@@ -340,7 +341,7 @@ int main()
 	//int numEnemies = 6;
 	int enemiesSpawnPeriod = 1500;
 	int enemiesSpawnNumber = 2;
-	//int difficulty = 2;
+	//int aggressiveness = 2;
 	//int difficultyIncrement = 1;
 	int powerUpsInit = 4;
 	int powerUpSpawnNumber = 1;
@@ -449,7 +450,7 @@ int main()
 	Bullet::Init("bullet.png");
 	Torpedo::Init("torpedo.png");
 	Mine::Init("mine.png");
-	GuidedMissile::Init("torpedo.png");
+	GuidedMissile::Init("guidedmissile.png");
 
 	Explosion::Init("explosion.png");
 	PowerUp::Init("powerup.png");
@@ -457,7 +458,7 @@ int main()
 	TextExplosion::Init("pixel_font.ttf", sf::Color::Green);
 	BlackHole::Init("blackhole.png");
 	PowerUpFactory::Init(ScreenThing::powerUps, size);
-	SpaceshipFactory::Init(1, size, ScreenThing::spaceships);
+	SpaceshipFactory::Init(1, 0,size, ScreenThing::spaceships);
 	spaceships.push_back(SpaceshipFactory::generatePlayer(0));//instantiate player
 	
 	static Spaceship* player = ScreenThing::spaceships->at(0);
@@ -631,6 +632,14 @@ int main()
 				}
 				if ((*it)->isUpgrade()) {
 					player = ScreenThing::spaceships->at(0); //need to fix the pointer to player so that the user inputs still map to the correct spaceship
+				}
+				delete* it;
+				//std::cout << "erasing powerup at " << *it << std::endl;
+				it = ScreenThing::powerUps->erase(it);
+			}
+			else {
+				if (!(*it)->eaten) {
+					(*it)->explode();
 				}
 				delete* it;
 				//std::cout << "erasing powerup at " << *it << std::endl;

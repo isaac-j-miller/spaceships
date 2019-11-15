@@ -27,8 +27,8 @@ void Carrier::setImage() {
 	shieldSprite.setPosition(avgPosition.x, avgPosition.y);
 	shieldSprite.setRotation(180 * rotation);
 }
-Carrier::Carrier(point initPos, double initRotation, int d) :
-	EnemySpaceship(initPos, initRotation, d) {
+Carrier::Carrier(point initPos, double initRotation, int d, int s) :
+	EnemySpaceship(initPos, initRotation, d, s) {
 	std::cout << "carrier init" << std::endl;
 	position = initPos;
 	level = 3;
@@ -42,6 +42,7 @@ Carrier::Carrier(point initPos, double initRotation, int d) :
 	shieldPeriod = 500;
 	numMines = 100;
 	numGuidedMissiles = 0;
+	movePeriod -= 2;
 	activateShield();
 	tempTorpedoOrigin = { 0, .4 };
 	tempBulletOrigin = { .4, 0 };
@@ -75,7 +76,7 @@ void Carrier::fireBullet() {
 	Spaceship::fireBullet();
 }
 void Carrier::fireTorpedo() {
-	Mini* temp = new Mini(torpedoOrigin, rotation, difficulty, this);
+	Mini* temp = new Mini(torpedoOrigin, rotation, aggressiveness,0, this);
 	spaceships->push_back(temp); // instead of firing torpedos, this generates new spaceships
 	enemySpaceships->push_back(temp);
 	children.push_back(temp);

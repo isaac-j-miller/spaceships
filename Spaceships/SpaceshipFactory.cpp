@@ -4,19 +4,22 @@
 #include "EnemyCruiser.h"
 #include "Carrier.h"
 //#include <chrono>
-int SpaceshipFactory::difficulty;
+int SpaceshipFactory::aggressiveness;
+int SpaceshipFactory::sluggishness;
 point SpaceshipFactory::windowSize;
 std::vector<Spaceship*>* SpaceshipFactory::spaceships;
 
-void SpaceshipFactory::Init(int d, point window, std::vector<Spaceship*>* s) {
-	difficulty = d;
+void SpaceshipFactory::Init(int d,int slug, point window, std::vector<Spaceship*>* s) {
+	aggressiveness = d;
 	windowSize = window;
 	spaceships = s;
 	
 }
-void SpaceshipFactory::setDifficulty(int i) {
-	difficulty = i;
+void SpaceshipFactory::setDifficulty(int aggress, int slug) {
+	aggressiveness = aggress;
+	sluggishness = slug;
 }
+
 
 Spaceship* SpaceshipFactory::upgradePlayer(Spaceship* p) {
 	//make a "copy" of the spaceship as the next level up
@@ -73,10 +76,10 @@ EnemySpaceship* SpaceshipFactory::generateRandomEnemy(int level) {
 			}
 		}
 	} while (c);
-	return generate(randpos, 0., difficulty, level);
+	return generate(randpos, 0.,level);
 }
 EnemySpaceship* SpaceshipFactory::generateRandomEnemyPosition(point pos, int level) {
-	return generate(pos, 0., difficulty, level);
+	return generate(pos, 0., level);
 }
 Spaceship* SpaceshipFactory::generatePlayer(int level) {
 	
@@ -96,26 +99,26 @@ Spaceship* SpaceshipFactory::generatePlayer(int level) {
 	}
 }
 
-EnemySpaceship* SpaceshipFactory::generate(point pos, int initRotation, int d, int level) {
+EnemySpaceship* SpaceshipFactory::generate(point pos, int initRotation, int level) {
 	switch (level) {
 	case 0:
-		std::cout << "generating enemy patrol ship at " << pos << std::endl;
-		return new EnemyPatrolShip(pos, 0., difficulty);
+		//std::cout << "generating enemy patrol ship at " << pos << std::endl;
+		return new EnemyPatrolShip(pos, initRotation, aggressiveness, sluggishness);
 		break;
 	case 1:
-		std::cout << "generating enemy fighter at " << pos << std::endl;
-		return new EnemyFighter(pos, 0, difficulty);
+		//std::cout << "generating enemy fighter at " << pos << std::endl;
+		return new EnemyFighter(pos, initRotation, aggressiveness, sluggishness);
 		break;
 	case 2:
-		std::cout << "generating enemy cruiser at " << pos << std::endl;
-		return new EnemyCruiser(pos, 0, difficulty);
+		//std::cout << "generating enemy cruiser at " << pos << std::endl;
+		return new EnemyCruiser(pos, initRotation, aggressiveness, sluggishness);
 		break;
 	case 3:
-		std::cout << "generating enemy cruiser at " << pos << std::endl;
-		return new Carrier(pos, 0, difficulty);
+		//std::cout << "generating enemy cruiser at " << pos << std::endl;
+		return new Carrier(pos, initRotation, aggressiveness, sluggishness);
 		break;
 	default:
-		return new EnemySpaceship(pos, 0., difficulty);
+		return new EnemySpaceship(pos, initRotation, aggressiveness, sluggishness);
 		break;
 	}
 }
