@@ -339,13 +339,13 @@ int main()
 	int playerLevel = initPlayerLevel;
 	int level = 0;
 	//int numEnemies = 6;
-	int enemiesSpawnPeriod = 1500;
-	int enemiesSpawnNumber = 2;
+	int enemiesSpawnPeriod = 1250;
+	int enemiesSpawnNumber = 3;
 	//int aggressiveness = 2;
 	//int difficultyIncrement = 1;
 	int powerUpsInit = 4;
-	int powerUpSpawnNumber = 1;
-	int powerUpPeriod = 1250;
+	int powerUpSpawnNumber = 2;
+	int powerUpPeriod = 1500;
 	int warningFlashPeriod = 50;
 	bool warningState = false;
 
@@ -498,7 +498,7 @@ int main()
 			for (int i = 0; i < powerUpSpawnNumber; i++) { // generate powerups
 				ScreenThing::powerUps->push_back(PowerUpFactory::generateRandom());
 			}
-			ScreenThing::powerUps->push_back(PowerUpFactory::generateSpecificTypeRandom(4));//guaranteed to generate health powerup
+			//ScreenThing::powerUps->push_back(PowerUpFactory::generateSpecificTypeRandom(4));//guaranteed to generate health powerup
 			powerUpTimer.restart();
 		}
 		if ((enemyTimer.getTime() > enemiesSpawnPeriod && ScreenThing::enemySpaceships->size() == 0) && player->isActive()) {
