@@ -74,10 +74,6 @@ point EnemySpaceship::getMoveVector() {
 			}
 		}
 
-		//else {
-		//	moveVector = { 0,0 };
-		//}
-		//std::cout << moveVector<<","<<position<< std::endl;
 		moveTimer.restart();
 	}
 	else {

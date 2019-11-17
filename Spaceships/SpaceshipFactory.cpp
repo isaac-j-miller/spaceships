@@ -30,6 +30,7 @@ Spaceship* SpaceshipFactory::upgradePlayer(Spaceship* p) {
 	player->prevPosition = p->prevPosition;
 	player->displacementVector = p->displacementVector;
 	player->rotation = p->rotation;
+	player->oldRotation = p->oldRotation;
 	player->elapsedFrames = p->elapsedFrames;
 	player->updateCollisionBox();
 	//do shield stuff: activate and set strength
@@ -41,6 +42,7 @@ Spaceship* SpaceshipFactory::upgradePlayer(Spaceship* p) {
 	//copy upgradable attributes
 	Spaceship* temp = generatePlayer(level - 1);
 	player->speed += (p->speed - temp->speed);
+	player->speed += (p->acceleration - temp->acceleration);
 	player->rotationIncrement += (p->rotationIncrement - temp->rotationIncrement);
 	player->bulletDamage += (p->bulletDamage - temp->bulletDamage);
 	player->torpedoDamage += (p->torpedoDamage - temp->torpedoDamage);
@@ -52,7 +54,7 @@ Spaceship* SpaceshipFactory::upgradePlayer(Spaceship* p) {
 	player->numMines += (p->numMines);
 	player->numGuidedMissiles += (p->numGuidedMissiles);
 	delete temp;
-	
+	player->getSpawnExplosion();
 	return player;
 }
 

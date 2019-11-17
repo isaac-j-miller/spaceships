@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DEFECTS>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\Isaac Miller\source\repos\Spaceships\Spaceships\</FILEPATH>
+      <FILENAME>ScreenThing.cpp</FILENAME>
+      <LINE>14</LINE>
+      <COLUMN>13</COLUMN>
+    </SFA>
+    <DEFECTCODE>26495</DEFECTCODE>
+    <DESCRIPTION>Variable 'ScreenThing::baseTransform' is uninitialized. Always initialize a member variable (type.6).</DESCRIPTION>
+    <FUNCTION>ScreenThing::{ctor}</FUNCTION>
+    <DECORATED>??0ScreenThing@@QAE@XZ</DECORATED>
+    <FUNCLINE>14</FUNCLINE>
+    <ADDITIONALINFO>
+      <targetSymbol>ScreenThing::baseTransform</targetSymbol>
+    </ADDITIONALINFO>
+    <PATH></PATH>
+  </DEFECT>
+</DEFECTS>

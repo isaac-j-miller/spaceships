@@ -35,15 +35,17 @@ EnemySpaceship(initPos, initRotation,d,s){
 	level = 0;
 	width = 20;
 	height = 20;
-	health = 50;
+	health = 30;
 	bulletPeriod = 7;
 	speed = 5.6;
 	pointValue = 400;
 	aggressiveness *= 3;
+	movePeriod = 0;
 	mini = true;
 	tempTorpedoOrigin = { 0, 0 };
 	tempBulletOrigin = { 0, 0 };
 	setImage();
+	getSpawnExplosion();
 }
 Mini::~Mini() {
 

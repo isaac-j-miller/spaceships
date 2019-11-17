@@ -1,7 +1,8 @@
 #include "TextExplosion.h"
 sf::Font TextExplosion::font;
 sf::Color TextExplosion::fillColor;
-TextExplosion::TextExplosion(const std::string& t, const point& topLeft, const float& fs){
+TextExplosion::TextExplosion(const std::string& t, const point& topLeft, const float& fs)
+{
 	position = topLeft;
 	text = t;
 	fontSize = fs;

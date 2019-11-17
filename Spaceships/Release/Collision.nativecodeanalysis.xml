@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DEFECTS>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\Isaac Miller\source\repos\Spaceships\Spaceships\</FILEPATH>
+      <FILENAME>Collision.cpp</FILENAME>
+      <LINE>47</LINE>
+      <COLUMN>36</COLUMN>
+    </SFA>
+    <DEFECTCODE>6386</DEFECTCODE>
+    <DESCRIPTION>Buffer overrun while writing to 'mask':  the writable size is '*public: class sf::Vector2&lt;unsigned int&gt; __thiscall sf::Texture::getSize(void)const ().y**public: class sf::Vector2&lt;unsigned int&gt; __thiscall sf::Texture::getSize(void)const ().x*1' bytes, but '2' bytes might be written.</DESCRIPTION>
+    <FUNCTION>Collision::BitmaskManager::CreateMask</FUNCTION>
+    <DECORATED>?CreateMask@BitmaskManager@Collision@@QAEPAEPBVTexture@sf@@ABVImage@4@@Z</DECORATED>
+    <FUNCLINE>41</FUNCLINE>
+    <PROBABILITY>1</PROBABILITY>
+    <RANK>4</RANK>
+    <CATEGORY>
+      <RULECATEGORY>mspft</RULECATEGORY>
+    </CATEGORY>
+    <PATH>
+      <SFA>
+        <FILEPATH>C:\Users\Isaac Miller\source\repos\Spaceships\Spaceships\</FILEPATH>
+        <FILENAME>Collision.cpp</FILENAME>
+        <LINE>42</LINE>
+        <COLUMN>12</COLUMN>
+        <KEYEVENT>
+          <ID>1</ID>
+          <KIND>declaration</KIND>
+          <IMPORTANCE>Essential</IMPORTANCE>
+          <MESSAGE>'mask' is an array of 1 elements (1 bytes)</MESSAGE>
+        </KEYEVENT>
+      </SFA>
+      <SFA>
+        <FILEPATH>C:\Users\Isaac Miller\source\repos\Spaceships\Spaceships\</FILEPATH>
+        <FILENAME>Collision.cpp</FILENAME>
+        <LINE>44</LINE>
+        <COLUMN>21</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>C:\Users\Isaac Miller\source\repos\Spaceships\Spaceships\</FILEPATH>
+        <FILENAME>Collision.cpp</FILENAME>
+        <LINE>44</LINE>
+        <COLUMN>30</COLUMN>
+        <KEYEVENT>
+          <ID>2</ID>
+          <KIND>branch</KIND>
+          <IMPORTANCE>Full</IMPORTANCE>
+          <MESSAGE>Enter this loop, (assume 'y&lt;*tex-&gt;getSize().y')</MESSAGE>
+        </KEYEVENT>
+      </SFA>
+      <SFA>
+        <FILEPATH>C:\Users\Isaac Miller\source\repos\Spaceships\Spaceships\</FILEPATH>
+        <FILENAME>Collision.cpp</FILENAME>
+        <LINE>46</LINE>
+        <COLUMN>22</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>C:\Users\Isaac Miller\source\repos\Spaceships\Spaceships\</FILEPATH>
+        <FILENAME>Collision.cpp</FILENAME>
+        <LINE>46</LINE>
+        <COLUMN>31</COLUMN>
+        <KEYEVENT>
+          <ID>3</ID>
+          <KIND>branch</KIND>
+          <IMPORTANCE>Full</IMPORTANCE>
+          <MESSAGE>Enter this loop, (assume 'x&lt;*tex-&gt;getSize().x')</MESSAGE>
+        </KEYEVENT>
+      </SFA>
+      <SFA>
+        <FILEPATH>C:\Users\Isaac Miller\source\repos\Spaceships\Spaceships\</FILEPATH>
+        <FILENAME>Collision.cpp</FILENAME>
+        <LINE>47</LINE>
+        <COLUMN>36</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>C:\Users\Isaac Miller\source\repos\Spaceships\Spaceships\</FILEPATH>
+        <FILENAME>Collision.cpp</FILENAME>
+        <LINE>46</LINE>
+        <COLUMN>52</COLUMN>
+        <KEYEVENT>
+          <ID>4</ID>
+          <KIND>declaration</KIND>
+          <IMPORTANCE>Essential</IMPORTANCE>
+          <MESSAGE>'x' may equal 1</MESSAGE>
+        </KEYEVENT>
+      </SFA>
+      <SFA>
+        <FILEPATH>C:\Users\Isaac Miller\source\repos\Spaceships\Spaceships\</FILEPATH>
+        <FILENAME>Collision.cpp</FILENAME>
+        <LINE>46</LINE>
+        <COLUMN>31</COLUMN>
+        <KEYEVENT>
+          <ID>5</ID>
+          <KIND>branch</KIND>
+          <IMPORTANCE>Full</IMPORTANCE>
+          <MESSAGE>Continue this loop, (assume 'x&lt;*tex-&gt;getSize().x')</MESSAGE>
+        </KEYEVENT>
+      </SFA>
+      <SFA>
+        <FILEPATH>C:\Users\Isaac Miller\source\repos\Spaceships\Spaceships\</FILEPATH>
+        <FILENAME>Collision.cpp</FILENAME>
+        <LINE>47</LINE>
+        <COLUMN>36</COLUMN>
+        <KEYEVENT>
+          <ID>6</ID>
+          <KIND>declaration</KIND>
+          <IMPORTANCE>Full</IMPORTANCE>
+          <MESSAGE>'x' is an In/Out argument to 'sf::Image::getPixel' (declared at c:\users\isaac miller\documents\visual studio 2019\sfml-2.5.1\include\sfml\graphics\image.hpp:232)</MESSAGE>
+        </KEYEVENT>
+      </SFA>
+      <SFA>
+        <FILEPATH>C:\Users\Isaac Miller\source\repos\Spaceships\Spaceships\</FILEPATH>
+        <FILENAME>Collision.cpp</FILENAME>
+        <LINE>47</LINE>
+        <COLUMN>36</COLUMN>
+        <KEYEVENT>
+          <ID>7</ID>
+          <KIND>usage</KIND>
+          <IMPORTANCE>Essential</IMPORTANCE>
+          <MESSAGE>Invalid write to 'mask[1]', (writable range is 0 to 0)</MESSAGE>
+        </KEYEVENT>
+      </SFA>
+    </PATH>
+  </DEFECT>
+</DEFECTS>

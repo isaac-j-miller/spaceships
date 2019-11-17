@@ -8,6 +8,8 @@
 #include "GuidedMissile.h"
 #include "BlackHole.h"
 
+#include "SpawnExplosion.h"
+
 #define _USE_MATH_DEFINES
 #include <math.h>
 #ifndef SPACESHIP_H
@@ -33,7 +35,7 @@ public:
 	point getSize();
 	box getCollisionBox();
 	//point getTrajectory();
-	
+	void getSpawnExplosion();
 	//point getAvgPosition();
 	bool bulletReady();
 	bool torpedoReady();
@@ -66,6 +68,7 @@ public:
 	int getGuidedMissileCount();
 	int getMineCount();
 	int getChasedByCount();
+	
 protected:
 	
 	bool mini = false;

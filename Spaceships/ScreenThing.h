@@ -11,6 +11,7 @@ class Explosion;
 class Projectile;
 class EnemySpaceship;
 class BlackHole;
+class Burst;
 
 class ScreenThing
 {
@@ -19,7 +20,7 @@ public:
 	static std::vector<Spaceship*>* spaceships;
 	static std::vector<EnemySpaceship*>* enemySpaceships;
 	static std::vector<Projectile*>* projectiles;
-	static std::vector<Explosion*>* explosions;
+	static std::vector<Burst*>* explosions;
 	static std::vector<PowerUp*>* powerUps;
 	static BlackHole* blackHole;
 protected:
@@ -29,7 +30,7 @@ public:
 	static void InitGame(std::string shield, box windowB, point windowS, std::vector<Spaceship*>* s,
 		std::vector<EnemySpaceship*>* e,
 		std::vector<Projectile*>* p,
-		std::vector<Explosion*>* ex,
+		std::vector<Burst*>* ex,
 		std::vector<PowerUp*>* pu);
 	ScreenThing();
 	virtual ~ScreenThing();

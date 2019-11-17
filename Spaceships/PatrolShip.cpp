@@ -10,6 +10,8 @@ PatrolShip::PatrolShip(point initPos, double initRotation):
 	speed = 4;
 	numMines = 0;
 	numGuidedMissiles = 0;
+	explosionDamage = 1;
+	health = 70;
 	point tempTorpedoOrigin = { -.5,0 };
 	point tempBulletOrigin = { .5,0 };
 	setDims(width, height);

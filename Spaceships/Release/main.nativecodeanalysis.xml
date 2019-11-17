@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DEFECTS>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\Isaac Miller\source\repos\Spaceships\Spaceships\</FILEPATH>
+      <FILENAME>main.cpp</FILENAME>
+      <LINE>246</LINE>
+      <COLUMN>29</COLUMN>
+    </SFA>
+    <DEFECTCODE>6001</DEFECTCODE>
+    <DESCRIPTION>Using uninitialized memory 'nextToken'.</DESCRIPTION>
+    <FUNCTION>getHighScore</FUNCTION>
+    <DECORATED>?getHighScore@@YAIXZ</DECORATED>
+    <FUNCLINE>234</FUNCLINE>
+    <PROBABILITY>1</PROBABILITY>
+    <RANK>3</RANK>
+    <CATEGORY>
+      <RULECATEGORY>mspft</RULECATEGORY>
+    </CATEGORY>
+    <PATH>
+      <SFA>
+        <FILEPATH>C:\Users\Isaac Miller\source\repos\Spaceships\Spaceships\</FILEPATH>
+        <FILENAME>main.cpp</FILENAME>
+        <LINE>235</LINE>
+        <COLUMN>18</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>C:\Users\Isaac Miller\source\repos\Spaceships\Spaceships\</FILEPATH>
+        <FILENAME>main.cpp</FILENAME>
+        <LINE>236</LINE>
+        <COLUMN>6</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>C:\Users\Isaac Miller\source\repos\Spaceships\Spaceships\</FILEPATH>
+        <FILENAME>main.cpp</FILENAME>
+        <LINE>237</LINE>
+        <COLUMN>7</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>C:\Users\Isaac Miller\source\repos\Spaceships\Spaceships\</FILEPATH>
+        <FILENAME>main.cpp</FILENAME>
+        <LINE>238</LINE>
+        <COLUMN>7</COLUMN>
+        <KEYEVENT>
+          <ID>1</ID>
+          <KIND>declaration</KIND>
+          <IMPORTANCE>Essential</IMPORTANCE>
+          <MESSAGE>'nextToken' is not initialized</MESSAGE>
+        </KEYEVENT>
+      </SFA>
+      <SFA>
+        <FILEPATH>C:\Users\Isaac Miller\source\repos\Spaceships\Spaceships\</FILEPATH>
+        <FILENAME>main.cpp</FILENAME>
+        <LINE>239</LINE>
+        <COLUMN>14</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>C:\Users\Isaac Miller\source\repos\Spaceships\Spaceships\</FILEPATH>
+        <FILENAME>main.cpp</FILENAME>
+        <LINE>240</LINE>
+        <COLUMN>15</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>C:\Users\Isaac Miller\source\repos\Spaceships\Spaceships\</FILEPATH>
+        <FILENAME>main.cpp</FILENAME>
+        <LINE>241</LINE>
+        <COLUMN>27</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>C:\Users\Isaac Miller\source\repos\Spaceships\Spaceships\</FILEPATH>
+        <FILENAME>main.cpp</FILENAME>
+        <LINE>242</LINE>
+        <COLUMN>5</COLUMN>
+        <KEYEVENT>
+          <ID>2</ID>
+          <KIND>branch</KIND>
+          <IMPORTANCE>Full</IMPORTANCE>
+          <MESSAGE>Enter this branch, (assume 'log-&gt;._N()')</MESSAGE>
+        </KEYEVENT>
+      </SFA>
+      <SFA>
+        <FILEPATH>C:\Users\Isaac Miller\source\repos\Spaceships\Spaceships\</FILEPATH>
+        <FILENAME>main.cpp</FILENAME>
+        <LINE>244</LINE>
+        <COLUMN>10</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>C:\Users\Isaac Miller\source\repos\Spaceships\Spaceships\</FILEPATH>
+        <FILENAME>main.cpp</FILENAME>
+        <LINE>246</LINE>
+        <COLUMN>8</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>C:\Users\Isaac Miller\source\repos\Spaceships\Spaceships\</FILEPATH>
+        <FILENAME>main.cpp</FILENAME>
+        <LINE>248</LINE>
+        <COLUMN>18</COLUMN>
+      </SFA>
+      <SFA>
+        <FILEPATH>C:\Users\Isaac Miller\source\repos\Spaceships\Spaceships\</FILEPATH>
+        <FILENAME>main.cpp</FILENAME>
+        <LINE>246</LINE>
+        <COLUMN>29</COLUMN>
+        <KEYEVENT>
+          <ID>3</ID>
+          <KIND>usage</KIND>
+          <IMPORTANCE>Essential</IMPORTANCE>
+          <MESSAGE>'nextToken' is used, but may not have been initialized</MESSAGE>
+        </KEYEVENT>
+      </SFA>
+    </PATH>
+  </DEFECT>
+  <DEFECT>
+    <SFA>
+      <FILEPATH>C:\Users\Isaac Miller\source\repos\Spaceships\Spaceships\</FILEPATH>
+      <FILENAME>main.cpp</FILENAME>
+      <LINE>707</LINE>
+      <COLUMN>0</COLUMN>
+    </SFA>
+    <DEFECTCODE>26812</DEFECTCODE>
+    <DESCRIPTION>The enum type 'sf::PrimitiveType' is unscoped. Prefer 'enum class' over 'enum' (Enum.3).</DESCRIPTION>
+    <FUNCTION>sf::VertexArray::=</FUNCTION>
+    <DECORATED>??4VertexArray@sf@@QAEAAV01@$$QAV01@@Z</DECORATED>
+    <FUNCLINE>192</FUNCLINE>
+    <PATH></PATH>
+  </DEFECT>
+</DEFECTS>

@@ -11,6 +11,7 @@ Fighter::Fighter(point initPos, double initRotation) :
 	pointValue = 2000;
 	numMines = 0;
 	numGuidedMissiles = 5;
+	explosionDamage = 1;
 	point tempTorpedoOrigin = { -.5,0 };
 	point tempBulletOrigin = { .5,0 };
 	setDims(width, height);

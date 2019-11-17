@@ -2,25 +2,22 @@
 #include <SFML/Graphics.hpp>
 #include "Tools.h"
 #include "FrameClock.h"
-#include "ScreenThing.h"
+#include "Burst.h"
 #ifndef EXPLOSION_H
 #define EXPLOSION_H
-class Explosion: virtual public ScreenThing
+class Explosion: virtual public Burst
 {
 	static sf::Image image;
 	static sf::Texture texture;
 public:
-	Explosion();
-	Explosion(float microSecondsDuration, float size, point centerPosition);
-	virtual ~Explosion() {}
-	bool isActive();
+	Explosion(float microSecondsDuration, float size, point centerPosition, int dmg);
+	~Explosion() {}
 	void setImage();
 	sf::Sprite getSprite();
 	static bool Init(const std::string& FileName);
 protected:
-	FrameClock clock;
-	float size = 10;
-	float duration = 20; //in frames
-	bool active = true;
+	
+	int damagePerFrame = 0;
+	
 };
 #endif

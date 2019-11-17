@@ -5,6 +5,8 @@ EnemyCruiser::EnemyCruiser(point initPos, double initRotation, int d, int s) :
 	EnemySpaceship(initPos, initRotation, d,s) {
 	movePeriod -= 2;
 	setImage();
+
+	getSpawnExplosion();
 	//std::cout << "enemy cruiser init at " << initPos << std::endl;
 }
 EnemyCruiser::~EnemyCruiser() {

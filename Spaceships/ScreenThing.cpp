@@ -1,11 +1,12 @@
 #include "ScreenThing.h"
 #include "SpaceshipFactory.h"
 #include "Collision.h"
+#include "Burst.h"
 std::string ScreenThing::shieldImageFileName;
 std::vector<Spaceship*>* ScreenThing::spaceships;
 std::vector<EnemySpaceship*>* ScreenThing::enemySpaceships;
 std::vector<Projectile*>* ScreenThing::projectiles;
-std::vector<Explosion*>* ScreenThing::explosions;
+std::vector<Burst*>* ScreenThing::explosions;
 std::vector<PowerUp*>* ScreenThing::powerUps;
 box ScreenThing::windowBounds;
 point ScreenThing::windowSize;
@@ -35,7 +36,7 @@ sf::Sprite ScreenThing::getSprite() {
 void ScreenThing::InitGame(std::string shield, box windowB, point windowS, std::vector<Spaceship*>* s,
 	std::vector<EnemySpaceship*>* e,
 	std::vector<Projectile*>* p,
-	std::vector<Explosion*>* ex,
+	std::vector<Burst*>* ex,
 	std::vector<PowerUp*>* pu)
 {
 	shieldImageFileName = shield;

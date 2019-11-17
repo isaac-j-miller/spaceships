@@ -11,12 +11,11 @@ public:
 	virtual ~Moveable() {}
 	point getTrajectory();
 	point getDisplacementVector() { return displacementVector; }
-	
 protected:
 	float speed = 0; //in pixels per frame
 	point trajectory = { 0,0 };
 	point displacementVector = { 0,0 };
-
+	int explosionDamage = 0;
 	FrameClock moveClock;
 };
 #endif

@@ -18,13 +18,14 @@ GuidedMissile::~GuidedMissile() {
 GuidedMissile::GuidedMissile(point pos, point traj, int dmg, Spaceship* f) :
 	Projectile(pos, traj, dmg, f) {
 	//std::cout << "new GuidedMissile" << std::endl;
-	speed = 7; //in pixels per frame
+	speed = 5; //in pixels per frame
 	explosionDuration = 10;//frames
-	explosionSize = 20;
+	explosionSize = 30;
+	explosionDamage = 1;
 	width = 10;
 	height = 15;
-
-	acceleration = 0.5; // pixels/(frame^2)
+	
+	acceleration = 0.6; // pixels/(frame^2)
 
 	setDims(width, height);
 	setImage();
@@ -70,9 +71,6 @@ bool GuidedMissile::move() {
 	point moveVector = { 0,0 };
 	unsigned long long int timeElapsed = moveClock.getTime();
 
-	
-
-
 	if (eaten) {
 		return true;
 	}
@@ -83,12 +81,8 @@ bool GuidedMissile::move() {
 			targetPos = target->getAvgPosition();
 			point differenceVector = normalizeVector(targetPos - avgPosition);
 			
-			float angle = vectToAngle(differenceVector);
-			//if (abs(angle) >= maxAngle) {
-			//	float angleDiff = angle - maxAngle;
-			//	point angleVector = { cos(angleDiff), sin(angleDiff) };
-			//	differenceVector = normalizeVector(differenceVector + angleVector);
-			//}
+			//float angle = vectToAngle(differenceVector);
+		
 			moveVector = moveVector + differenceVector;
 		}
 		point moveVectorAccel = moveVector * acceleration;

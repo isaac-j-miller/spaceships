@@ -27,7 +27,7 @@ public:
 	Spaceship* getFather();
 	float getMaxDimension();
 	int getCounter();
-
+	void collideWithMine();
 protected:
 	float rotationDeg;
 	int counter = 0;
@@ -41,7 +41,7 @@ protected:
 	bool collision = false;
 	friend class BlackHole;
 	point collisionCoords = { 0,0 };
-	unsigned long int lifetime = 1000; //number of frames before destruction
+	unsigned long int lifetime = 500; //number of frames before destruction
 	Spaceship* father;
 };
 #endif

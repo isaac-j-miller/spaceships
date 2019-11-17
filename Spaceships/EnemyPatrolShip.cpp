@@ -7,6 +7,8 @@ EnemyPatrolShip::EnemyPatrolShip(point initPos, double initRotation, int d, int 
 	{
 	movePeriod -= 0;
 	setImage();
+	
+	getSpawnExplosion();
 	//std::cout << "enemy patrol init at " << initPos << std::endl;
 
 }

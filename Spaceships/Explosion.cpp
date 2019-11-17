@@ -1,12 +1,15 @@
 #include "Explosion.h"
+#include "Collision.h"
+#include "Spaceship.h"
 sf::Image Explosion::image = sf::Image();
 sf::Texture Explosion::texture = sf::Texture();
 
-Explosion::Explosion() {
+
+Explosion::Explosion(float frameDuration, float s, point centerPosition, int dmg):
+	Burst(frameDuration, s, centerPosition)
+{
 	clock.restart();
-}
-Explosion::Explosion(float frameDuration, float s, point centerPosition) {
-	clock.restart();
+	damagePerFrame = dmg;
 	duration = frameDuration;
 	size = s;
 	point trans = { s/2,s/2 };
@@ -14,13 +17,10 @@ Explosion::Explosion(float frameDuration, float s, point centerPosition) {
 	setImage();
 	//do sprite stuff
 }
-bool Explosion::isActive() {
-	//check timer 
-	return(clock.getTime() < duration ? true : false);
-}
+
 sf::Sprite Explosion::getSprite() {
-	float cTime = clock.getTime();
-	float progress = cTime / duration;
+	unsigned int cTime = clock.getTime();
+	float progress = ((float)cTime) / duration;
 	if (progress > .5) {
 		progress = 1 - progress;
 	}
@@ -28,7 +28,14 @@ sf::Sprite Explosion::getSprite() {
 	int alpha = 255 *2* (progress);
 	//std::cout << "alpha=" << alpha << std::endl;
 	sprite.setColor(sf::Color(255, 255, 255, alpha));
-	
+	if (damagePerFrame&&!cTime%5) {
+		for (auto s : *spaceships) {
+			if (Collision::PixelPerfectTest(sprite, s->getSprite())) {//if collision
+				// make the ship take damage
+				s->takeDamage(damagePerFrame);
+			}
+		}
+	}
 	return sprite;
 }
 bool Explosion::Init(const std::string& FileName) {
@@ -40,5 +47,6 @@ void Explosion::setImage() {
 	float xScale = size / image.getSize().x;
 	float yScale = size / image.getSize().y;
 	sprite.setScale(sf::Vector2f(xScale, yScale));
-	sprite.setPosition(position.x-size/8, position.y-size/8);
+	sprite.setOrigin(sprite.getLocalBounds().width / 2, sprite.getLocalBounds().height / 2);
+	sprite.setPosition(avgPosition.x, avgPosition.y);
 }

@@ -43,12 +43,14 @@ Carrier::Carrier(point initPos, double initRotation, int d, int s) :
 	numMines = 100;
 	numGuidedMissiles = 0;
 	movePeriod -= 2;
+	explosionDamage = 2;
 	activateShield();
 	tempTorpedoOrigin = { 0, .4 };
 	tempBulletOrigin = { .4, 0 };
 	setDims(width, height);
 	setImage();
-	
+
+	getSpawnExplosion();
 }
 Carrier::~Carrier() {
 
@@ -100,31 +102,6 @@ void Carrier::move(point inputVector) {
 			position = getWrapped(position, windowBounds.bottomRight);
 			prevPosition = position - inputVector * speed;
 		}
-		
-		/*
-		for (auto a : *spaceships) {
-			if (a != this && !(a->isMini())) { // quickly filter out minis
-				point aPos = a->getAvgPosition();
-				if (pointDistance(avgPosition, aPos) < (getMaxDimension() + a->getMaxDimension())) { // if spaceship is close
-					box aBox = a->getCollisionBox();
-					point direction = (avgPosition - aPos) * inputVector;
-					if (boxOverlap(collisionBox, aBox)) {
-						if (direction.x < 0 || direction.y < 0) { // moving in wrong direction
-							position = prevPosition;
-						}
-						break;
-					}
-					else if (boxWithin(aBox, collisionBox)) {
-						if (direction.x < 0 || direction.y < 0) { // moving in wrong direction
-							position = prevPosition;
-						}
-						break;
-					}
-				}
-			}
-		}
-		*/
-
 	}
 	//calculate displacement vector
 	if (elapsedFrames != 0) {

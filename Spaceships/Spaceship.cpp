@@ -6,6 +6,7 @@
 #include <iostream>
 
 
+
 Spaceship::Spaceship() {
 
 }
@@ -14,10 +15,11 @@ Spaceship::Spaceship(point initPos, double initRotation) {
 	position = initPos; 
 	point tempTorpedoOrigin = { .5,0 };
 	point tempBulletOrigin = { -.5,0 };
-	std::cout << "spaceship init w/ position " << position << ", rotation " << rotation*180 << " deg, address: " << this <<std::endl;
+	//std::cout << "spaceship init w/ position " << position << ", rotation " << rotation*180 << " deg, address: " << this <<std::endl;
 	//setDims(width, height);
 	shieldTimer.restart();
 	displacementVector = { 0,0 };
+	
 }
 Spaceship::~Spaceship() {
 	setTargetNull();
@@ -26,7 +28,7 @@ point Spaceship::getDisplacementVector() {
 	return displacementVector;
 }
 void Spaceship::explode() {
-	explosions->push_back( new Explosion(explosionDuration, getMaxDimension(), getAvgPosition()));
+	explosions->push_back( new Explosion(explosionDuration, getMaxDimension(), getAvgPosition(), explosionDamage));
 }
 void Spaceship::destroy() {
 	//std::cout << "base this: " << this << "this - 20"<< this - 20 << std::endl;
@@ -48,33 +50,7 @@ void Spaceship::incrementRotation(float rotationDir) {
 	if (rotation > 2) {
 		rotation = rotation - 2;
 	}
-	
 	updateCollisionBox();
-	/*
-	std::cout << "collisionBox: " << collisionBox << std::endl;
-	while (!boxWithin(collisionBox, windowBounds)) {
-		std::cout << "adjusting.." << std::endl;
-		rotation -= rotationDir * rotationIncrement*boundAdjustment;
-		updateCollisionBox();
-		std::cout << "collisionBox: " << collisionBox << std::endl;
-	}
-	std::cout << "collisionBox in bounds: " << collisionBox << std::endl;
-	*/
-	/*
-	for (auto a : *spaceships) {
-		if (a != this ) {
-			//boxOverlap(collisionBox, a->getCollisionBox())
-			sf::Sprite aSprite = a->getSprite();
-			if (sprite.getGlobalBounds().intersects(aSprite.getGlobalBounds())) {
-				rotation -= rotationDir * rotationIncrement;
-				updateCollisionBox();
-				break;
-			}
-		}
-	}
-	*/
-	
-	
 	moveSprite();
 	//std::cout << "rotation incremented by " << rotationDir * rotationIncrement<<"; new rotation is " << rotation << std::endl;
 }
@@ -88,20 +64,6 @@ bool Spaceship::setRotation(float newRotation) {
 	if (rotation > 2) {
 		rotation = rotation - 2;
 	}
-	//point avg = averagePosition(getCollisionBox());
-	/*
-	for (auto a : *spaceships) {
-		
-		if (a != this) {
-			sf::Sprite aSprite = a->getSprite();
-			if (sprite.getGlobalBounds().intersects(aSprite.getGlobalBounds())) {
-				rotation = oldRotation;
-				set = false;
-				break;
-			}
-		}
-	}
-	*/
 	updateCollisionBox();
 	moveSprite();
 	return set;
@@ -109,12 +71,7 @@ bool Spaceship::setRotation(float newRotation) {
 void Spaceship::setImage() {
 	
 }
-void Spaceship::fireBullet() {
-	//std::cout << "Firing Bullet from " << bulletOrigin <<std::endl;
-	//std::cout << "rotation =" << rotation * 180 << std::endl;
-	bulletClock.restart();
-	projectiles->push_back( new Bullet(bulletOrigin, getTrajectory(), bulletDamage, this));
-}
+
 
 bool Spaceship::bulletReady() {
 	return (bulletClock.getTime() >= bulletPeriod);
@@ -145,18 +102,27 @@ void Spaceship::takeDamage(int dmg) {
 		health -= dmg;
 	}
 }
-void Spaceship::fireTorpedo() {
-	torpedoClock.restart();
-	if (!numGuidedMissiles) {
-		projectiles->push_back(new Torpedo(torpedoOrigin, getTrajectory(), torpedoDamage, this));
+void Spaceship::fireBullet() {
+	if (bulletReady()) {
+		bulletClock.restart();
+		projectiles->push_back(new Bullet(bulletOrigin, getTrajectory(), bulletDamage, this));
 	}
-	else {
-		projectiles->push_back(new GuidedMissile(torpedoOrigin, getTrajectory(), torpedoDamage, this));
-		numGuidedMissiles--;
+}
+void Spaceship::fireTorpedo() {
+	
+	if (torpedoReady()) {
+		torpedoClock.restart();
+		if (!numGuidedMissiles) {
+			projectiles->push_back(new Torpedo(torpedoOrigin, getTrajectory(), torpedoDamage, this));
+		}
+		else {
+			projectiles->push_back(new GuidedMissile(torpedoOrigin, getTrajectory(), torpedoDamage, this));
+			numGuidedMissiles--;
+		}
 	}
 }
 void Spaceship::layMine() {
-	if (numMines) {
+	if (numMines && mineReady()) {
 		mineClock.restart();
 		projectiles->push_back(new Mine(avgPosition, getTrajectory(), mineDamage, this));
 		numMines--;
@@ -315,4 +281,7 @@ int Spaceship::getMineCount() {
 }
 int Spaceship::getChasedByCount() {
 	return chasedBy.size();
+}
+void Spaceship::getSpawnExplosion() {
+	explosions->push_back(new SpawnExplosion(getMaxDimension(), avgPosition));
 }

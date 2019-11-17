@@ -83,6 +83,4 @@ void Cruiser::updateCollisionBox() { // fix
 	bulletOrigin = avgPosition + rotate(wh * tempBulletOrigin, rotation * M_PI);
 	torpedoOrigin2 = avgPosition + rotate(wh * tempTorpedoOrigin2, rotation * M_PI);
 	bulletOrigin2 = avgPosition + rotate(wh * tempBulletOrigin2, rotation * M_PI);
-	//std::cout << "torpedo origins: " << torpedoOrigin << ", " << torpedoOrigin2 << std::endl;
-	//std::cout << "bullet origins: " << bulletOrigin << ", " << bulletOrigin2 << std::endl;
 }

@@ -99,6 +99,12 @@
     <ClCompile Include="GuidedMissile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SpawnExplosion.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Burst.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Tools.h">
@@ -180,6 +186,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GuidedMissile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SpawnExplosion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Burst.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

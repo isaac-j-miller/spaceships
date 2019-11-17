@@ -15,6 +15,7 @@
 #include "Carrier.h"
 #include "Mini.h"
 #include "BlackHole.h"
+#include "SpawnExplosion.h"
 
 #include <iostream>
 #include <fstream>
@@ -23,7 +24,7 @@
 
 
 
-const int thresholds[] = { 4000, 15000, 45000 };
+const int thresholds[] = { 10000, 25000, 50000 };
 const int MAX_LEVEL = 2;
 const int SPACESHIP_TYPES = MAX_LEVEL + 1;
 const char* logFile = "scores.txt";
@@ -35,6 +36,7 @@ unsigned int prevScore = 0;
 bool paused = false;
 const point size = { 1280, 960 };
 const box windowBox = { { 0,0 } ,{0,size.y},{size.x,size.y},{size.x,0} };
+int count = 0;
 sf::RenderWindow window(sf::VideoMode(size.x, size.y), "Spaceships");
 sf::Font font;
 sf::Text healthReadout;
@@ -54,7 +56,7 @@ std::string shieldImageFileName;
 std::vector<Spaceship*> spaceships;
 std::vector<EnemySpaceship*> enemySpaceships;
 std::vector<Projectile*> projectiles;
-std::vector<Explosion*> explosions;
+std::vector<Burst*> explosions;
 std::vector<PowerUp*> powerUps;
 
 
@@ -325,24 +327,47 @@ void intro(sf::Font f, sf::Text controlsText) {
 	}
 }
 
+template <typename T>
+
+void resetVector(std::vector<T> *vect){
+	for (auto it = vect->begin(); it != vect->end();) {
+		delete (*it);
+		it++;
+	}
+	vect->clear();
+}
+
+void resetAll() {
+	/*
+	std::vector<Spaceship*> spaceships;
+	std::vector<EnemySpaceship*> enemySpaceships;
+	std::vector<Projectile*> projectiles;
+	std::vector<Burst*> explosions;
+	std::vector<PowerUp*> powerUps;
+	*/
+	window.clear();
+	delete ScreenThing::blackHole;
+	ScreenThing::blackHole = nullptr;
+	resetVector(&spaceships);
+	resetVector(&projectiles);
+	resetVector(&explosions);
+	resetVector(&powerUps);
+	enemySpaceships.clear();
+	masterClock.restart();
+
+}
+
 int main()
 {
-	//unsigned int seed = (std::chrono::system_clock::now().time_since_epoch().count() - 15672112962443214) / 10E6;
-	//std::cout << seed<< std::endl;
-	srand(time(0));
-	//for (int i = 0; i < 20; i++) {
-	//	rand();
-	//}
+	if(!count){ srand(time(0)); }
+	
 	bool logged = false;
 	bool levelUpActive = false;
 	int initPlayerLevel = 0;
 	int playerLevel = initPlayerLevel;
 	int level = 0;
-	//int numEnemies = 6;
 	int enemiesSpawnPeriod = 1250;
 	int enemiesSpawnNumber = 3;
-	//int aggressiveness = 2;
-	//int difficultyIncrement = 1;
 	int powerUpsInit = 4;
 	int powerUpSpawnNumber = 2;
 	int powerUpPeriod = 1500;
@@ -354,19 +379,8 @@ int main()
 	controlsText = sf::Text(controlsTextLines, font);
 	
 
-
-	//controlsText.setOrigin(controlsText.getLocalBounds().width / 2, controlsText.getLocalBounds().height/2);
-	
-	//unsigned int levelUpScore = 10000;
 	highScore = getHighScore();
-	
-	//std::cout << "Frame Period is " << framePeriodMicroSeconds << " us" << std::endl;
-	//std::cout << "spaceship size: " << sizeof(Spaceship) << " enemyspaceship size: " << sizeof(EnemySpaceship) << " patrolship size: " << sizeof(PatrolShip) << "enemypatrolship size: " << sizeof(EnemyPatrolShip) << std::endl;
 	font.loadFromFile("pixel_font.ttf");
-	
-
-	
-
 
 	healthReadout.setFont(font);
 	healthReadout.setPosition(0, 0);
@@ -387,7 +401,6 @@ int main()
 	highScoreText.setStyle(sf::Text::Bold);
 
 	playerStatus.setFont(font);
-	//playerStatus.setOrigin(playerStatus.getLocalBounds().width, playerStatus.getLocalBounds().height);
 	playerStatus.setPosition(window.getSize().x-340, window.getSize().y -140);
 	
 	playerStatus.setCharacterSize(30);
@@ -414,7 +427,6 @@ int main()
 	pauseText.setOrigin(pauseText.getLocalBounds().width / 2, pauseText.getLocalBounds().height / 2);
 	pauseText.setPosition(size.x / 2, size.y / 2);
 
-	//controlsText.setOrigin(controlsText.getLocalBounds().width / 2, controlsText.getLocalBounds().height / 2);
 	controlsText.setPosition(10, window.getSize().y * 5.f / 8.f);
 	
 
@@ -435,8 +447,6 @@ int main()
 	bSprite.setTexture(backgroundTexture);
 	point scale = { size.x / backgroundTexture.getSize().x,size.y / backgroundTexture.getSize().y };
 	bSprite.setScale(scale.x, scale.y);
-
-	//Spaceship::Init("shield.png", &spaceships, &enemySpaceships, &projectiles, &explosions, windowBox); 
 	
 	ScreenThing::InitGame("shield.png", windowBox, size,&spaceships,&enemySpaceships,&projectiles, &explosions, &powerUps);
 	
@@ -453,20 +463,20 @@ int main()
 	GuidedMissile::Init("guidedmissile.png");
 
 	Explosion::Init("explosion.png");
+	TextExplosion::Init("pixel_font.ttf", sf::Color::Green);
+	SpawnExplosion::Init("spawn.png");
 	PowerUp::Init("powerup.png");
 	Upgrade::Init("levelup.png");
-	TextExplosion::Init("pixel_font.ttf", sf::Color::Green);
+	
 	BlackHole::Init("blackhole.png");
 	PowerUpFactory::Init(ScreenThing::powerUps, size);
 	SpaceshipFactory::Init(1, 0,size, ScreenThing::spaceships);
 	spaceships.push_back(SpaceshipFactory::generatePlayer(0));//instantiate player
 	
-	static Spaceship* player = ScreenThing::spaceships->at(0);
-	//Projectile::Init(&explosions, &spaceships, size);
+	Spaceship* player = ScreenThing::spaceships->at(0);
 	EnemySpaceship::Init(player); // initialize enemySpaceships with player as the target
 	point randpos;
-	//bool c = false; //used to make sure RNG doesn't place 2 spaceships in the same spot
-	
+	player->takeDamage(-50);
 	level = generateLevel(level);
 	
 	for (float i = 0; i < powerUpsInit; i++) { // generate powerups
@@ -476,9 +486,7 @@ int main()
 	powerUpTimer.restart();
 	while (window.isOpen())
 	{
-		//if (!player ->isActive()) {
-		//	break;
-		//}
+		
 		masterClock.restart();
 		FrameClock::updateTime(frame);
 		sf::Event event;
@@ -716,6 +724,11 @@ int main()
 				else if (event.type == sf::Event::KeyPressed) {
 					if(event.key.code == sf::Keyboard::Escape){ 
 						window.close(); 
+					}
+					if (event.key.code == sf::Keyboard::Enter) {
+						resetAll();
+						main();
+						count++;
 					}
 					
 				}

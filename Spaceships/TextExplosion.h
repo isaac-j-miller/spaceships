@@ -1,9 +1,9 @@
 #pragma once
-#include "Explosion.h"
+#include "Burst.h"
 #ifndef TEXTEXPLOSION_H
 #define TEXTEXPLOSION_H
 class TextExplosion :
-	public Explosion
+	public Burst
 {
 	static sf::Font font;
 	static sf::Color fillColor;
@@ -12,9 +12,9 @@ public:
 	TextExplosion(const std::string& t, const point& topLeft, const float& fs);
 	~TextExplosion();
 	void setImage();
+	sf::Sprite getSprite() { return Burst::getSprite(); }
 private:
-	point boxSize;
-	point avgPosition;
+	
 	float fontSize;
 	std::string text;
 	sf::Text sfText;

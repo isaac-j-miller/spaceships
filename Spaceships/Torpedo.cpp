@@ -19,6 +19,7 @@ Torpedo::Torpedo(point pos, point traj, int dmg, Spaceship* f) :
 	speed = 7; //in pixels per frame
 	explosionDuration = 10;//frames
 	explosionSize = 20;
+	explosionDamage = 1;
 	width = 10;
 	height = 15;
 	
