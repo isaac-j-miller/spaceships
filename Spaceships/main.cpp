@@ -698,11 +698,11 @@ int main()
 		}
 		if (!player->isActive()) {
 			if (prevScore == highScore) {
-				endText.setString("New High Score: " + std::to_string(highScore) + "! Press Esc to exit.");
+				endText.setString("New High Score: " + std::to_string(highScore) + "! Press Esc to exit.\n        or [Enter] to play again.");
 			}
 			else {
 
-				endText.setString("Game Over. Press [Esc] to exit.");
+				endText.setString("Game Over. Press [Esc] to exit\n   or [Enter] to play again.");
 			}
 			endText.setOrigin(endText.getLocalBounds().width / 2, pauseText.getLocalBounds().height / 2);
 			endText.setPosition(size.x / 2, size.y / 2);
