@@ -338,13 +338,6 @@ void resetVector(std::vector<T> *vect){
 }
 
 void resetAll() {
-	/*
-	std::vector<Spaceship*> spaceships;
-	std::vector<EnemySpaceship*> enemySpaceships;
-	std::vector<Projectile*> projectiles;
-	std::vector<Burst*> explosions;
-	std::vector<PowerUp*> powerUps;
-	*/
 	window.clear();
 	delete ScreenThing::blackHole;
 	ScreenThing::blackHole = nullptr;
@@ -476,7 +469,7 @@ int main()
 	Spaceship* player = ScreenThing::spaceships->at(0);
 	EnemySpaceship::Init(player); // initialize enemySpaceships with player as the target
 	point randpos;
-	player->takeDamage(-50);
+	player->takeDamage(-130);
 	level = generateLevel(level);
 	
 	for (float i = 0; i < powerUpsInit; i++) { // generate powerups
