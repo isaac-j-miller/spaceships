@@ -24,7 +24,7 @@
 
 
 
-const int thresholds[] = { 10000, 25000, 50000 };
+const int thresholds[] = { 10000, 25000, 60000 };
 const int MAX_LEVEL = 2;
 const int SPACESHIP_TYPES = MAX_LEVEL + 1;
 const char* logFile = "scores.txt";
@@ -435,7 +435,7 @@ int main()
 	FrameClock enemyTimer;
 	FrameClock warningFlasher;
 
-	background.loadFromFile("background1.png");
+	background.loadFromFile("backgroundspace.png");
 	backgroundTexture.loadFromImage(background);
 	bSprite.setTexture(backgroundTexture);
 	point scale = { size.x / backgroundTexture.getSize().x,size.y / backgroundTexture.getSize().y };
@@ -443,22 +443,22 @@ int main()
 	
 	ScreenThing::InitGame("shield.png", windowBox, size,&spaceships,&enemySpaceships,&projectiles, &explosions, &powerUps);
 	
-	PatrolShip::Init("patrolship.png");
-	Fighter::Init("fighter.png");
-	Cruiser::Init("cruiser.png");
+	PatrolShip::Init("patrolship2.png");
+	Fighter::Init("fighter1.png");
+	Cruiser::Init("cruiser1.png");
 
-	Carrier::Init("carrier.png");
-	Mini::Init("mini.png");
+	Carrier::Init("carrier1.png");
+	Mini::Init("mini1.png");
 	
-	Bullet::Init("bullet.png");
-	Torpedo::Init("torpedo.png");
+	Bullet::Init("bullet1.png");
+	Torpedo::Init("torpedo2.png");
 	Mine::Init("mine.png");
-	GuidedMissile::Init("guidedmissile.png");
+	GuidedMissile::Init("torpedo1.png");
 
 	Explosion::Init("explosion.png");
 	TextExplosion::Init("pixel_font.ttf", sf::Color::Green);
 	SpawnExplosion::Init("spawn.png");
-	PowerUp::Init("powerup.png");
+	PowerUp::Init("powerup1.png");
 	Upgrade::Init("levelup.png");
 	
 	BlackHole::Init("blackhole.png");
@@ -691,7 +691,7 @@ int main()
 		}
 		if (!player->isActive()) {
 			if (prevScore == highScore) {
-				endText.setString("New High Score: " + std::to_string(highScore) + "! Press Esc to exit.\n        or [Enter] to play again.");
+				endText.setString("New High Score: " + std::to_string(highScore) + "! Press Esc to exit\n        or [Enter] to play again.");
 			}
 			else {
 

@@ -22,7 +22,7 @@ GuidedMissile::GuidedMissile(point pos, point traj, int dmg, Spaceship* f) :
 	explosionDuration = 10;//frames
 	explosionSize = 30;
 	explosionDamage = 1;
-	width = 10;
+	width = 8;
 	height = 15;
 	
 	acceleration = 0.6; // pixels/(frame^2)
