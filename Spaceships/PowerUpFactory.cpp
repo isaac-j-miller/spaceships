@@ -77,7 +77,7 @@ std::tuple<int,int> PowerUpFactory::getValue(int type) {
 	{
 	case 0:
 		// shield
-		minValue = 2;
+		minValue = 3;
 		maxValue = 6;
 		break;
 	case 1:
@@ -97,8 +97,8 @@ std::tuple<int,int> PowerUpFactory::getValue(int type) {
 		break;
 	case 4:
 		// health upgrade
-		minValue = 4;
-		maxValue = 6;
+		minValue = 8;
+		maxValue = 10;
 		break;
 	case 5:
 		// bullet ROF upgrade

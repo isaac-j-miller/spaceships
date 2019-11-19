@@ -42,7 +42,7 @@ Carrier::Carrier(point initPos, double initRotation, int d, int s) :
 	shieldPeriod = 500;
 	numMines = 100;
 	numGuidedMissiles = 0;
-	movePeriod -= 2;
+	aggressiveness /= 2;
 	explosionDamage = 2;
 	activateShield();
 	tempTorpedoOrigin = { 0, .4 };

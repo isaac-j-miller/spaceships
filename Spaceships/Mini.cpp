@@ -39,7 +39,7 @@ EnemySpaceship(initPos, initRotation,d,s){
 	bulletPeriod = 7;
 	speed = 5.6;
 	pointValue = 400;
-	aggressiveness *= 3;
+	aggressiveness *= 2;
 	movePeriod = 0;
 	mini = true;
 	tempTorpedoOrigin = { 0, 0 };

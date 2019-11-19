@@ -8,16 +8,25 @@ levelInfo generateLevelInfo(int level) {
 	out.fighters = level/2 - 1;
 	out.cruisers = level/3 - 2;
 	out.carriers = level/4 - 1;
-	out.aggressiveness = level/5 + 3;
-	out.sluggishness = 10 - level/2;
+	out.aggressiveness = level/6 + 3;
+	out.sluggishness = 10 - level/3;
 	if (out.patrols < 0) {
 		out.patrols = 0;
+	}
+	if (out.patrols > 8) {
+		out.patrols = 8;
 	}
 	if (out.fighters < 0) {
 		out.fighters = 0;
 	}
+	if (out.fighters > 4) {
+		out.fighters = 4;
+	}
 	if (out.cruisers < 0) {
 		out.cruisers = 0;
+	}
+	if (out.cruisers > 3) {
+		out.cruisers = 3;
 	}
 	if (out.carriers < 0) {
 		out.carriers = 0;

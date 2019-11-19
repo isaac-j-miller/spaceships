@@ -469,7 +469,7 @@ int main()
 	Spaceship* player = ScreenThing::spaceships->at(0);
 	EnemySpaceship::Init(player); // initialize enemySpaceships with player as the target
 	point randpos;
-	player->takeDamage(-130);
+	player->takeDamage(-150);
 	level = generateLevel(level);
 	
 	for (float i = 0; i < powerUpsInit; i++) { // generate powerups
@@ -496,10 +496,18 @@ int main()
 		//maybe generate powerups
 	
 		if (powerUpTimer.getTime() > powerUpPeriod && player->isActive()) {
-			for (int i = 0; i < powerUpSpawnNumber; i++) { // generate powerups
-				ScreenThing::powerUps->push_back(PowerUpFactory::generateRandom());
+			if (player->getHealth() > 50) {
+				for (int i = 0; i < powerUpSpawnNumber; i++) { // generate powerups
+					ScreenThing::powerUps->push_back(PowerUpFactory::generateRandom());
+				}
 			}
-			//ScreenThing::powerUps->push_back(PowerUpFactory::generateSpecificTypeRandom(4));//guaranteed to generate health powerup
+			else {
+				for (int i = 0; i < powerUpSpawnNumber-1; i++) { // generate powerups
+					ScreenThing::powerUps->push_back(PowerUpFactory::generateRandom());
+				}
+				ScreenThing::powerUps->push_back(PowerUpFactory::generateSpecificTypeRandom(4));//generate health powerup
+			}
+			
 			powerUpTimer.restart();
 		}
 		if ((enemyTimer.getTime() > enemiesSpawnPeriod && ScreenThing::enemySpaceships->size() == 0) && player->isActive()) {
